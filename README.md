@@ -1,5 +1,4 @@
 # **KJX Automations**
-___
 
 Use our fully realized sample application to get a head start on your instrument
 control software (ICS). This example provides the infrastructure and patterns required for a 
