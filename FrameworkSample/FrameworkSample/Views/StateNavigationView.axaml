@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:FrameworkSample.Views"
+             xmlns:viewModels="clr-namespace:FrameworkSample.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:StateNavigationViewModel"
+             x:Class="FrameworkSample.Views.StateNavigationView">
+    <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch">
+        <TextBlock></TextBlock>
+        <TransitioningContentControl Grid.Row="1" Content="{Binding CurrentPage}"  >
+            <TransitioningContentControl.PageTransition>
+                <PageSlide Orientation="Horizontal" Duration="00:00:00.25" />
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+        <views:NavigationBreadCrumbControl Grid.Row="0" DataContext="{Binding NavigationService}" 
+                                           Margin="5" VerticalAlignment="Bottom"  HorizontalAlignment="Center" />
+        <views:NavigationButtonBarControl Grid.Row="2" HorizontalAlignment="Center"/>
+        <views:NotificationsCounterControl Grid.Row="2" 
+                                           x:Name="NotificationsControl"
+                                           DataContext="{Binding Notifications}" 
+                                           VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+    </Grid>
+</UserControl>

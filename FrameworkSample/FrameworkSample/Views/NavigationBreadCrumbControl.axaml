@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:FrameworkSample.Services"
+             xmlns:converters="clr-namespace:FrameworkSample.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FrameworkSample.Views.NavigationBreadCrumbControl">
+    <Design.DataContext>
+        <services:NavigationService/>
+    </Design.DataContext>
+    <UserControl.Resources>
+        <converters:StateActiveColorConverter x:Key="StateActiveColorConverter" />
+    </UserControl.Resources>
+    <ItemsControl x:DataType="services:NavigationService"
+                  ItemsSource="{ReflectionBinding BreadcrumbStates}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <DockPanel LastChildFill="True" IsHitTestVisible="False">
+                        <Path DockPanel.Dock="Left"  Stroke="White" Fill="{ReflectionBinding IsActive,
+                                                                                Converter={StaticResource StateActiveColorConverter}}" 
+                              Data="F1 M 112,144L 104,144L 112,160L 104,176L 112,176" Stretch="Fill" Height="50" Width="20" />
+                        <Grid>
+                            <Rectangle Fill="{ReflectionBinding IsActive, 
+                                                Converter={StaticResource StateActiveColorConverter}}" />
+                            <TextBlock Text="{ReflectionBinding StateName}" Padding="10"
+                                       VerticalAlignment="Center"
+                                       Background="{ReflectionBinding Path=IsActive, Converter={StaticResource StateActiveColorConverter}}"
+                                       />
+                        </Grid>
+                        <Path DockPanel.Dock="Right" Stroke="White" Fill="{ReflectionBinding IsActive,
+                                                                                Converter={StaticResource StateActiveColorConverter}}" 
+                              Data="F1 M 168,144L 176,160L 168,176" Stretch="Fill" Height="50" Width="20" />
+                    </DockPanel>
+                </StackPanel>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>
