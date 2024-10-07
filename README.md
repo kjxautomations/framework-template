@@ -34,4 +34,4 @@ utilizing [Avalonia](https://avaloniaui.net/) for cross-platform support.
 ### Need more?
 
 Not every project is the same, and we're here to help. Whether it is implementing real devices and hardware or workflow customizations,
-[contact us](https://www.kjxautomations.com).
+[contact us](info@kjxautomations.com).
