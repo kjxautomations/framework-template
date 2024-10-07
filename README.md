@@ -31,6 +31,11 @@ utilizing [Avalonia](https://avaloniaui.net/) for cross-platform support.
 - Patterns for reusable and responsive UI components
 - Simulation
 
+### Getting Started
+
+Open the FrameworkSample.sln in the latest Visual Studio or Rider. There are projects for a desktop and browser-based version, as 
+well as a unit test project.
+
 ### Need more?
 
 Not every project is the same, and we're here to help. Whether it is implementing real devices and hardware or workflow customizations contact us: git@kjxautomations.com
