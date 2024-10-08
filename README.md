@@ -14,7 +14,7 @@ development process.
 
 Furthermore, requirements for internal and external stakeholders vary wildly and are rarely static.
 Often this leads to customer-facing and internal (or Engineering) software applications with drastically different user experiences,
-that relying on the same underlying code and logic. This can lead to "maintenance hell",
+that rely on the same underlying code and logic. This can lead to "maintenance hell",
 if not managed effectively.
 
 ### What's Included?
