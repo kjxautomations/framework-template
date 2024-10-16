@@ -48,6 +48,9 @@
       </EmbeddedResource>
       <None Remove="web_config.ini" />
       <EmbeddedResource Include="web_config.ini" />
+      <None Update="SystemConfigs\DemoSystem.ini">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

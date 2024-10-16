@@ -11,7 +11,8 @@ public static class ConfigLoader
     private const string SystemTypeLabel = "SystemType";
     private const string TypeLabel = "_type";
     private const string InterfacePrefix = "_interface";
-    
+    private const string SimulatedLabel = "_simulated";
+
     public static HashSet<ConfigSection> LoadConfig(string configFile, string? systemsDirectory = null)
     {
         using var stream = new FileStream(configFile, FileMode.Open, FileAccess.Read);
@@ -35,7 +36,6 @@ public static class ConfigLoader
             }
 
             var result = new HashSet<ConfigSection>();
-
             // look for the {SystemType}.ini file in systemsDirectory and load it
             if (systemType != null)
             {
@@ -52,15 +52,62 @@ public static class ConfigLoader
             {
                 if (section.Type == null)
                     throw new InvalidDataException($"Section '{section.Name}' does not define a type");
+                VerifyAndConvertProperties(section);
+                VerifyInterfaces(section);
             }
-
-
+            
             return result;
-    
+
         }
         catch (Exception e)
         {
             throw new ConfigError($"Error loading main config file '{configFile}'", e);
+        }
+    }
+
+    /// <summary>
+    /// Take the final loaded ConfigSection and convert all the properties to the correct type.
+    /// Along the way, perform validation on the properties.
+    /// </summary>
+    /// <param name="section">The section to validate</param>
+    /// <exception cref="InvalidDataException"></exception>
+    private static void VerifyAndConvertProperties(ConfigSection section)
+    {
+        var allPropertiesWithRequiredAttribute = section.Type.GetProperties()
+            .Where(p => p.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0)
+            .Select(p => p.Name)
+            .ToList();
+        var convertedProperties = new Dictionary<string, object>();
+        foreach (var item in section.Properties)
+        {
+            var prop = section.Type.GetProperty(item.Key);
+            if (prop == null || !prop.CanWrite)
+                throw new InvalidDataException(
+                    $"{item.Key} not found in type {section.Type.Name} as a settable property");
+            var converter = TypeDescriptor.GetConverter(prop.PropertyType);
+            var convertedObject = converter.ConvertFromString(item.Value.ToString());
+            if (convertedObject == null)
+            {
+                throw new InvalidDataException($"Unable to convert '{item.Value}' to '{prop.PropertyType.Name}'");
+            }
+            if (!PropertyValidator.TryValidateProperty(prop, convertedObject, out var validationResults))
+            {
+                throw new InvalidDataException(
+                    $"Validation failed for property '{item.Key}' in section '{section.Name}': {string.Join(", ", validationResults.Select(x => x.ErrorMessage))}");
+            }
+            convertedProperties.Add(item.Key, convertedObject);
+            allPropertiesWithRequiredAttribute.Remove(item.Key);
+        }
+        section.Properties.Clear();
+        // copyConvertedProperties to the section
+        foreach (var item in convertedProperties)
+        {
+            section.Properties.Add(item.Key, item.Value);
+        }
+
+        if (allPropertiesWithRequiredAttribute.Any())
+        {
+            throw new InvalidDataException($"Required properties did not have values provided in section '{section.Name}': {string.Join(", ", allPropertiesWithRequiredAttribute)}");
         }
     }
 
@@ -84,6 +131,11 @@ public static class ConfigLoader
                 type = Type.GetType(typeItem.Value);
                 if (type == null)
                     throw new InvalidDataException($"Unable to load type '{typeItem.Value}'");
+                var simItem = section.FirstOrDefault(item => item.Name == SimulatedLabel);
+                if (simItem != null && bool.TryParse(simItem.Value, out var isSimulated) && isSimulated)
+                {
+                    type = RemapSimulatedType(type);
+                }
             }
             else
             {
@@ -91,6 +143,8 @@ public static class ConfigLoader
             }
 
             result = new ConfigSection(type, section.Name);
+            ParseInterfaces(result, section);
+            LoadProperties(result, section);
             existingSections.Add(result);
         }
         else
@@ -109,60 +163,78 @@ public static class ConfigLoader
                     result.Interfaces.Clear();
                     result.Properties.Clear();
                 }
+                // we explicitly do NOT throw away the interfaces and properties if the type is marked as simulated
+                var simItem = section.FirstOrDefault(item => item.Name == SimulatedLabel);
+                if (simItem != null && bool.TryParse(simItem.Value, out var isSimulated) && isSimulated)
+                {
+                    result.Type = RemapSimulatedType(type);
+                }
             }
             else
             {
                 type = result.Type;
+                var simItem = section.FirstOrDefault(item => item.Name == SimulatedLabel);
+                if (simItem != null && bool.TryParse(simItem.Value, out var isSimulated) && isSimulated)
+                {
+                    type = result.Type = RemapSimulatedType(type);
+                }
             }
+            ParseInterfaces(result, section);
+            LoadProperties(result, section);
         }
 
         if (type == null)
         {
             throw new InvalidDataException($"{section.Name} does not define a type");
         }
+        
+    }
 
-        var allPropertiesWithRequiredAttribute = type.GetProperties()
-            .Where(p => p.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0)
-            .Select(p => p.Name)
-            .ToList();
+    private static void LoadProperties(ConfigSection result, Section section)
+    {
+        foreach (var item in section.Where(x => x.Name != TypeLabel))
+        {
+            if (item.Name.StartsWith(InterfacePrefix) || item.Name == SimulatedLabel)
+                continue;
+            result.Properties[item.Name] = item.Value;
+        }
+    }
+
+    private static void ParseInterfaces(ConfigSection result, Section section)
+    {
         foreach (var item in section.Where(x => x.Name != TypeLabel))
         {
             if (item.Name.StartsWith(InterfacePrefix))
             {
                 var interfaceType = Type.GetType(item.Value);
                 if (interfaceType == null)
-                    throw new InvalidDataException($"Unable to load interface type '{item.Value}'");
+                    throw new InvalidDataException($"Unable to load interface type '{item.Value}' from section {result.Name}");
                 if (!interfaceType.IsInterface)
-                    throw new InvalidDataException($"{item.Value} is not an interface");
-                if (!interfaceType.IsAssignableFrom(type))
-                    throw new InvalidDataException($"Type {type.Name} does not support interface {item.Value}");
+                    throw new InvalidDataException($"{item.Value} in section {result.Name} is not an interface");
                 result.Interfaces.Add(interfaceType);
             }
-            else
-            {
-                var prop = type.GetProperty(item.Name);
-                if (prop == null || !prop.CanWrite)
-                    throw new InvalidDataException(
-                        $"{item.Name} not found in type {type.Name} as a settable property");
-                var converter = TypeDescriptor.GetConverter(prop.PropertyType);
-                var convertedObject = converter.ConvertFromString(item.Value.ToString());
-                if (convertedObject == null)
-                {
-                    throw new InvalidDataException($"Unable to convert '{item.Value}' to '{prop.PropertyType.Name}'");
-                }
-                if (!PropertyValidator.TryValidateProperty(prop, convertedObject, out var validationResults))
-                {
-                    throw new InvalidDataException(
-                        $"Validation failed for property '{item.Name}' in section '{section.Name}': {string.Join(", ", validationResults.Select(x => x.ErrorMessage))}");
-                }
-                result.Properties[item.Name] = convertedObject;
-                allPropertiesWithRequiredAttribute.Remove(item.Name);
-            }
+        }
+    }
+
+    private static void VerifyInterfaces(ConfigSection section)
+    {
+        foreach (var interfaceType in section.Interfaces)
+        {
+            if (!interfaceType.IsAssignableFrom(section.Type))
+                throw new InvalidDataException($"Type {section.Type.Name} in section {section.Name} does not support interface {interfaceType.Name}");
         }
 
-        if (allPropertiesWithRequiredAttribute.Any())
-        {
-            throw new InvalidDataException($"Required properties did not have values provided in section '{section.Name}': {string.Join(", ", allPropertiesWithRequiredAttribute)}");    
-        }
+    }
+
+    private static Type RemapSimulatedType(Type type)
+    {
+        // separate the namespaxe and class name
+        var parts = type.FullName.Split('.');
+        var simulatedTypeName = "Simulated" + parts.Last();
+        var fqtn = $"{string.Join(".", parts.Take(parts.Length - 1))}.{simulatedTypeName}, {type.Assembly.FullName}";
+        var result = Type.GetType(fqtn);
+        if (result == null)
+            throw new InvalidDataException($"Unable to load simulated type '{simulatedTypeName}'");
+        return result;
     }
 }

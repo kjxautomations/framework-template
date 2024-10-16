@@ -2,11 +2,11 @@
 
 ## Design Goals
 
-The primary goal of the configuration system is to allow instruments to have calibration data that is per-instrument to be stored on the instrument. A good example of this is storing offsets from motor homing position to a standard coordinate system.  
-A secondary goal is to facilitate experiments by internal users of the software, such as System Integration and Software Test. An example of this is performing A/B testing of the customer-facing software with alternate tuning parameters.  
-A tertiary goal is to allow advanced testing and debugging scenarios that involve the interchange of software components that share a common interface. Examples of this include:
-
-* Allowing classes that control hardware components to be exchanged for ones that simply simulate the component, which allows running the software without a physical instrument or with one that is only partially built.  
+The primary goal of the configuration system is to allow instruments to have calibration data that is per-instrument to be stored on the instrument. A good example of this is storing offsets from motor homing position to a standard coordinate system.
+Other goals of the system are:
+* Allow easy simulation of devices. This is useful during instrument bring-up when all the hardware may not be available.
+* Facilitate experiments by internal users of the software, such as System Integration and Software Test. An example of this is performing A/B testing of the customer-facing software with alternate tuning parameters.  
+* Allow advanced testing and debugging scenarios that involve the interchange of software components that share a common interface. Examples of this include:
 * Allowing different instrument generations (e.g. several generations of prototypes) to be supported by a single program
 
 ## Audience
@@ -93,12 +93,13 @@ In this example, FirstSystem.ini is loaded, then the remaining values are overla
 
 The following tags are reserved for the system and may not be used for other purposes:
 
-| Name | Where | Description |
-| :---- | :---- | :---- |
-| System | A section name | Defines a special section that controls the loading of other config files |
-| SystemType | In a “System” section | Defines the name of the INI file to be loaded for the system |
-| _type | In any non-System section | Defines the .NET object type that will be created to hold the configuration values |
+| Name        | Where | Description |
+|:------------| :---- | :---- |
+| System      | A section name | Defines a special section that controls the loading of other config files |
+| SystemType  | In a “System” section | Defines the name of the INI file to be loaded for the system |
+| _type       | In any non-System section | Defines the .NET object type that will be created to hold the configuration values |
 | _interface* | In any non-System section | Defines 0 or more interfaces supported by the object |
+| _simulated  | In any non-System section | If true, the object is simulated |
 
 # What occurs under the hood
 
@@ -108,7 +109,41 @@ The remaining sections are ready to be inserted into a dependency-injection fram
 
 # Patterns for Simulation
 
-One way to simulate a device is to completely replace its definition with a class that simulates the interfaces:  
+## The easy way
+
+The easiest way to simulate a device is to have a separate class that implements the same interfaces as the real device. The name of the 
+class should be the same as the real class with the word “Simulated” prepended to it. It must exist in the same assembly and namespace as the 
+real class.
+
+For example:
+```
+namespace Framework.Devices  
+{  
+    public class LinearStepperMotor : IMotor, ISupportsInitialization, ISupportsHoming  
+    {  
+        // Implementation here  
+    }
+    public class SimulatedLinearStepperMotor : IMotor, ISupportsInitialization, ISupportsHoming  
+    {  
+        // Implementation here  
+    }  
+}
+```
+
+In the configuration file, you would specify the simulated class like this:  
+```
+[System]
+SystemType = SystemWithXMotorDefined
+
+[XMotor]
+_simulated = true
+```
+
+This is the approach that we took in the desktop example.
+
+## The hard way
+
+A more difficult, but more flexible way to simulate a device is to completely replace its definition with a class that simulates the interfaces:  
 ```
 [XMotor]  
 _type = Framework.Devices.SimulatedLinearStepperMotor, Devices  
@@ -116,10 +151,4 @@ _interface1 = Framework.Devices.IMotor, Devices
 _interface2 = Framework.Devices.ISupportsInitialization, Devices  
 _interface3 = Framework.Devices.ISupportsHoming, Devices  
 ```
-This keeps the underlying classes closer to the Single Responsibility Principle in programming.  
-However, there may be a lot of common logic that the simulated and real classes share, and your design may warrant having a common class that knows about simulation. In this case, you can use a more minimalist approach to simulation:  
-```
-[XMotor]  
-Simulated = true  
-```
-In this case, you’ll have a property called “Simulated” that causes different code paths to be taken.   
+This is the approach we took in the Browser sample.
