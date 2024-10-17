@@ -36,6 +36,10 @@ public class DummyXMotor : DummyMotor
 {
 }
 
+public class SimulatedDummyXMotor : DummyMotor
+{
+}
+
 public class DummyYMotor : DummyMotor
 {
 }

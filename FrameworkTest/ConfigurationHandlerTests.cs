@@ -26,7 +26,7 @@ public class ConfigurationHandlerTests
     {
         var x1 = _container.ResolveKeyed<IMotorInterface>("XMotor");
         var x2 = _container.ResolveKeyed<IMotorInterface>("XMotor");
-        Assert.IsNotNull(x1);
+        Assert.That(x1, Is.Not.Null);
         Assert.That(x2, Is.SameAs(x1));
     }
     [Test]

@@ -65,7 +65,8 @@ public partial class App : Application
         {
             var assemblyPath = Path.GetDirectoryName(assembly.Location);
             var configPath = Path.Combine(assemblyPath, "simple_config.ini");
-            cfg = ConfigLoader.LoadConfig(configPath);
+            var systemsPath = Path.Combine(assemblyPath, "SystemConfigs");
+            cfg = ConfigLoader.LoadConfig(configPath, systemsPath);
         }
         else
         {
