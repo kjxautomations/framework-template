@@ -53,10 +53,10 @@ This is mostly for writing small test programs that use this architecture.
 ## Minimal specification
 
 This is the form that is intended for use in programs that will run on multiple instrument types and have calibration values. They contain a special section called “System” that causes a base configuration file to be loaded. Subsequent sections in the minimal config file are overlaid onto the base configuration.  
-For example, we may have two systems. System 1 defines a motor supported by an RMS-356 stepper controller from LIN Industries:  
+For example, we may have two systems. System 1 defines a motor supported by an R-356 stepper controller from LIN Industries:  
 ```
 [XMotor]  
-_type = Framework.Devices.RMS356StepperMotor, Devices  
+_type = Framework.Devices.R356StepperMotor, Devices  
 _interface1 = Framework.Devices.IMotor, Devices  
 _interface2 = Framework.Devices.ISupportsInitialization, Devices  
 _interface3 = Framework.Devices.ISupportsHoming, Devices  
