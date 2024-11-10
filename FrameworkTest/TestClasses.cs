@@ -92,6 +92,9 @@ public class ObjectWithRequiredPropertiesKeyword
     public required string? RequiredString { get; set; }
 
     public int NotRequiredInt { get; set; }
+    
+    // we don't verify these - leave these for the DI container
+    public required IInitializable? RequiredObject { get; set; }
 }
 
 

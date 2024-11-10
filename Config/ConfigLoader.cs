@@ -79,8 +79,12 @@ public static class ConfigLoader
             return prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0 ||
                    prop.GetCustomAttributes(typeof(RequiredMemberAttribute), true).Length > 0;
         }
+        bool IsSimpleType(PropertyInfo prop)
+        {
+            return prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string);
+        }
         var allPropertiesWithRequiredAttribute = section.Type.GetProperties()
-            .Where(p => IsRequired(p))
+            .Where(p => IsRequired(p) && IsSimpleType(p))
             .Select(p => p.Name)
             .ToList();
         var convertedProperties = new Dictionary<string, object>();
