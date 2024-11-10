@@ -143,4 +143,30 @@ public class ConfigLoaderTests
         Assert.That(ex.InnerException.Message, Does.Contain("is not an interface")); 
 
     }
+    
+    [Test]
+    public void TestClassWithRequiredProperties()
+    {
+        var ex = Assert.Throws<ConfigError>(() =>
+            ConfigLoader.LoadConfig("ConfigTestFiles/PropertyValidationBadRequiredPropertiesAttribute.ini"));
+
+        Assert.That(ex.InnerException.Message, Does.Contain("RequiredString")); 
+        ex = Assert.Throws<ConfigError>(() =>
+            ConfigLoader.LoadConfig("ConfigTestFiles/PropertyValidationBadRequiredPropertiesKeyword.ini"));
+
+        Assert.That(ex.InnerException.Message, Does.Contain("RequiredString"));
+        
+        // test the 2 happy paths
+        var cfg = ConfigLoader.LoadConfig("ConfigTestFiles/PropertyValidationGoodRequiredPropertiesAttribute.ini");
+        Assert.That(cfg.Count, Is.EqualTo(1));
+        var obj = cfg.First();
+        Assert.That(obj.Properties["RequiredString"].ToString(), Is.EqualTo("bar"));
+        Assert.That(obj.Properties["NotRequiredInt"].ToString(), Is.EqualTo("3"));
+        cfg = ConfigLoader.LoadConfig("ConfigTestFiles/PropertyValidationGoodRequiredPropertiesKeyword.ini");
+        Assert.That(cfg.Count, Is.EqualTo(1));
+        obj = cfg.First();
+        Assert.That(obj.Properties["RequiredString"].ToString(), Is.EqualTo("bar"));
+        Assert.That(obj.Properties["NotRequiredInt"].ToString(), Is.EqualTo("3"));
+
+    }
 }

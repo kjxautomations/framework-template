@@ -81,6 +81,20 @@ public interface IUnsupportedInterface
 {
 }
 
+public class ObjectWithRequiredPropertiesAttribute
+{
+    [Required] public string? RequiredString { get; set; }
+
+    public int NotRequiredInt { get; set; }
+}
+public class ObjectWithRequiredPropertiesKeyword
+{
+    public required string? RequiredString { get; set; }
+
+    public int NotRequiredInt { get; set; }
+}
+
+
 
 public class BackgroundThreadSynchronizationContext : SynchronizationContext
 {

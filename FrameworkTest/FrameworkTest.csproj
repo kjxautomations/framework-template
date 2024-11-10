@@ -94,6 +94,18 @@
       <None Update="ConfigTestFiles\SystemConfigSimulatedMotor.ini">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="ConfigTestFiles\PropertyValidationBadRequiredPropertiesAttribute.ini">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="ConfigTestFiles\PropertyValidationBadRequiredPropertiesKeyword.ini">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="ConfigTestFiles\PropertyValidationGoodRequiredPropertiesAttribute.ini">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="ConfigTestFiles\PropertyValidationGoodRequiredPropertiesKeyword.ini">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

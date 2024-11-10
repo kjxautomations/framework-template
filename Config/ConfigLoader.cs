@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using IniFile;
 
 namespace Framework.Config;
@@ -73,8 +74,13 @@ public static class ConfigLoader
     /// <exception cref="InvalidDataException"></exception>
     private static void VerifyAndConvertProperties(ConfigSection section)
     {
+        bool IsRequired(PropertyInfo prop)
+        {
+            return prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0 ||
+                   prop.GetCustomAttributes(typeof(RequiredMemberAttribute), true).Length > 0;
+        }
         var allPropertiesWithRequiredAttribute = section.Type.GetProperties()
-            .Where(p => p.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0)
+            .Where(p => IsRequired(p))
             .Select(p => p.Name)
             .ToList();
         var convertedProperties = new Dictionary<string, object>();
