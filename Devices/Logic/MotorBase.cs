@@ -53,9 +53,16 @@ public abstract class MotorBase : SupportsInitialization, IMotor
             SetField(ref _upperLimit, value);
         }
     }
+    public bool EnforceLimits
+    {
+        get => _enforceLimits;
+        set => SetField(ref _enforceLimits, value);
+    }
+    
     private double _position;
     private double? _lowerLimit;
     private double? _upperLimit;
+    private bool _enforceLimits;
     
     public abstract void MoveTo(double newPosition);
 }
@@ -114,6 +121,13 @@ public abstract class StepperMotorBase : MotorBase, IStepperMotor
 
     public override void MoveTo(double newPosition)
     {
+        if (EnforceLimits)
+        {
+            if (LowerLimit.HasValue && newPosition < LowerLimit.Value)
+                throw new ArgumentOutOfRangeException("newPosition", "Position is below lower limit");
+            if (UpperLimit.HasValue && newPosition > UpperLimit.Value)
+                throw new ArgumentOutOfRangeException("newPosition", "Position is above upper limit");
+        }
         var delta = newPosition - Position;
         var deltaSteps = (int)(delta * StepsPerUnit);
         DoMoveSteps(deltaSteps);

@@ -20,6 +20,8 @@ public interface IMotor
     
     public double? LowerLimit { get; set; }
     public double? UpperLimit { get; set; }
+    
+    public bool EnforceLimits { get; set; }
 }
 
 public interface IStepperMotor : IMotor
