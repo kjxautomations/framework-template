@@ -22,6 +22,13 @@ public interface IMotor
     public double? UpperLimit { get; set; }
     
     public bool EnforceLimits { get; set; }
+    
+    /// <summary>
+    /// The minimum amount a motor can move. For a stepper, this mmight be the microstepping resolution,
+    /// translated to the native units. For a servo, this will be the accuracy of the position holding
+    /// loop.
+    /// </summary>
+    public double MinimumPositionIncrement { get;  }
 }
 
 public interface IStepperMotor : IMotor
@@ -31,10 +38,4 @@ public interface IStepperMotor : IMotor
     /// For example, if 255 steps were required to go 1 mm, put 255 here
     /// </summary>
     public uint StepsPerUnit { get; set; }
-    /// <summary>
-    /// Implementation-dependent value for setting microstepping. If using microstepping,
-    /// StepsPerUnit must be adjusted accordingly
-    /// </summary>
-    public uint MicrosteppingMode { get; set; }
-
 }
