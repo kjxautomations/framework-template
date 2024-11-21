@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Framework.Core.ViewModels;
 
-namespace FrameworkSample;
+namespace Framework.Core;
 
 public class ViewLocator : IDataTemplate
 {
@@ -13,16 +13,15 @@ public class ViewLocator : IDataTemplate
             return null;
 
         var name = data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var type = Type.GetType(name);
+        var assembly = data.GetType().Assembly;
+        // load the type from the assembly
+        var type = assembly.GetType(name);
 
-        if (type != null)
-        {
-            var control = (Control)Activator.CreateInstance(type)!;
-            control.DataContext = data;
-            return control;
-        }
+        if (type == null) return new TextBlock { Text = "Not Found: " + name };
+        var control = (Control)Activator.CreateInstance(type)!;
+        control.DataContext = data;
+        return control;
 
-        return new TextBlock { Text = "Not Found: " + name };
     }
 
     public bool Match(object? data)
