@@ -1,4 +1,4 @@
-namespace FrameworkSample.Services;
+namespace Framework.Services;
 
 public interface IBackgroundService
 {
