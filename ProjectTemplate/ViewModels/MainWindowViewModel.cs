@@ -6,10 +6,10 @@ namespace ProjectTemplate.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public StateNavigationViewModel StateNavigationViewModel { get; init; }
+    public required StateNavigationViewModel StateNavigationViewModel { get; set; }
+
     public MainWindowViewModel()
     {
-        (Application.Current as App).Container.Resolve(typeof(StateNavigationViewModel));
     }
-    
+
 }

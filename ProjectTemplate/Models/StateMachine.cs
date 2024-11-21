@@ -44,13 +44,7 @@ public class StateMachine : ReactiveObject
     private void AddTransitions()
     {
         _sm.Configure(NavigationStates.Default)
-            .Permit(NavigationTriggers.Next, NavigationStates.Welcome);
-
-        _sm.Configure(NavigationStates.Welcome)
             .Permit(NavigationTriggers.Next, NavigationStates.Initial);
-
-        _sm.Configure(NavigationStates.Initial)
-            .Permit(NavigationTriggers.Previous, NavigationStates.Welcome);
     }
 
     private void AddPerStateHandlers()

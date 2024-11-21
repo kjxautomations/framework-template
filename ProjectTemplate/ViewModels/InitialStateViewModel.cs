@@ -13,15 +13,12 @@ namespace ProjectTemplate.ViewModels;
 
 public class InitialStateViewModel : StateViewModelBase<NavigationStates,NavigationTriggers>
 {
-    public ReactiveCommand<Unit, Unit> ClickCommand { get; }
     public ReactiveCommand<Unit, Unit> InitializeCommand { get; }
 
     public InitialStateViewModel(INavigationService<NavigationStates, NavigationTriggers> navigationService,
         ISupportsInitialization[] initializables, ISupportsHoming[] homables) 
         : base (navigationService, new [] {NavigationStates.Initial})
     {
-        ClickCommand = ReactiveCommand.Create(() => throw new ApplicationException("Foo"));
-        
         var needsInitialization = initializables
             .Select(item => item.WhenAnyValue(x => x.IsInitialized))
             .CombineLatest()

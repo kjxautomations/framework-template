@@ -16,25 +16,21 @@ namespace ProjectTemplate.Services;
 public enum NavigationStates
 {
     Default,
-    Initial,
-    Welcome
+    Initial
 }
 
 public enum NavigationTriggers
 {
     Next,
     Previous,
-    Cancel,
-    Abort
+    Cancel
 }
 
 public class NavigationService : INavigationService<NavigationStates, NavigationTriggers>
 {
     public ObservableCollection<NavigationStateInfo<NavigationStates>> BreadcrumbStates { get; } =
     [
-        new NavigationStateInfo<NavigationStates>(NavigationStates.Welcome, "Welcome") { IsActive = true },
-        new NavigationStateInfo<NavigationStates>(NavigationStates.Initial, "Initial"),
-
+        new NavigationStateInfo<NavigationStates>(NavigationStates.Initial, "Initial") { IsActive = true }
     ];
 
     public ObservableCollection<NavigationTriggerInfo<NavigationTriggers>> ButtonTriggers { get; } = new()
