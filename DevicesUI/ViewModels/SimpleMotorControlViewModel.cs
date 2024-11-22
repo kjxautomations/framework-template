@@ -18,6 +18,11 @@ public class SimpleMotorControlViewModel : ViewModelBase
     [Reactive] public double Acceleration { get; set; }
     [Reactive] public double Velocity { get; set; }
     [Reactive] public string Units { get; set; }
+    [Reactive] public double? LowerLimit { get; set; }
+    [Reactive] public double? UpperLimit { get; set; }
+    [Reactive] public bool EnforceLimits { get; set; }
+    
+    public double MinimumPositionIncrement => _motor.MinimumPositionIncrement;
     public ReactiveCommand<double, Unit> MoveToPositionCommand { get; set; }
     
     public SimpleMotorControlViewModel(IMotor motor)
@@ -27,6 +32,14 @@ public class SimpleMotorControlViewModel : ViewModelBase
         Acceleration = _motor.Acceleration;
         Velocity = _motor.Velocity;
         Units = _motor.Units;
+        LowerLimit = _motor.LowerLimit;
+        UpperLimit = _motor.UpperLimit;
+        EnforceLimits = _motor.EnforceLimits;
+        
+        this.WhenAnyValue(x => x.LowerLimit).Subscribe(x => _motor.LowerLimit = x);
+        this.WhenAnyValue(x => x.UpperLimit).Subscribe(x => _motor.UpperLimit = x);
+        this.WhenAnyValue(x => x.EnforceLimits).Subscribe(x => _motor.EnforceLimits = x);
+        
         
         this.WhenAnyValue(x => x.Acceleration).Subscribe(SetAcceleration);
         this.WhenAnyValue(x => x.Velocity).Subscribe(SetVelocity);

@@ -29,4 +29,22 @@ public class TestSimulatedLinearMotor
         Assert.That(propertyName, Is.EqualTo("Position"));
 
     }
+
+    [Test]
+    public void TestLimitsEnforced()
+    {
+        var logger = new Mock<ILogger<SimulatedLinearStepperMotor>>().Object;
+        var motor = new SimulatedLinearStepperMotor { Acceleration = 1.0, Velocity = 1.0, Logger = logger};
+        motor.Home();
+        motor.LowerLimit = 0;
+        motor.UpperLimit = 10;
+        motor.MoveTo(5);
+        Assert.DoesNotThrow(() => motor.MoveTo(-1));
+        Assert.DoesNotThrow(() => motor.MoveTo(11));
+        motor.EnforceLimits = true;
+        Assert.Throws<ArgumentOutOfRangeException>(() => motor.MoveTo(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => motor.MoveTo(11));
+
+
+    }
 }
