@@ -2,7 +2,7 @@ namespace Framework.Devices.Logic;
 
 public abstract class MotorBase : SupportsInitialization, IMotor
 {
-    public string Units => "mm";
+    public string Units { get; protected set; }
     public string Name { get; set; }
 
     public double Position
@@ -53,11 +53,20 @@ public abstract class MotorBase : SupportsInitialization, IMotor
             SetField(ref _upperLimit, value);
         }
     }
+    public bool EnforceLimits
+    {
+        get => _enforceLimits;
+        set => SetField(ref _enforceLimits, value);
+    }
+    
     private double _position;
     private double? _lowerLimit;
     private double? _upperLimit;
+    private bool _enforceLimits;
     
     public abstract void MoveTo(double newPosition);
+
+    public abstract double MinimumPositionIncrement { get; }
 }
 
 public abstract class MotorBaseSupportsHoming : MotorBase, ISupportsHoming
@@ -98,27 +107,33 @@ public abstract class StepperMotorBase : MotorBase, IStepperMotor
     }
     
     private uint _stepsPerUnit;
-    private uint _microsteppingMode;
-
+    
     public uint StepsPerUnit
     {
         get => _stepsPerUnit;
         set => SetField(ref _stepsPerUnit, value);
     }
 
-    public uint MicrosteppingMode
-    {
-        get => _microsteppingMode;
-        set => SetField(ref _microsteppingMode, value);
-    }
-
     public override void MoveTo(double newPosition)
     {
+        if (EnforceLimits)
+        {
+            if (LowerLimit.HasValue && newPosition < LowerLimit.Value)
+                throw new ArgumentOutOfRangeException("newPosition", "Position is below lower limit");
+            if (UpperLimit.HasValue && newPosition > UpperLimit.Value)
+                throw new ArgumentOutOfRangeException("newPosition", "Position is above upper limit");
+        }
         var delta = newPosition - Position;
         var deltaSteps = (int)(delta * StepsPerUnit);
         DoMoveSteps(deltaSteps);
         Position = newPosition;
     }
+
+    /// <summary>
+    /// For a stepper motor, the minimum position increment is the inverse of the steps per unit
+    /// i.e. if 200 steps are required to move 1 mm, the minimum position increment is 1/200 mm
+    /// </summary>
+    public override double MinimumPositionIncrement => 1.0 / _stepsPerUnit;
 
     protected abstract void DoMoveSteps(int numberOfSteps);
 }
