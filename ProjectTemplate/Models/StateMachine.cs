@@ -49,7 +49,7 @@ public class StateMachine : ReactiveObject
 
     private void AddPerStateHandlers()
     {
-        // reset the RunInfo and all views to their initial state after the first time we enter the Initial state
+        // reset all views to their initial state after the first time we enter the Initial state
         this.WhenAnyValue(s => s.CurrentState)
             .Skip(1)
             .Where(s => s == NavigationStates.Initial)
