@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using Framework.Devices;
 using Size = System.Drawing.Size;
 
-namespace DevicesUI.Views;
+namespace KJX.ProjectTemplate.DevicesUI.Views;
 
 public partial class SimpleCameraView : UserControl
 {

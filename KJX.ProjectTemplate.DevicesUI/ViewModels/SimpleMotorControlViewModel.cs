@@ -7,7 +7,7 @@ using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace DevicesUI.ViewModels;
+namespace KJX.ProjectTemplate.DevicesUI.ViewModels;
 
 public class SimpleMotorControlViewModel : ViewModelBase
 {

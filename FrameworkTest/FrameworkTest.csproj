@@ -34,7 +34,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Config\Config.csproj" />
       <ProjectReference Include="..\Core\Core.csproj" />
-      <ProjectReference Include="..\Devices\Devices.csproj" />
+      <ProjectReference Include="..\KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj" />
     </ItemGroup>
 
     <ItemGroup>

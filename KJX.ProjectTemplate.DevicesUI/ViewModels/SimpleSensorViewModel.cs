@@ -13,7 +13,7 @@ using LiveChartsCore.SkiaSharpView;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace DevicesUI.ViewModels;
+namespace KJX.ProjectTemplate.DevicesUI.ViewModels;
 
 public class SimpleSensorViewModel : ViewModelBase
 {

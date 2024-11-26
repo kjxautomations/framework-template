@@ -13,7 +13,7 @@ using ReactiveUI.Fody.Helpers;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
 
-namespace DevicesUI.ViewModels;
+namespace KJX.ProjectTemplate.DevicesUI.ViewModels;
 
 public class SimpleCameraViewModel : ViewModelBase
 {
