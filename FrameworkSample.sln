@@ -10,12 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesUI", "DevicesUI\DevicesUI.csproj", "{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkSample", "FrameworkSample\FrameworkSample\FrameworkSample.csproj", "{A273FD08-6E24-4BFD-BAAB-06690956E5A6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkSample.Desktop", "FrameworkSample\FrameworkSample.Desktop\FrameworkSample.Desktop.csproj", "{CD328E1B-A398-46D2-ACA2-852AB89A0534}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkSample.Browser", "FrameworkSample\FrameworkSample.Browser\FrameworkSample.Browser.csproj", "{F8EA0747-C521-4FAE-8485-B455AEE605F2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTemplate", "ProjectTemplate\ProjectTemplate.csproj", "{50E85E3F-2717-4C0F-A027-74DED8DE4C92}"
 EndProject
 Global
@@ -44,18 +38,6 @@ Global
 		{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A273FD08-6E24-4BFD-BAAB-06690956E5A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A273FD08-6E24-4BFD-BAAB-06690956E5A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A273FD08-6E24-4BFD-BAAB-06690956E5A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A273FD08-6E24-4BFD-BAAB-06690956E5A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD328E1B-A398-46D2-ACA2-852AB89A0534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD328E1B-A398-46D2-ACA2-852AB89A0534}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD328E1B-A398-46D2-ACA2-852AB89A0534}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD328E1B-A398-46D2-ACA2-852AB89A0534}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8EA0747-C521-4FAE-8485-B455AEE605F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8EA0747-C521-4FAE-8485-B455AEE605F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8EA0747-C521-4FAE-8485-B455AEE605F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8EA0747-C521-4FAE-8485-B455AEE605F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{50E85E3F-2717-4C0F-A027-74DED8DE4C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{50E85E3F-2717-4C0F-A027-74DED8DE4C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50E85E3F-2717-4C0F-A027-74DED8DE4C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
