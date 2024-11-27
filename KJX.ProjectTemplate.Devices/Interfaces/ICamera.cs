@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Runtime.Versioning;
 
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 [Flags]
 public enum CameraProperties

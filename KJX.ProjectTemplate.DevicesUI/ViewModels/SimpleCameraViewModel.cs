@@ -7,7 +7,7 @@ using Avalonia.ReactiveUI;
 using Framework.Core.ViewModels;
 using Devices.Utils;
 using DynamicData;
-using Framework.Devices;
+using KJX.ProjectTemplate.Devices;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Size = System.Drawing.Size;

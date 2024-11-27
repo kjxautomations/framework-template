@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Framework.Devices.Logic;
+namespace KJX.ProjectTemplate.Devices.Logic;
 
 public abstract class SupportsInitialization : ISupportsInitialization, INotifyPropertyChanged
 {

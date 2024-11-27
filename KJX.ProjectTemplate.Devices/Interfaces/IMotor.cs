@@ -1,4 +1,4 @@
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 public interface IMotor 
 {

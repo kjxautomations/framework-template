@@ -7,7 +7,8 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Devices.Utils;
-using Framework.Devices.Logic;
+using KJX.ProjectTemplate.Devices;
+using KJX.ProjectTemplate.Devices.Logic;
 
 
 namespace Framework.Devices;

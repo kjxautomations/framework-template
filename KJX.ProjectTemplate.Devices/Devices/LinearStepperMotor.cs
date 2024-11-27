@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Framework.Devices.Logic;
+using KJX.ProjectTemplate.Devices;
+using KJX.ProjectTemplate.Devices.Logic;
 using Microsoft.Extensions.Logging;
 
 namespace Framework.Devices;

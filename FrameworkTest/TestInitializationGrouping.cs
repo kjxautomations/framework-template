@@ -1,8 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Framework.Devices;
-using Framework.Devices.Logic;
-using IniFile;
+using KJX.ProjectTemplate.Devices;
+using KJX.ProjectTemplate.Devices.Logic;
 
 namespace FrameworkTest;
 

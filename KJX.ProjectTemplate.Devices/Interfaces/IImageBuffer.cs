@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 public interface IImageBuffer : IDisposable
 {

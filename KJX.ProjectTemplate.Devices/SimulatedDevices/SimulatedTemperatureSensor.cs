@@ -1,5 +1,5 @@
 using System.Timers;
-using Framework.Devices.Logic;
+using KJX.ProjectTemplate.Devices.Logic;
 using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
 

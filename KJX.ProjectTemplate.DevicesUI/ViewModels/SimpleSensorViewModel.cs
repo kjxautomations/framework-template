@@ -7,6 +7,7 @@ using Framework.Core.ViewModels;
 using Core.Stylesheets;
 using DynamicData;
 using Framework.Devices;
+using KJX.ProjectTemplate.Devices;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;

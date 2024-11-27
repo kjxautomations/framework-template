@@ -1,4 +1,5 @@
-using Framework.Devices.Logic;
+using KJX.ProjectTemplate.Devices;
+using KJX.ProjectTemplate.Devices.Logic;
 
 
 namespace Framework.Devices;

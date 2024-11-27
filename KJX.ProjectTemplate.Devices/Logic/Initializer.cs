@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Framework.Devices.Logic;
+namespace KJX.ProjectTemplate.Devices.Logic;
 
 public static class Initializer
 {

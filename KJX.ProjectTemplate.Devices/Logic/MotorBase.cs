@@ -1,4 +1,4 @@
-namespace Framework.Devices.Logic;
+namespace KJX.ProjectTemplate.Devices.Logic;
 
 public abstract class MotorBase : SupportsInitialization, IMotor
 {

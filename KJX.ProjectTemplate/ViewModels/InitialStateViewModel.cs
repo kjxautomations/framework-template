@@ -3,9 +3,9 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using Framework.Core.ViewModels;
-using Framework.Devices;
-using Framework.Devices.Logic;
 using Framework.Services;
+using KJX.ProjectTemplate.Devices;
+using KJX.ProjectTemplate.Devices.Logic;
 using KJX.ProjectTemplate.Services;
 using ReactiveUI;
 

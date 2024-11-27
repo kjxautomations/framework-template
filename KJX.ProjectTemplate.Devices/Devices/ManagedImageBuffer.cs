@@ -1,4 +1,5 @@
 using System.Drawing;
+using KJX.ProjectTemplate.Devices;
 
 namespace Framework.Devices;
 
