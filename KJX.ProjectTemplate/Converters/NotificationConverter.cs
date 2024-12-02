@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using Framework.Services;
+using KJX.ProjectTemplate.Services;
 
 namespace KJX.ProjectTemplate.Converters;
 

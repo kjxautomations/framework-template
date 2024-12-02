@@ -6,9 +6,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Avalonia;
-using Framework.Services;
-using Framework.Core.ViewModels;
 using KJX.ProjectTemplate.Services;
+using KJX.ProjectTemplate.Core.ViewModels;
 using Microsoft.Extensions.Logging;
 
 using ReactiveUI;

@@ -1,7 +1,6 @@
 using System.Reactive;
 using Avalonia.Threading;
-using Framework.Core.ViewModels;
-using Framework.Devices;
+using KJX.ProjectTemplate.Core.ViewModels;
 using KJX.ProjectTemplate.Devices;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;

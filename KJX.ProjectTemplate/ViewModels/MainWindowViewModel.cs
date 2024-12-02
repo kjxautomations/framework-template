@@ -1,6 +1,6 @@
 using Autofac;
 using Avalonia;
-using Framework.Core.ViewModels;
+using KJX.ProjectTemplate.Core.ViewModels;
 
 namespace KJX.ProjectTemplate.ViewModels;
 
