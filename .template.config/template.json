@@ -1,2 +1,15 @@
 {
+    "$schema": "http://json.schemastore.org/template",
+    "author": "KJX Automations, LLC",
+    "classifications": ["Instrumentation", "Device Control", "C#", "WPF"],
+    "identity": "KJX.ProjectTemplate",
+    "name": "KJX Instrumentation Application Template",
+    "description": "A cross-platform template for an internal/customer-facing instrument control application",
+    "shortName": "kjxinstrumentation",
+    "sourceName": "KJX.ProjectTemplate",
+    "tags": {
+        "language": "C#",
+        "type": "solution"
+    },
+  "preferNameDirectory": true
 }
