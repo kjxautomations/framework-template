@@ -11,5 +11,37 @@
     "language": "C#",
     "type": "solution"
   },
-  "preferNameDirectory": true
+  "preferNameDirectory": true,
+  "symbols": {
+    "EngineeringProject": {
+      "type": "parameter",
+      "description": "Defines if your solution will include an Engineering facing user interface",
+      "datatype": "bool",
+      "defaultValue": false
+    },
+    "ControlSoftwareProject": {
+      "type": "parameter",
+      "description": "Defines if your solution will include a Control SW user interface",
+      "datatype": "bool",
+      "defaultValue": true
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(!EngineeringProject)",
+          "exclude": [
+            "KJX.ProjectTemplate.Engineering/**"
+          ]
+        },
+        {
+          "condition": "(!ControlSoftwareProject)",
+          "exclude": [
+            "KJX.ProjectTemplate/**"
+          ]
+        }
+      ]
+    }
+  ]
 }
