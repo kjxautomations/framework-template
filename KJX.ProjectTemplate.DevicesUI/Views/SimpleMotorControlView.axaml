@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:KJX.ProjectTemplate.DevicesUI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:SimpleMotorControlViewModel"
+             x:Class="KJX.ProjectTemplate.DevicesUI.Views.SimpleMotorControlView">
+    <Design.DataContext>
+        <viewModels:SimpleMotorControlViewModel />
+    </Design.DataContext>
+    <Border BorderThickness="1" BorderBrush="DimGray" CornerRadius="10" Padding="10">
+        <StackPanel>
+            <Label Content="{Binding Name}" Margin="0,0,0,10" FontWeight="Bold"/>
+            <Grid ColumnDefinitions="Auto, 10, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0">Acceleration: </TextBlock>
+                <NumericUpDown Grid.Row="0" Grid.Column="2"
+                               Value="{Binding Acceleration}"
+                               Increment="0.1" />
+            
+                <TextBlock Grid.Row="1" Grid.Column="0">Velocity: </TextBlock>
+                <NumericUpDown Grid.Row="1" Grid.Column="2"
+                               Value="{Binding Velocity}" 
+                               Increment="0.1"/>
+            
+                <TextBlock Grid.Row="2" Grid.Column="0">Position to move to: </TextBlock>
+                <NumericUpDown Grid.Row="2" Grid.Column="2"
+                               Value="{Binding PositionToMoveTo}" 
+                               Increment="{Binding MinimumPositionIncrement}"/>
+            
+                <Button Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"
+                        Content="Move" Margin="10,10,0,10"
+                        Command="{Binding MoveToPositionCommand}"
+                        CommandParameter="{Binding PositionToMoveTo}" />
+                
+                <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,15,0,0"
+                            Orientation="Vertical">
+                    <CheckBox IsChecked="{Binding EnforceLimits}" Content="Enforce Limits?"/>
+                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                        <Label Grid.Row="0" Grid.Column="0">Lower: </Label>
+                        <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding LowerLimit}" Increment="{Binding MinimumPositionIncrement}"/>
+                        <Label Grid.Row="1" Grid.Column="0">Upper: </Label>
+                        <NumericUpDown Grid.Row="1"  Grid.Column="1" Value="{Binding UpperLimit}" Increment="{Binding MinimumPositionIncrement}"/>    
+                    </Grid>
+                    
+                </StackPanel>
+                <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,15,0,0"
+                            Orientation="Horizontal">
+                    <TextBlock >Position (</TextBlock>
+                    <TextBlock Text="{Binding Units}" />
+                    <TextBlock >): </TextBlock>
+                    <TextBlock Background="Coral" Padding="5,0,5,0"
+                               Text="{Binding Position}" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+    </Border>
+
+</UserControl>
