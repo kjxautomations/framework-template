@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace KJX.ProjectTemplate.Engineering.Views;
 
-public partial class DeviceShowcase : UserControl
+public partial class DeviceShowcaseView : UserControl
 {
-    public DeviceShowcase()
+    public DeviceShowcaseView()
     {
         InitializeComponent();
     }

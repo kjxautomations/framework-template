@@ -6,11 +6,11 @@ using Autofac.Extensions.DependencyInjection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using KJX.ProjectTemplate.Config;
 using KJX.ProjectTemplate.Core;
+using KJX.ProjectTemplate.Core.ViewModels;
 using KJX.ProjectTemplate.Engineering.ViewModels;
 using KJX.ProjectTemplate.Engineering.Views;
 using KJX.ProjectTemplate.Services;
@@ -36,19 +36,6 @@ public partial class App : Application
     {
         InitAutoFac();
         AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
-        }
-
-        base.OnFrameworkInitializationCompleted();
     }
 
     private void InitAutoFac()
@@ -118,5 +105,18 @@ public partial class App : Application
         {
             svc.Start();
         }
+    }
+    
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel(),
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
     }
 }

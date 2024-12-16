@@ -1,3 +1,5 @@
+using KJX.ProjectTemplate.Core.ViewModels;
+
 namespace KJX.ProjectTemplate.Engineering.ViewModels;
 
 public class DeviceShowcaseViewModel : ViewModelBase
