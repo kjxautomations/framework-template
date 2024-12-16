@@ -89,7 +89,7 @@ public partial class App : Application
             typeof(IPropertyBindingHook));
         
         //Register all view and view-model types
-        foreach (var uiAssembly in new[] { Assembly.GetExecutingAssembly() })
+        foreach (var uiAssembly in new[] { Assembly.GetExecutingAssembly(), Assembly.Load("KJX.ProjectTemplate.DevicesUI") })
         {
             builder.RegisterAssemblyTypes(uiAssembly)
                 .Where(t => t.IsSubclassOf(typeof(ViewModelBase)))

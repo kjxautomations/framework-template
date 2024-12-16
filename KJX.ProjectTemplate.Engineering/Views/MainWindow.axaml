@@ -3,6 +3,7 @@
         xmlns:vm="using:KJX.ProjectTemplate.Engineering.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:KJX.ProjectTemplate.Engineering.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="KJX.ProjectTemplate.Engineering.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -15,6 +16,35 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+               OpenPaneLength="300"
+               CompactPaneLength="37"
+               DisplayMode="CompactInline">
+        <SplitView.Pane>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <Button Command="{Binding OpenClosePaneCommand}"
+                        VerticalAlignment="Top"
+                        Margin="5"
+                        Content="{Binding PaneOpenCloseIcon}" />
+                <ListBox ItemsSource="{Binding NavigableMenuTypes}"
+                         SelectedItem="{Binding SelectedPage}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:NavigationMenuType}">
+                            <TextBlock Text="{Binding MenuLabel}" MinWidth="300" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <Border CornerRadius="12 0 0 0">
+                <TransitioningContentControl Content="{Binding CurrentPage}"  >
+                    <TransitioningContentControl.PageTransition>
+                        <Rotate3DTransition Orientation="Vertical" Duration="00:00:00.5" />
+                    </TransitioningContentControl.PageTransition>
+                </TransitioningContentControl>
+            </Border>
+        </SplitView.Content>
+    </SplitView>
 
 </Window>

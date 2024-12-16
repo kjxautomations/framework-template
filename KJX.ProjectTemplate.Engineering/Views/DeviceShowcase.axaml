@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:KJX.ProjectTemplate.Engineering.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:DeviceShowcaseViewModel"
+             x:Class="KJX.ProjectTemplate.Engineering.Views.DeviceShowcase">
+        <StackPanel HorizontalAlignment="Center">
+        <Label Content="{Binding StateLabel}" 
+               HorizontalAlignment="Center" Margin="5"
+               FontSize="30"
+               FontWeight="Bold"/>
+        <TabControl>
+          <TabItem Header="Motors">
+              <Border>
+
+              </Border>
+          </TabItem>
+          <TabItem Header="Sensors">
+              <Border>
+
+              </Border>
+          </TabItem>
+              <TabItem Header="Cameras">
+                  <Border>
+
+                  </Border>
+              </TabItem>
+          </TabControl>  
+    </StackPanel>
+</UserControl>

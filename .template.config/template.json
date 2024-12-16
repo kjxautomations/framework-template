@@ -3,13 +3,14 @@
   "author": "KJX Automations, LLC",
   "classifications": ["Desktop", "C#", "WPF","Instrumentation", "Device Control"],
   "identity": "KJX.ProjectTemplate",
+  "groupIdentity": "KJX.ProjectTemplate.Templates",
   "name": "KJX Instrumentation Application Template",
   "description": "A cross-platform template for an internal/customer-facing instrument control application",
   "shortName": "kjxinstrumentation",
   "sourceName": "KJX.ProjectTemplate",
   "tags": {
     "language": "C#",
-    "type": "solution"
+    "type": "project"
   },
   "preferNameDirectory": true,
   "symbols": {
@@ -17,13 +18,13 @@
       "type": "parameter",
       "description": "Defines if your solution will include an Engineering facing user interface",
       "datatype": "bool",
-      "defaultValue": false
+      "defaultValue": true
     },
     "ControlSoftwareProject": {
       "type": "parameter",
       "description": "Defines if your solution will include a Control SW user interface",
       "datatype": "bool",
-      "defaultValue": true
+      "defaultValue": false
     }
   },
   "sources": [

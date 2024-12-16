@@ -9,7 +9,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
@@ -33,6 +32,8 @@
     <ItemGroup>
       <ProjectReference Include="..\KJX.ProjectTemplate.Config\KJX.ProjectTemplate.Config.csproj" />
       <ProjectReference Include="..\KJX.ProjectTemplate.Core\KJX.ProjectTemplate.Core.csproj" />
+      <ProjectReference Include="..\KJX.ProjectTemplate.DevicesUI\KJX.ProjectTemplate.DevicesUI.csproj" />
+      <ProjectReference Include="..\KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj" />
     </ItemGroup>
 
     <ItemGroup>
