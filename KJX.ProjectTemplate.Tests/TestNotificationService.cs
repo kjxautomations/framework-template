@@ -1,4 +1,5 @@
-using KJX.ProjectTemplate.Services;
+using KJX.ProjectTemplate.Core;
+using KJX.ProjectTemplate.Core.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 

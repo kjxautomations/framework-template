@@ -4,7 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Framework.Devices</RootNamespace>
+        <AssemblyName>KJX.ProjectTemplate.Devices</AssemblyName>
+        <RootNamespace>KJX.ProjectTemplate.Devices</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 

@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:KJX.ProjectTemplate.Engineering.ViewModels"
+             xmlns:views="clr-namespace:KJX.ProjectTemplate.DevicesUI.Views;assembly=KJX.ProjectTemplate.DevicesUI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:DeviceShowcaseViewModel"
+             x:Class="KJX.ProjectTemplate.Engineering.Views.DeviceShowcaseView">
+    <StackPanel HorizontalAlignment="Center">
+        <Label Content="{Binding HeaderLabel}" 
+               HorizontalAlignment="Center" Margin="5"
+               FontSize="30"
+               FontWeight="Bold"/>
+        <TabControl>
+          <TabItem Header="Motors">
+              <Border>
+                  <ItemsControl ItemsSource="{Binding Motors}">
+                      <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                          </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                              <views:SimpleMotorControlView Margin="5"/>
+                          </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+              </Border>
+          </TabItem>
+          <TabItem Header="Sensors">
+              <Border>
+                  <ItemsControl ItemsSource="{Binding Sensors}">
+                      <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                              <StackPanel Orientation="Horizontal" />
+                          </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                              <views:SimpleSensorView Margin="5" />
+                          </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+              </Border>
+          </TabItem>
+              <TabItem Header="Cameras">
+                  <Border>
+                      <ItemsControl ItemsSource="{Binding Cameras}">
+                          <ItemsControl.ItemsPanel>
+                              <ItemsPanelTemplate>
+                                  <StackPanel Orientation="Horizontal" />
+                              </ItemsPanelTemplate>
+                          </ItemsControl.ItemsPanel>
+                          <ItemsControl.ItemTemplate>
+                              <DataTemplate>
+                                  <views:SimpleCameraView />
+                              </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                  </Border>
+              </TabItem>
+          </TabControl>  
+    </StackPanel>
+</UserControl>
