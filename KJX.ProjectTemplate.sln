@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Core", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.DevicesUI", "KJX.ProjectTemplate.DevicesUI\KJX.ProjectTemplate.DevicesUI.csproj", "{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate", "KJX.ProjectTemplate\KJX.ProjectTemplate.csproj", "{50E85E3F-2717-4C0F-A027-74DED8DE4C92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Control", "KJX.ProjectTemplate.Control\KJX.ProjectTemplate.Control.csproj", "{50E85E3F-2717-4C0F-A027-74DED8DE4C92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Engineering", "KJX.ProjectTemplate.Engineering\KJX.ProjectTemplate.Engineering.csproj", "{E8035390-DE08-418B-B59C-ED8B57C19E32}"
 EndProject

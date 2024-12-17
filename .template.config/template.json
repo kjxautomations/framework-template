@@ -10,7 +10,7 @@
   "sourceName": "KJX.ProjectTemplate",
   "tags": {
     "language": "C#",
-    "type": "project"
+    "type": "solution"
   },
   "preferNameDirectory": true,
   "symbols": {
