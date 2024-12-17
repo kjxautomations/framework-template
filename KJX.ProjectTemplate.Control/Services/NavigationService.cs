@@ -16,7 +16,8 @@ namespace KJX.ProjectTemplate.Control.Services;
 public enum NavigationStates
 {
     Default,
-    Initial
+    Initial,
+    End
 }
 
 public enum NavigationTriggers
@@ -30,7 +31,8 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
 {
     public ObservableCollection<NavigationStateInfo<NavigationStates>> BreadcrumbStates { get; } =
     [
-        new NavigationStateInfo<NavigationStates>(NavigationStates.Initial, "Initial") { IsActive = true }
+        new NavigationStateInfo<NavigationStates>(NavigationStates.Initial, "Initial") { IsActive = true },
+        new NavigationStateInfo<NavigationStates>(NavigationStates.End, "End") { IsActive = false },
     ];
 
     public ObservableCollection<NavigationTriggerInfo<NavigationTriggers>> ButtonTriggers { get; } = new()

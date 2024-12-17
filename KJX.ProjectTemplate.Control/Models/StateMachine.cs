@@ -43,6 +43,10 @@ public class StateMachine : ReactiveObject
     {
         _sm.Configure(NavigationStates.Default)
             .Permit(NavigationTriggers.Next, NavigationStates.Initial);
+        _sm.Configure(NavigationStates.Initial)
+            .Permit(NavigationTriggers.Next, NavigationStates.End);
+        _sm.Configure(NavigationStates.End)
+            .Permit(NavigationTriggers.Previous, NavigationStates.Initial);
     }
 
     private void AddPerStateHandlers()
