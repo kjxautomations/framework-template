@@ -4,6 +4,7 @@
   "classifications": ["Desktop", "C#", "WPF","Instrumentation", "Device Control"],
   "identity": "KJX.ProjectTemplate",
   "groupIdentity": "KJX.ProjectTemplate.Templates",
+  "defaultName": "InstrumentationProject",
   "name": "KJX Instrumentation Application Template",
   "description": "A cross-platform template for an internal/customer-facing instrument control application",
   "shortName": "kjxinstrumentation",
@@ -39,7 +40,7 @@
         {
           "condition": "(!ControlSoftwareProject)",
           "exclude": [
-            "KJX.ProjectTemplate/**"
+            "KJX.ProjectTemplate.Control/**"
           ]
         }
       ]
