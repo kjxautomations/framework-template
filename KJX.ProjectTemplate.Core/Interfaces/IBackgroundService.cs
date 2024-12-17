@@ -1,4 +1,4 @@
-namespace KJX.ProjectTemplate.Core;
+namespace KJX.ProjectTemplate.Services;
 
 public interface IBackgroundService
 {

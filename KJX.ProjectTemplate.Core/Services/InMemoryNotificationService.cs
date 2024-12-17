@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.Logging;
 
-namespace KJX.ProjectTemplate.Core.Services;
+namespace KJX.ProjectTemplate.Services;
 
 /// <summary>
 /// A simple notification service that stores its items in memory

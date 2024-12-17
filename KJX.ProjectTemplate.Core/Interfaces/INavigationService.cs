@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace KJX.ProjectTemplate.Core;
+namespace KJX.ProjectTemplate.Services;
 
 public class NavigationStateInfo<TState>(TState state, string stateName) : INotifyPropertyChanged
     where TState : System.Enum
