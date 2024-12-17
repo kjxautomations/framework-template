@@ -1,7 +1,7 @@
 using System.Drawing;
 using KJX.ProjectTemplate.Devices;
 
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 public class ManagedImageBuffer : IImageBuffer
 {

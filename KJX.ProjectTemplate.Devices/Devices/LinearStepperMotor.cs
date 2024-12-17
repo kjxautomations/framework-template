@@ -4,7 +4,7 @@ using KJX.ProjectTemplate.Devices;
 using KJX.ProjectTemplate.Devices.Logic;
 using Microsoft.Extensions.Logging;
 
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 public class LinearStepperMotor : StepperMotorBase, ISupportsHoming
 {

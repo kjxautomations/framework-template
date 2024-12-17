@@ -3,7 +3,7 @@ using KJX.ProjectTemplate.Devices.Logic;
 using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
 
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 public class SimulatedTemperatureSensor : SensorBase
 {

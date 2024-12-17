@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using Framework.Devices;
+using KJX.ProjectTemplate.Devices;
 using Microsoft.Extensions.Logging;
 using Moq;
 

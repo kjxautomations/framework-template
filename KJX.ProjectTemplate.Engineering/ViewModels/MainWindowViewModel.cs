@@ -13,11 +13,12 @@ public class MainWindowViewModel : ViewModelBase
 {
     [Reactive] public bool IsPaneOpen { get; set; } = true;
     [Reactive] public string PaneOpenCloseIcon { get; set; } = "+";
-    [Reactive] public ViewModelBase CurrentPage { get; set; } = new DeviceShowcaseViewModel();
+    [Reactive] public ViewModelBase CurrentPage { get; set; } = new WelcomeScreenViewModel();
     [Reactive] public NavigationMenuType SelectedPage { get; set; }
 
     public ObservableCollection<NavigationMenuType> NavigableMenuTypes { get; } =
     [
+        new NavigationMenuType(typeof(WelcomeScreenViewModel)) { MenuLabel = "Welcome Screen" },
         new NavigationMenuType(typeof(DeviceShowcaseViewModel)) { MenuLabel = "Devices Showcase" }
     ];
     

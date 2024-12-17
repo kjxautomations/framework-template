@@ -4,7 +4,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using BitMiracle.LibTiff.Classic;
-using Framework.Devices;
 using KJX.ProjectTemplate.Devices;
 
 namespace Devices.Utils;

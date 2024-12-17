@@ -2,7 +2,7 @@ using KJX.ProjectTemplate.Devices;
 using KJX.ProjectTemplate.Devices.Logic;
 
 
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 public class Camera : SupportsInitialization, ICamera
 {

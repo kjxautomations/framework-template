@@ -1,17 +1,14 @@
 using System.Globalization;
 using System.Reflection;
 using Autofac.Features.AttributeFilters;
-using Autofac.Features.Metadata;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Devices.Utils;
-using KJX.ProjectTemplate.Devices;
 using KJX.ProjectTemplate.Devices.Logic;
 
-
-namespace Framework.Devices;
+namespace KJX.ProjectTemplate.Devices;
 
 public class SimulatedCamera : SupportsInitialization, ICamera
 {
@@ -30,8 +27,8 @@ public class SimulatedCamera : SupportsInitialization, ICamera
         Name = name;
         _images = new IImageBuffer[]
         {
-            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "Framework.KJX.ProjectTemplate.Devices.Resources.blocks1.tiff"),
-            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "Framework.KJX.ProjectTemplate.Devices.Resources.blocks2.tiff"),
+            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "KJX.ProjectTemplate.Devices.Resources.blocks1.tiff"),
+            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "KJX.ProjectTemplate.Devices.Resources.blocks2.tiff"),
         };
         _xMotor = xMotor;
         _yMotor = yMotor;
