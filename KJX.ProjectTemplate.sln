@@ -10,14 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Core", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.DevicesUI", "KJX.ProjectTemplate.DevicesUI\KJX.ProjectTemplate.DevicesUI.csproj", "{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}"
 EndProject
-@*#if (ControlSoftwareProject) *@
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Control", "KJX.ProjectTemplate.Control\KJX.ProjectTemplate.Control.csproj", "{50E85E3F-2717-4C0F-A027-74DED8DE4C92}"
-EndProject
-@*#endif*@
-@*#if (EngineeringProject) *@
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Engineering", "KJX.ProjectTemplate.Engineering\KJX.ProjectTemplate.Engineering.csproj", "{E8035390-DE08-418B-B59C-ED8B57C19E32}"
-EndProject
-@*#endif*@
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,17 +37,5 @@ Global
 		{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}.Release|Any CPU.Build.0 = Release|Any CPU
-        @*#if (ControlSoftwareProject) *@
-		{50E85E3F-2717-4C0F-A027-74DED8DE4C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50E85E3F-2717-4C0F-A027-74DED8DE4C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50E85E3F-2717-4C0F-A027-74DED8DE4C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50E85E3F-2717-4C0F-A027-74DED8DE4C92}.Release|Any CPU.Build.0 = Release|Any CPU
-		@*#endif*@
-		@*#if (EngineeringProject) *@
-		{E8035390-DE08-418B-B59C-ED8B57C19E32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8035390-DE08-418B-B59C-ED8B57C19E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8035390-DE08-418B-B59C-ED8B57C19E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8035390-DE08-418B-B59C-ED8B57C19E32}.Release|Any CPU.Build.0 = Release|Any CPU
-		@*#endif*@
 	EndGlobalSection
 EndGlobal
