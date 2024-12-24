@@ -1,0 +1,61 @@
+syntax = "proto3";
+option csharp_namespace = "KJX.ProjectTemplate.Devices.FirmwareProtocol";
+
+message RequestHeader
+{
+  uint32 request_id = 1;
+}
+message ResponseHeader
+{
+  uint32 request_id = 1;
+}
+message Ack 
+{
+}
+
+message Nack
+{
+  uint32 error_code = 2;
+}
+
+enum LedStatus
+{
+  OFF = 0;
+  ON = 1;
+}
+
+enum LedType
+{
+  GREEN = 0;
+  RED = 1;
+  BLUE = 2;
+}
+
+message LedControl {
+  LedType led_type = 2;
+  LedStatus led_status = 3;
+}
+
+message Dummy
+{
+  string message = 2;
+}
+message Notification
+{
+  string message = 1;
+}
+
+message Request
+{
+  RequestHeader header = 1;
+  optional LedControl led_control = 2;
+  optional Dummy dummy = 3;
+}
+
+message Response
+{
+  ResponseHeader header = 1;
+  optional Ack ack = 2;
+  optional Nack nak = 3;
+  optional Notification notification = 4;
+}
