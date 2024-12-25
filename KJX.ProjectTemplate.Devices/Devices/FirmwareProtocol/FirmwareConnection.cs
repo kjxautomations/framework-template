@@ -1,24 +1,17 @@
-using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using Google.Protobuf;
+using KJX.ProjectTemplate.Devices.Logic;
 using Microsoft.Extensions.Logging;
 
 namespace KJX.ProjectTemplate.Devices.FirmwareProtocol;
 
-public class FirmwareConnection(string ipAddress, ushort port) : ISupportsInitialization, INotifyPropertyChanged
+public class FirmwareConnection(string ipAddress, ushort port) : SupportsInitialization
 {
     public required ILogger<FirmwareConnection> Logger { get; init; }
 
-    public bool IsInitialized
-    {
-        get => _isInitialized;
-        private set => SetField(ref _isInitialized, value);
-    }
-
     private Socket? _socket;
-    
+
     class CallContext
     {
         public UInt32 SequenceNumber { get; set; }
@@ -28,10 +21,9 @@ public class FirmwareConnection(string ipAddress, ushort port) : ISupportsInitia
     private readonly Dictionary<UInt32, CallContext> _calls = new Dictionary<UInt32, CallContext>();
     private UInt32 _sequenceNumber = 0;
     private readonly object _lock = new object();
-    private bool _isInitialized;
     private AsyncSocketReceiver<FirmwareConnection>? _asyncSocketReceiver = null;
 
-    public void Initialize()
+    protected override void DoInitialize()
     {
         Logger.LogInformation("Connecting to {IpAddress}:{Port}", ipAddress, port);
         IPAddress ip = IPAddress.Parse(ipAddress);
@@ -50,38 +42,66 @@ public class FirmwareConnection(string ipAddress, ushort port) : ISupportsInitia
                     Logger.LogError("Received response for unknown request id {RequestId}", response.Header.RequestId);
                     return;
                 }
+
                 context = _calls[response.Header.RequestId];
                 _calls.Remove(response.Header.RequestId);
             }
+
             context.OnResponse(response);
         };
-        IsInitialized = true;
 
         Logger.LogInformation("Connected");
     }
 
-    public void Shutdown()
+    protected override void DoShutdown()
     {
         if (_socket is { Connected: true })
         {
-            _asyncSocketReceiver.Stop();
-            _socket.Shutdown(SocketShutdown.Both);
-            _socket.Close();
+            _asyncSocketReceiver?.Stop();
+            // the async reciever closes the socket
         }
+
         _socket?.Dispose();
         _socket = null;
     }
 
-    public ushort InitializationGroup => 5;
+    public new ushort InitializationGroup => 5;
 
-    public void SendCommandGetResponse(Request request, Action<Response> onResponse)
+    /// <summary>
+    /// A simple wrapper that sends a request and waits for a Nack/Ack response
+    /// </summary>
+    public void SendRequest(NodeId recipient, Request request)
+    {
+        Response? response = null;
+        SendCommandGetResponse(recipient, request, (r) => { response = r; });
+        if (response?.Nak is not null)
+        {
+            Logger.LogError("Failed to send request: {ErrorCode}", response.Nak.ErrorCode);
+            throw new ApplicationException("Failed to send request");
+        }
+
+        if (response?.Ack is null)
+        {
+            Logger.LogError("Failed to send request: no response");
+            throw new ApplicationException("Failed to send request");
+        }
+    }
+    
+    public Response GetResponse(NodeId recipient, Request request)
+    {
+        Response response = null;
+        SendCommandGetResponse(recipient, request, (r) => { response = r; });
+        return response;
+    }
+
+    public void SendCommandGetResponse(NodeId recipient, Request request, Action<Response> onResponse)
     {
         if (!IsInitialized)
         {
             Logger.LogError("Cannot send command before initialization");
             throw new ApplicationException("Cannot send command before initialization");
         }
-        
+
         using var callCompleted = new ManualResetEvent(false);
         Response response = null;
         var completionHandler = (Response r) =>
@@ -92,35 +112,39 @@ public class FirmwareConnection(string ipAddress, ushort port) : ISupportsInitia
 
         lock (_lock)
         {
-            var context = new CallContext { SequenceNumber = _sequenceNumber++, OnResponse = onResponse };
-            request.Header = new RequestHeader { RequestId = context.SequenceNumber };
+            var context = new CallContext { SequenceNumber = _sequenceNumber++, OnResponse = completionHandler };
+            request.Header = new RequestHeader
+                { RequestId = context.SequenceNumber, SourceNodeId = NodeId.Pc, TargetNodeId = recipient };
             _calls.Add(context.SequenceNumber, context);
         }
+
         // serialize the request and send it
         using (var stream = new MemoryStream())
         {
             int length = request.CalculateSize();
-            stream.Write(BitConverter.GetBytes(length));
+            if (length > UInt16.MaxValue)
+            {
+                Logger.LogError("Request too large: {Length}", length);
+                throw new ApplicationException("Request too large");
+            }
+            UInt16 shortLength = (UInt16)length;
+            stream.Write(BitConverter.GetBytes(shortLength));
             request.WriteTo(stream);
             var requestBytes = stream.ToArray();
             _socket.Send(requestBytes);
         }
+
         callCompleted.WaitOne();
         onResponse(response);
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    
+    public FirmwareVersions GetFirmwareVersions()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
+        FirmwareVersions firmwareVersions = null;
+        SendCommandGetResponse(
+            NodeId.Main, 
+            new Request { GetFirmwareVersions = new GetFirmwareVersions() },
+        (response) => { firmwareVersions = response.FirmwareVersions; });
+        return firmwareVersions;
     }
 }

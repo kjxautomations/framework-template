@@ -80,10 +80,9 @@ public class AsyncSocketReceiver<T>
             while (!_cancellationTokenSource.Token.IsCancellationRequested)
             {
                 // Read the length (4 bytes)
-                var lengthBuffer = new byte[4];
-                int received = 0;
-                ReadBytesBlocking(received, lengthBuffer);
-                int length = BitConverter.ToInt32(lengthBuffer, 0);
+                var lengthBuffer = new byte[2];
+                ReadBytesBlocking(lengthBuffer.Length, lengthBuffer);
+                int length = BitConverter.ToUInt16(lengthBuffer, 0);
 
                 // Read the serialized protobuf object
                 var dataBuffer = new byte[length];
@@ -92,6 +91,7 @@ public class AsyncSocketReceiver<T>
                 // Parse the Response object
                 var response = Response.Parser.ParseFrom(dataBuffer);
                 
+                // Enqueue the response for dispatch
                 lock (_lock)
                 {
                     _responses.Enqueue(response);
@@ -102,7 +102,10 @@ public class AsyncSocketReceiver<T>
         catch (Exception ex)
         {
             if (!_cancellationTokenSource.Token.IsCancellationRequested)
+            {
                 _logger.LogError(ex, "Error in ReceiveLoop");
+                throw;
+            }
         }
     }
 
@@ -120,26 +123,14 @@ public class AsyncSocketReceiver<T>
         }
     }
 
-    private async Task ReceiveAsync(byte[] buffer, int length)
-    {
-        int received = 0;
-        while (received < length)
-        {
-            int bytesRead = await _socket.ReceiveAsync(new ArraySegment<byte>(buffer, received, length - received), SocketFlags.None);
-            if (bytesRead == 0)
-            {
-                throw new SocketException((int)SocketError.ConnectionReset);
-            }
-            received += bytesRead;
-        }
-    }
-
     public void Stop()
     {
         _cancellationTokenSource.Cancel();
         _responsesAvailable.Set();
+        _eventDispatchTask.Wait();
+        _socket.Shutdown(SocketShutdown.Both);
         _socket.Close();
         _receiveTask.Wait();
-        _eventDispatchTask.Wait();
+        _cancellationTokenSource.Dispose();
     }
 }
