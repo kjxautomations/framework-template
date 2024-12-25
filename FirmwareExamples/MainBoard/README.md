@@ -53,4 +53,4 @@ engineers to collaborate, by following patterns that should be familiar to both.
 
 If you want to modify the protocol, you'll need to download and configure NanoPB. The .NET build system
 automatically generates the C# classes, but you'll need to manually generate the C++ classes
-with NanoPB and place the files in the generated_coe subdirectory.
+with NanoPB and place the files in the generated_code subdirectory.
