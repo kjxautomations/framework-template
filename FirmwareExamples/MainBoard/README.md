@@ -25,6 +25,9 @@ of the same features as UDP/IP, but with one big drawback - it only handles 64 b
 Still, it's pretty trivial to write code that splits up large messages and reassembles them
 at the destination, so I count CAN-FD as a good protocol as well.
 
+Even if you are stuck with plain old CAN with its 8-byte payloads, you can still
+use it with a good abstraction layer that splits and merges packets.
+
 ## Programming embedded controllers doesn't have to be hard
 
 The MainBoard demo shows a way to use a very programmer-friendly embedded OS [MBed](https://os.mbed.com/)
@@ -42,15 +45,24 @@ engineers to collaborate, by following patterns that should be familiar to both.
 
 ## Getting the example running
 
-- Download the MBed IDE
+- Download the MBed Studio IDE
 - Open the project
-- Add a reference to the version of MBed OS you want to use
+- Add a reference to the version of MBed OS you want to use. You can use the Libraries tab to do this. I recommend fething the Git repo and linking to a local copy of it for your projects. See the "Libraries" tab in the IDE.
+- Set up soft links to the shared code. This is necessary because the IDE assumes all sources are contained within the tree. From the MainBoard directory:
+    - Linux: ln -s ../SharedCode .
+    - Windows: mklink /D SharedCode ..\SharedCode (may require Administrator rights)
+
 - Connect your Nucleo-144 board to a spare Ethernet port
+- Configure the port to IP: 192.168.68.100, netmask 255.255.255.0, no gateway
 - Connect a USB-2.0 cable (not a charging cable!) to the port on the opposite side of the ethernet port
-- Configure that port to IP: 192.168.68.100, netmask 255.255.255.0, no gateway
 - Open the .NET unit tests and comment out the "Ignore" attribute on FirmwareConnnectionTestHarness
 - Run the test
 
 If you want to modify the protocol, you'll need to download and configure NanoPB. The .NET build system
 automatically generates the C# classes, but you'll need to manually generate the C++ classes
-with NanoPB and place the files in the generated_code subdirectory.
+with NanoPB and place the files in the generated_code subdirectory:
+```
+cd <your_git_dir>/framework-template/FirmwareExamples/SharedCode/generated_src/
+py <your_nanopb_dir>/generator/nanopb_generator.py <your_git_dir>/framework-template/KJX.ProjectTemplate.Devices/Devices/FirmwareProtocol/firmware.proto \
+    -I<your_git_dir>/framework-template/KJX.ProjectTemplate.Devices/Devices/FirmwareProtocol
+```

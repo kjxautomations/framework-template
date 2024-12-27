@@ -19,9 +19,9 @@ mbed_configure_app_target(${APP_TARGET})
 
 target_include_directories(${APP_TARGET}
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/generated_src
-        ${CMAKE_CURRENT_SOURCE_DIR}/nano_pb
+        ${CMAKE_CURRENT_SOURCE_DIR}/SharedCode/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/SharedCode/generated_src
+        ${CMAKE_CURRENT_SOURCE_DIR}/SharedCode/nano_pb
 )
 
 target_sources(${APP_TARGET}
