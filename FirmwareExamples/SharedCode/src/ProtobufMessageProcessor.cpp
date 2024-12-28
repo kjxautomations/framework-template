@@ -59,7 +59,7 @@ void ProtobufMessageProcessor::ProcessMessage(std::unique_ptr<Request> message)
     }
     else 
     {
-        // route to other boars vis CANBus
+        // route to other boards vis CANBus
     }
 
 }
