@@ -9,6 +9,7 @@ one or more embedded controllers. There are many reasons:
 - Cost reduction (several controller ships on a custom board is usually cheaper than multiple individual USB controllers) 
 This demo application uses the MBedOS framework
 - Reliability (every cable is a failure point)
+- Availability of parts - not all devices (sensors, LEDs, etc) come with a way to read them from a PC
 
 ## Choose a robust wire protocol
 
@@ -26,13 +27,14 @@ Still, it's pretty trivial to write code that splits up large messages and reass
 at the destination, so I count CAN-FD as a good protocol as well.
 
 Even if you are stuck with plain old CAN with its 8-byte payloads, you can still
-use it with a good abstraction layer that splits and merges packets.
+use it with a good abstraction layer that splits and merges packets - it will just be slower.
 
-## Programming embedded controllers doesn't have to be hard
+## Programming embedded controllers shouldn't be this hard
 
 The MainBoard demo shows a way to use a very programmer-friendly embedded OS [MBed](https://os.mbed.com/)
 and serialization frameworks [Protobuf](https://protobuf.dev/) and [NanoPB](https://github.com/nanopb/nanopb).
-There is a dedicated main "thread", and it's easy to add more.
+There is a dedicated main "thread", and it's easy to add more. Unfortunately, Arm has announced end-of-life
+for this platorm.
 
 Why didn't we use STMCube? Well, I hate to say it, but it was far too buggy. The code it generated
 for my board, the [Nucleo-144](https://www.st.com/en/evaluation-tools/nucleo-f767zi.html) was simply
@@ -47,7 +49,7 @@ engineers to collaborate, by following patterns that should be familiar to both.
 
 - Download the MBed Studio IDE
 - Open the project
-- Add a reference to the version of MBed OS you want to use. You can use the Libraries tab to do this. I recommend fething the Git repo and linking to a local copy of it for your projects. See the "Libraries" tab in the IDE.
+- Add a reference to the version of MBed OS you want to use. You can use the Libraries tab to do this. I recommend fetching the Git repo and linking to a local copy of it for your projects. See the "Libraries" tab in the IDE.
 - Set up soft links to the shared code. This is necessary because the IDE assumes all sources are contained within the tree. From the MainBoard directory:
     - Linux: ln -s ../SharedCode .
     - Windows: mklink /D SharedCode ..\SharedCode (may require Administrator rights)
