@@ -1,0 +1,85 @@
+syntax = "proto2";
+option csharp_namespace = "KJX.ProjectTemplate.Devices.FirmwareProtocol";
+
+enum NodeId
+{
+  PC = 0;
+  MAIN = 1;
+  AUX = 2;
+}
+message RequestHeader
+{
+  required uint32 request_id = 1;
+  required NodeId source_node_id = 2;
+  required NodeId target_node_id = 3;
+}
+message ResponseHeader
+{
+  required uint32 request_id = 1;
+  required NodeId source_node_id = 2;
+  required NodeId target_node_id = 3;
+}
+message Ack 
+{
+}
+
+message Nack
+{
+  required uint32 error_code = 1;
+}
+
+enum LedStatus
+{
+  OFF = 0;
+  ON = 1;
+}
+
+enum LedType
+{
+  LED1 = 0;
+  LED2 = 1;
+  LED3 = 2;
+}
+
+message LedControl 
+{
+  required LedType led_type = 1;
+  required LedStatus led_status = 2;
+}
+
+message GetFirmwareVersions
+{
+}
+
+message Ping
+{
+  required uint32 id = 1;
+}
+
+message Pong
+{
+  required uint32 id = 1;
+}
+
+message FirmwareVersions
+{
+  required int32 main_version = 1;
+  required int32 aux_version = 2;
+}
+
+message Request
+{
+  required RequestHeader header = 1;
+  optional Ping ping = 2;
+  optional LedControl led_control = 3;
+  optional GetFirmwareVersions get_firmware_versions = 4;
+}
+
+message Response
+{
+  required ResponseHeader header = 1;
+  optional Ack ack = 2;
+  optional Nack nak = 3;
+  optional Pong pong = 4;
+  optional FirmwareVersions firmware_versions = 5;
+}
