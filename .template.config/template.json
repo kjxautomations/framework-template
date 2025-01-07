@@ -50,7 +50,8 @@
         {
           "condition": "(!ControlSoftwareProject)",
           "exclude": [
-            "KJX.ProjectTemplate.Control/**"
+            "KJX.ProjectTemplate.Control/**",
+            "FirmwareExamples/**/**"
           ]
         }
       ]
