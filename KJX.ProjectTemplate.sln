@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Config", "KJX.ProjectTemplate.Config\KJX.ProjectTemplate.Config.csproj", "{9E34429E-4039-4E47-B275-353A92688C22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Config", "KJX.Config\KJX.Config.csproj", "{9E34429E-4039-4E47-B275-353A92688C22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Devices", "KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj", "{D10AF760-85C2-4A1D-B473-3781D136797F}"
 EndProject

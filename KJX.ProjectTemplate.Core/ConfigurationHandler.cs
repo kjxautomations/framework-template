@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Features.AttributeFilters;
-using KJX.ProjectTemplate.Config;
+using KJX.Config;
 
 namespace KJX.ProjectTemplate.Core;
 

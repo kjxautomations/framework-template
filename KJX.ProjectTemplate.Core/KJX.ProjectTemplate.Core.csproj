@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\KJX.ProjectTemplate.Config\KJX.ProjectTemplate.Config.csproj" />
+      <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
     </ItemGroup>
 
 </Project>

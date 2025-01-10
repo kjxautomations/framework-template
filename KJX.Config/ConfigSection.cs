@@ -1,6 +1,6 @@
 using IniFile;
 
-namespace KJX.ProjectTemplate.Config;
+namespace KJX.Config;
 
 public class ConfigSection(Type type, string name)
 {

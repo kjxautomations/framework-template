@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using IniFile;
 
-namespace KJX.ProjectTemplate.Config;
+namespace KJX.Config;
 
 public static class ConfigLoader
 {

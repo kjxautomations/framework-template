@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace KJX.ProjectTemplate.Config;
+namespace KJX.Config;
 
 
 public static class PropertyValidator
