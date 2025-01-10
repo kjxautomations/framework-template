@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using KJX.ProjectTemplate.Core;
+using KJX.Core.Interfaces;
 
 namespace KJX.ProjectTemplate.Control.Views;
 
