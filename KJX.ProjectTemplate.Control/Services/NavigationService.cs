@@ -6,9 +6,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using KJX.Core.Interfaces;
 using KJX.ProjectTemplate.Control.Models;
-using KJX.ProjectTemplate.Core;
-using KJX.ProjectTemplate.Devices;
+using KJX.Devices;
 using ReactiveUI;
 
 namespace KJX.ProjectTemplate.Control.Services;

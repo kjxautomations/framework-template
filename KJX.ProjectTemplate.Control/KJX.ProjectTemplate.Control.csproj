@@ -44,14 +44,6 @@
 
 
     <ItemGroup>
-      <ProjectReference Include="..\KJX.ProjectTemplate.Config\KJX.ProjectTemplate.Config.csproj" />
-      <ProjectReference Include="..\KJX.ProjectTemplate.Core\KJX.ProjectTemplate.Core.csproj" />
-      <ProjectReference Include="..\KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj" />
-    </ItemGroup>
-
-
-
-    <ItemGroup>
       <EmbeddedResource Include="nlog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
@@ -180,5 +172,13 @@
       <AdditionalFiles Include="Views\NotificationsWindow.axaml" />
       <AdditionalFiles Include="Views\NotificationsWindowControl.axaml" />
       <AdditionalFiles Include="Views\StateNavigationView.axaml" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
+      <ProjectReference Include="..\KJX.Core\KJX.Core.csproj" />
+      <ProjectReference Include="..\KJX.Devices\KJX.Devices.csproj" />
     </ItemGroup>
 </Project>

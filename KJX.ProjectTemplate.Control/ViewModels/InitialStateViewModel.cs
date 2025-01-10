@@ -3,10 +3,10 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using KJX.ProjectTemplate.Control.Services;
-using KJX.ProjectTemplate.Core;
-using KJX.ProjectTemplate.Core.ViewModels;
-using KJX.ProjectTemplate.Devices;
-using KJX.ProjectTemplate.Devices.Logic;
+using KJX.Core.Interfaces;
+using KJX.Core.ViewModels;
+using KJX.Devices;
+using KJX.Devices.Logic;
 using ReactiveUI;
 
 namespace KJX.ProjectTemplate.Control.ViewModels;
