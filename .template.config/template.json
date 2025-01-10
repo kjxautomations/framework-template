@@ -42,7 +42,7 @@
   },
   "primaryOutputs": [
     {
-      "path": "KJX.Engineering/KJX.Engineering.csproj"
+      "path": "KJX.ProjectTemplate.Engineering/KJX.ProjectTemplate.Engineering.csproj"
     },
     {
       "path": "KJX.ProjectTemplate.Control/KJX.ProjectTemplate.Control.csproj"
@@ -54,7 +54,7 @@
       "path": "KJX.DevicesUI/KJX.DevicesUI.csproj"
     },
     {
-      "path": "KJX.ProjectTemplate.Tests/KJX.ProjectTemplate.Tests.csproj"
+      "path": "KJX.Tests/KJX.Tests.csproj"
     }
   ],
   "sources": [

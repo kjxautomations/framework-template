@@ -1,8 +1,8 @@
 using Autofac;
-using KJX.ProjectTemplate.Config;
-using KJX.ProjectTemplate.Core;
+using KJX.Config;
+using KJX.Core;
 
-namespace KJX.ProjectTemplate.Tests;
+namespace KJX.Tests;
 
 public class ConfigurationHandlerTests
 {

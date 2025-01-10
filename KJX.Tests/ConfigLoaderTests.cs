@@ -1,6 +1,6 @@
-using KJX.ProjectTemplate.Config;
+using KJX.Config;
 
-namespace KJX.ProjectTemplate.Tests;
+namespace KJX.Tests;
 
 #pragma warning disable CS8602  
 public class ConfigLoaderTests

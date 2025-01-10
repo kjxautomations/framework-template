@@ -1,9 +1,9 @@
-using KJX.ProjectTemplate.Devices;
-using KJX.ProjectTemplate.Devices.FirmwareProtocol;
+using KJX.Devices;
+using KJX.Devices.FirmwareProtocol;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace KJX.ProjectTemplate.Tests;
+namespace KJX.Tests;
 
 [Ignore("This test requires a device to be connected")]
 [TestFixture]

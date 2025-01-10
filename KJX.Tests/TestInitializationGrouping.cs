@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using KJX.ProjectTemplate.Devices;
-using KJX.ProjectTemplate.Devices.Logic;
+using KJX.Devices;
+using KJX.Devices.Logic;
 
-namespace KJX.ProjectTemplate.Tests;
+namespace KJX.Tests;
 
 public class XMotorInit : ISupportsInitialization, INotifyPropertyChanged
 {

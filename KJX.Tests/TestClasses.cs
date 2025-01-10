@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Autofac.Features.AttributeFilters;
 
-namespace KJX.ProjectTemplate.Tests;
+namespace KJX.Tests;
 
 
 public interface IMotorInterface

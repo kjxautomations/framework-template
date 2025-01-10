@@ -8,7 +8,6 @@
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>KJX.ProjectTemplate.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,9 +32,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\KJX.ProjectTemplate.Config\KJX.ProjectTemplate.Config.csproj" />
-      <ProjectReference Include="..\KJX.ProjectTemplate.Core\KJX.ProjectTemplate.Core.csproj" />
-      <ProjectReference Include="..\KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj" />
+      <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
+      <ProjectReference Include="..\KJX.Core\KJX.Core.csproj" />
+      <ProjectReference Include="..\KJX.Devices\KJX.Devices.csproj" />
     </ItemGroup>
 
     <ItemGroup>

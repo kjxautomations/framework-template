@@ -1,9 +1,9 @@
 using System.ComponentModel;
-using KJX.ProjectTemplate.Devices;
+using KJX.Devices;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace KJX.ProjectTemplate.Tests;
+namespace KJX.Tests;
 
 [TestFixture]
 public class TestSimulatedLinearMotor

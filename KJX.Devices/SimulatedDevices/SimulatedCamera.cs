@@ -27,8 +27,8 @@ public class SimulatedCamera : SupportsInitialization, ICamera
         Name = name;
         _images = new IImageBuffer[]
         {
-            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "KJX.ProjectTemplate.Devices.Resources.blocks1.tiff"),
-            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "KJX.ProjectTemplate.Devices.Resources.blocks2.tiff"),
+            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "KJX.Devices.Resources.blocks1.tiff"),
+            ImageUtils.LoadFromResource(Assembly.GetExecutingAssembly(), "KJX.Devices.Resources.blocks2.tiff"),
         };
         _xMotor = xMotor;
         _yMotor = yMotor;

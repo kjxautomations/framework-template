@@ -1,9 +1,9 @@
-using KJX.ProjectTemplate.Core;
-using KJX.ProjectTemplate.Core.Services;
+using KJX.Core.Interfaces;
+using KJX.Core.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace KJX.ProjectTemplate.Tests;
+namespace KJX.Tests;
 
 [TestFixture]
 public class TestNotificationService
