@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\KJX.ProjectTemplate.Core\KJX.ProjectTemplate.Core.csproj" />
+      <ProjectReference Include="..\KJX.Core\KJX.Core.csproj" />
       <ProjectReference Include="..\KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj" />
     </ItemGroup>
 

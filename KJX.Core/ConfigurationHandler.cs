@@ -2,7 +2,7 @@
 using Autofac.Features.AttributeFilters;
 using KJX.Config;
 
-namespace KJX.ProjectTemplate.Core;
+namespace KJX.Core;
 
 public static class ConfigurationHandler
 {

@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace KJX.ProjectTemplate.Core;
+namespace KJX.Core.Interfaces;
 public enum NotificationType
 {
     Info,

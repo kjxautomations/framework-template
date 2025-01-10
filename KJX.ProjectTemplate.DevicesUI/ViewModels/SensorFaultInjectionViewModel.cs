@@ -1,4 +1,4 @@
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Core.ViewModels;
 using KJX.ProjectTemplate.Devices;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

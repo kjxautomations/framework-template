@@ -4,7 +4,7 @@ using System.Reactive.Linq;
 using System.Timers;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Core.ViewModels;
 using Devices.Utils;
 using DynamicData;
 using KJX.ProjectTemplate.Devices;

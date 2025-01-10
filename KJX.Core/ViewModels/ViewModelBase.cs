@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace KJX.ProjectTemplate.Core.ViewModels;
+namespace KJX.Core.ViewModels;
 
 public class ViewModelBase : ReactiveObject
 {

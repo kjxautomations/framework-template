@@ -1,8 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Core.ViewModels;
 
-namespace KJX.ProjectTemplate.Core;
+namespace KJX.Core;
 
 public class ViewLocator : IDataTemplate
 {

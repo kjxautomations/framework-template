@@ -4,7 +4,7 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
 
-namespace Core.Stylesheets;
+namespace KJX.Core.Stylesheets;
 
 //pulled straight from the examples: https://livecharts.dev/docs/Avalonia/2.0.0-rc2/samples.axes.style
 public static class CartesianChartStyles

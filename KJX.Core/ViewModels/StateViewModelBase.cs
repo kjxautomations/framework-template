@@ -4,8 +4,9 @@ using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Abstractions;
 using ReactiveUI.Validation.Contexts;
 using ValidationContext = ReactiveUI.Validation.Contexts.ValidationContext;
+using KJX.Core.Interfaces;
 
-namespace KJX.ProjectTemplate.Core.ViewModels;
+namespace KJX.Core.ViewModels;
 
 public abstract class StateViewModelBase<TState, TTrigger> : ViewModelBase, IValidatableViewModel
     where TState : System.Enum 
