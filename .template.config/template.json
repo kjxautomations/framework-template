@@ -26,25 +26,50 @@
       "description": "Defines if your solution will include a Control SW user interface",
       "datatype": "bool",
       "defaultValue": true
+    },
+    "Devices": {
+      "type": "parameter",
+      "description": "Include simple device implementations, configuration and UI",
+      "datatype": "bool",
+      "defaultValue": true
+    },
+    "Tests": {
+      "type": "parameter",
+      "description": "Include unit test project",
+      "datatype": "bool",
+      "defaultValue": false
     }
   },
   "primaryOutputs": [
     {
-      "condition": "(EngineeringProject)",
-      "path": "KJX.ProjectTemplate.Engineering/KJX.ProjectTemplate.Engineering.csproj"
+      "path": "KJX.Engineering/KJX.Engineering.csproj"
     },
     {
-      "condition": "(ControlSoftwareProject)",
       "path": "KJX.ProjectTemplate.Control/KJX.ProjectTemplate.Control.csproj"
+    },
+    {
+      "path": "KJX.ProjectTemplate.Devices/KJX.ProjectTemplate.Devices.csproj"
+    },
+    {
+      "path": "KJX.ProjectTemplate.DevicesUI/KJX.ProjectTemplate.DevicesUI.csproj"
+    },
+    {
+      "path": "KJX.ProjectTemplate.Tests/KJX.ProjectTemplate.Tests.csproj"
     }
   ],
   "sources": [
     {
       "modifiers": [
         {
+          "exclude": [
+            "FirmwareExamples/**",
+            "KJX.ProjectTemplate.Nuget.csproj"
+          ]
+        },
+        {
           "condition": "(!EngineeringProject)",
           "exclude": [
-            "KJX.ProjectTemplate.Engineering/**"
+            "KJX.Engineering/**"
           ]
         },
         {
@@ -53,11 +78,52 @@
             "KJX.ProjectTemplate.Control/**",
             "FirmwareExamples/**/**"
           ]
+        },
+        {
+          "condition": "(!Devices)",
+          "exclude": [
+            "KJX.ProjectTemplate.Devices/**",
+            "KJX.ProjectTemplate.DevicesUI/**"
+          ]
+        },
+        {
+          "condition": "(!Tests)",
+          "exclude": [
+            "KJX.ProjectTemplate.Tests/**"
+          ]
         }
       ]
     }
   ],
   "postActions": [
+    {
+      "description": "Add devices to the project",
+      "condition": "(Devices)",
+      "applyFileRenamesToArgs": [],
+      "manualInstructions": [{
+        "text": "Add Devices and DevicesUI projects to solution manually."
+      }],
+      "args": {
+        "inRoot": true,
+        "primaryOutputIndexes": 2
+      },
+      "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+      "continueOnError": true
+    },
+    {
+      "description": "Add device UI's to the project",
+      "condition": "(Devices)",
+      "applyFileRenamesToArgs": [],
+      "manualInstructions": [{
+        "text": "Add Devices and DevicesUI projects to solution manually."
+      }],
+      "args": {
+        "inRoot": true,
+        "primaryOutputIndexes": 3
+      },
+      "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+      "continueOnError": true
+    },
     {
       "description": "Add projects to solution",
       "condition": "(EngineeringProject)",
@@ -67,7 +133,8 @@
       }
       ],
       "args": {
-        "inRoot": true
+        "inRoot": true,
+        "primaryOutputIndexes": 0
       },
       "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
       "continueOnError": true
@@ -80,7 +147,22 @@
         "text": "Add control software project to solution manually."
       }],
       "args": {
-        "inRoot": true
+        "inRoot": true,
+        "primaryOutputIndexes": 1
+      },
+      "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+      "continueOnError": true
+    },
+    {
+      "description": "Add unit test project to solution",
+      "condition": "(Tests)",
+      "applyFileRenamesToArgs": [],
+      "manualInstructions": [{
+        "text": "Add control software project to solution manually."
+      }],
+      "args": {
+        "inRoot": true,
+        "primaryOutputIndexes": 4
       },
       "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
       "continueOnError": true

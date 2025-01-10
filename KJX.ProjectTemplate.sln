@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Tests", "KJX.ProjectTemplate.Tests\KJX.ProjectTemplate.Tests.csproj", "{2EEEB386-2A54-4E9D-BF4A-887C1F9F3BDD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Config", "KJX.ProjectTemplate.Config\KJX.ProjectTemplate.Config.csproj", "{9E34429E-4039-4E47-B275-353A92688C22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Devices", "KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj", "{D10AF760-85C2-4A1D-B473-3781D136797F}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2EEEB386-2A54-4E9D-BF4A-887C1F9F3BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EEEB386-2A54-4E9D-BF4A-887C1F9F3BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EEEB386-2A54-4E9D-BF4A-887C1F9F3BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EEEB386-2A54-4E9D-BF4A-887C1F9F3BDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E34429E-4039-4E47-B275-353A92688C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E34429E-4039-4E47-B275-353A92688C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E34429E-4039-4E47-B275-353A92688C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
