@@ -2,11 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Config", "KJX.Config\KJX.Config.csproj", "{9E34429E-4039-4E47-B275-353A92688C22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Devices", "KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj", "{D10AF760-85C2-4A1D-B473-3781D136797F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Devices", "KJX.Devices\KJX.Devices.csproj", "{D10AF760-85C2-4A1D-B473-3781D136797F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Core", "KJX.Core\KJX.Core.csproj", "{43DDB944-AE35-4216-ABBF-CCD90955BE47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.DevicesUI", "KJX.ProjectTemplate.DevicesUI\KJX.ProjectTemplate.DevicesUI.csproj", "{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.DevicesUI", "KJX.DevicesUI\KJX.DevicesUI.csproj", "{4B54C7BE-7591-41FF-82AA-8EEADE6CFCB3}"
 EndProject
 
 Global

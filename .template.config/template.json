@@ -48,10 +48,10 @@
       "path": "KJX.ProjectTemplate.Control/KJX.ProjectTemplate.Control.csproj"
     },
     {
-      "path": "KJX.ProjectTemplate.Devices/KJX.ProjectTemplate.Devices.csproj"
+      "path": "KJX.Devices/KJX.Devices.csproj"
     },
     {
-      "path": "KJX.ProjectTemplate.DevicesUI/KJX.ProjectTemplate.DevicesUI.csproj"
+      "path": "KJX.DevicesUI/KJX.DevicesUI.csproj"
     },
     {
       "path": "KJX.ProjectTemplate.Tests/KJX.ProjectTemplate.Tests.csproj"
@@ -69,7 +69,7 @@
         {
           "condition": "(!EngineeringProject)",
           "exclude": [
-            "KJX.Engineering/**"
+            "KJX.ProjectTemplate.Engineering/**"
           ]
         },
         {
@@ -82,8 +82,8 @@
         {
           "condition": "(!Devices)",
           "exclude": [
-            "KJX.ProjectTemplate.Devices/**",
-            "KJX.ProjectTemplate.DevicesUI/**"
+            "KJX.Devices/**",
+            "KJX.DevicesUI/**"
           ]
         },
         {
