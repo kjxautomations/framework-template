@@ -30,13 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\KJX.ProjectTemplate.Config\KJX.ProjectTemplate.Config.csproj" />
-      <ProjectReference Include="..\KJX.ProjectTemplate.Core\KJX.ProjectTemplate.Core.csproj" />
-      <ProjectReference Include="..\KJX.ProjectTemplate.DevicesUI\KJX.ProjectTemplate.DevicesUI.csproj" />
-      <ProjectReference Include="..\KJX.ProjectTemplate.Devices\KJX.ProjectTemplate.Devices.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="system_config.ini">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -49,5 +42,12 @@
       <EmbeddedResource Include="nlog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
+      <ProjectReference Include="..\KJX.Core\KJX.Core.csproj" />
+      <ProjectReference Include="..\KJX.DevicesUI\KJX.DevicesUI.csproj" />
+      <ProjectReference Include="..\KJX.Devices\KJX.Devices.csproj" />
     </ItemGroup>
 </Project>
