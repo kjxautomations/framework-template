@@ -63,7 +63,7 @@
         {
           "exclude": [
             "FirmwareExamples/**",
-            "KJX.ProjectTemplate.Nuget.csproj"
+            "../KJX.Nuget.csproj"
           ]
         },
         {
@@ -89,7 +89,7 @@
         {
           "condition": "(!Tests)",
           "exclude": [
-            "KJX.ProjectTemplate.Tests/**"
+            "KJX.Tests/**"
           ]
         }
       ]
@@ -140,6 +140,34 @@
       "continueOnError": true
     },
     {
+      "description": "Adding KJX.Devices to Engineering Project",
+      "condition": "(EngineeringProject && Devices)",
+      "manualInstructions": [{
+        "text": "Add the reference to KJX.Devices to Engineering manually."
+      }],
+      "args": {
+        "targetFiles": ["*.Engineering.csproj"],
+        "referenceType": "project",
+        "reference": "KJX.Devices/KJX.Devices.csproj"
+      },
+      "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+      "continueOnError": true
+    },
+    {
+      "description": "Adding a reference to another project",
+      "condition": "(EngineeringProject && Devices)",
+      "manualInstructions": [{
+        "text": "Add the reference to KJX.DevicesUI to Engineering manually."
+      }],
+      "args": {
+        "targetFiles": ["*.Engineering.csproj"],
+        "referenceType": "project",
+        "reference": "KJX.DevicesUI/KJX.DevicesUI.csproj"
+      },
+      "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+      "continueOnError": true
+    },
+    {
       "description": "Add control software project to solution",
       "condition": "(ControlSoftwareProject)",
       "applyFileRenamesToArgs": [],
@@ -154,6 +182,20 @@
       "continueOnError": true
     },
     {
+      "description": "Add KJX.Devices to Control project",
+      "condition": "(ControlSoftwareProject && Devices)",
+      "manualInstructions": [{
+        "text": "Add the the reference to KJX.Devices to Control project manually."
+      }],
+      "args": {
+        "targetFiles": ["*.Control.csproj"],
+        "referenceType": "project",
+        "reference": "KJX.Devices/KJX.Devices.csproj"
+      },
+      "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+      "continueOnError": true
+    },
+    {
       "description": "Add unit test project to solution",
       "condition": "(Tests)",
       "applyFileRenamesToArgs": [],
@@ -165,6 +207,20 @@
         "primaryOutputIndexes": 4
       },
       "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+      "continueOnError": true
+    },
+    {
+      "description": "Add KJX.Devices to Control project",
+      "condition": "(Tests)",
+      "manualInstructions": [{
+        "text": "Add the the reference to KJX.Devices to Control project manually."
+      }],
+      "args": {
+        "targetFiles": ["*.Tests.csproj"],
+        "referenceType": "project",
+        "reference": "KJX.Devices/KJX.Devices.csproj"
+      },
+      "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
       "continueOnError": true
     }
   ]
