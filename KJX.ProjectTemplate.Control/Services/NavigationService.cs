@@ -16,7 +16,16 @@ namespace KJX.ProjectTemplate.Control.Services;
 public enum NavigationStates
 {
     Default,
+    Welcome,
     Initial,
+    GatheringRunInfo,
+    ReadyToSequence,
+    Sequencing,
+    SequencingComplete,
+    SequencingAborted,
+    Washing,
+    WashingComplete,
+    WashingAborted,
     End
 }
 
@@ -24,7 +33,8 @@ public enum NavigationTriggers
 {
     Next,
     Previous,
-    Cancel
+    Cancel,
+    Abort
 }
 
 public class NavigationService : INavigationService<NavigationStates, NavigationTriggers>
