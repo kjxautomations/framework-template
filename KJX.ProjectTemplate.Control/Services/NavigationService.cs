@@ -17,8 +17,8 @@ public enum NavigationStates
 {
     Default,
     Welcome,
-    Initial,
-    GatheringRunInfo,
+    Initialize,
+    GatherRunInfo,
     ReadyToSequence,
     Sequencing,
     SequencingComplete,
@@ -41,8 +41,13 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
 {
     public ObservableCollection<NavigationStateInfo<NavigationStates>> BreadcrumbStates { get; } =
     [
-        new NavigationStateInfo<NavigationStates>(NavigationStates.Initial, "Initial") { IsActive = true },
-        new NavigationStateInfo<NavigationStates>(NavigationStates.End, "End") { IsActive = false },
+        new NavigationStateInfo<NavigationStates>(NavigationStates.Welcome, "Welcome") { IsActive = true },
+        new NavigationStateInfo<NavigationStates>(NavigationStates.Initialize, "Initialize Devices"),
+        new NavigationStateInfo<NavigationStates>(NavigationStates.GatherRunInfo, "Gather Run Info"),
+        new NavigationStateInfo<NavigationStates>(NavigationStates.ReadyToSequence, "Ready to Sequence"),
+        new NavigationStateInfo<NavigationStates>(NavigationStates.Sequencing, "Sequencing"),
+        new NavigationStateInfo<NavigationStates>(NavigationStates.SequencingComplete, "Sequencing Complete"),
+        new NavigationStateInfo<NavigationStates>(NavigationStates.Washing, "Washing"),
     ];
 
     public ObservableCollection<NavigationTriggerInfo<NavigationTriggers>> ButtonTriggers { get; } = new()
@@ -98,7 +103,7 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
             .Select(item => item.WhenAnyValue(x => x.IsInitialized))
             .CombineLatest()
             .Select(isInitializedArray => isInitializedArray.Any(isInitialized => !isInitialized));
-        needsInitialization.Subscribe(anyNotInitialized => UpdateTriggerEnabled(NavigationStates.Initial, NavigationTriggers.Next, !anyNotInitialized));
+        needsInitialization.Subscribe(anyNotInitialized => UpdateTriggerEnabled(NavigationStates.Initialize, NavigationTriggers.Next, !anyNotInitialized));
     }
 
     

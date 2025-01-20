@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:KJX.ProjectTemplate.Control.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="viewModels:InitialStateViewModel"
-             x:Class="KJX.ProjectTemplate.Control.Views.InitialStateView">
+             x:DataType="viewModels:InitializationScreenViewModel"
+             x:Class="KJX.ProjectTemplate.Control.Views.InitializationScreenView">
     <StackPanel Orientation="Vertical" Margin="15" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock  
                HorizontalAlignment="Center" Margin="5" TextWrapping="Wrap"

@@ -5,9 +5,9 @@ using Avalonia.Markup.Xaml;
 
 namespace KJX.ProjectTemplate.Control.Views;
 
-public partial class InitialStateView : UserControl
+public partial class InitializationScreenView : UserControl
 {
-    public InitialStateView()
+    public InitializationScreenView()
     {
         InitializeComponent();
     }

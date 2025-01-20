@@ -52,8 +52,8 @@
 
 
     <ItemGroup>
-      <Compile Update="Views\InitialStateView.axaml.cs">
-        <DependentUpon>InitialStateView.axaml</DependentUpon>
+      <Compile Update="Views\InitializationScreenView.axaml.cs">
+        <DependentUpon>InitializationStateView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\NavigationBreadCrumbControl.axaml.cs">
@@ -92,16 +92,12 @@
         <DependentUpon>FinishScreenView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\GatherRunInfoView.axaml.cs">
-        <DependentUpon>GatherRunInfoView.axaml</DependentUpon>
+      <Compile Update="Views\GatherRunInfoScreenView.axaml.cs">
+        <DependentUpon>GatherRunInfoScreenView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\HomePageView.axaml.cs">
         <DependentUpon>HomePageView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\InitialStateView.axaml.cs">
-        <DependentUpon>InitialStateView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\MainView.axaml.cs">
@@ -132,8 +128,8 @@
         <DependentUpon>NotificationsWindowControl.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\SequencingView.axaml.cs">
-        <DependentUpon>SequencingView.axaml</DependentUpon>
+      <Compile Update="Views\SequencingScreenView.axaml.cs">
+        <DependentUpon>SequencingScreenView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\StateNavigationView.axaml.cs">
@@ -148,8 +144,8 @@
         <DependentUpon>UnhandledExceptionWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\WashingView.axaml.cs">
-        <DependentUpon>WashingView.axaml</DependentUpon>
+      <Compile Update="Views\Screen.axaml.cs">
+        <DependentUpon>WashingScreenView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\WelcomeScreenView.axaml.cs">
@@ -165,7 +161,6 @@
 
 
     <ItemGroup>
-      <AdditionalFiles Include="Views\InitialStateView.axaml" />
       <AdditionalFiles Include="Views\NavigationBreadCrumbControl.axaml" />
       <AdditionalFiles Include="Views\NavigationButtonBarControl.axaml" />
       <AdditionalFiles Include="Views\NotificationsCounterControl.axaml" />

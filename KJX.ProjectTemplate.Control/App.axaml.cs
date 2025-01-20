@@ -5,6 +5,7 @@ using System.Threading;
 using System.Xml;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Autofac.Features.AttributeFilters;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -101,6 +102,9 @@ public partial class App : Application
             .As<INotificationService>()
             .WithParameter("context", SynchronizationContext.Current)
             .SingleInstance();
+        
+        builder.RegisterType<RunInfo>().AsSelf().WithAttributeFiltering().SingleInstance();
+        builder.RegisterType<SequencingService>().AsSelf().WithAttributeFiltering().SingleInstance();
         
         Container = builder.Build();
         Logger = Container.Resolve<ILogger<Application>>();

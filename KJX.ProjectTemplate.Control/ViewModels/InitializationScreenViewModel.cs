@@ -11,13 +11,13 @@ using ReactiveUI;
 
 namespace KJX.ProjectTemplate.Control.ViewModels;
 
-public class InitialStateViewModel : StateViewModelBase<NavigationStates,NavigationTriggers>
+public class InitializationScreenViewModel : StateViewModelBase<NavigationStates,NavigationTriggers>
 {
     public ReactiveCommand<Unit, Unit> InitializeCommand { get; }
 
-    public InitialStateViewModel(INavigationService<NavigationStates, NavigationTriggers> navigationService,
+    public InitializationScreenViewModel(INavigationService<NavigationStates, NavigationTriggers> navigationService,
         ISupportsInitialization[] initializables, ISupportsHoming[] homables) 
-        : base (navigationService, new [] {NavigationStates.Initial})
+        : base (navigationService, new [] {NavigationStates.Initialize})
     {
         var needsInitialization = initializables
             .Select(item => item.WhenAnyValue(x => x.IsInitialized))
