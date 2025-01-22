@@ -20,7 +20,9 @@
         {
           "exclude": [
             "FirmwareExamples/**",
-            "../KJX.Nuget.csproj"
+            "../KJX.Nuget.csproj",
+            ".idea/**",
+            ".git/**"
           ]
         }
       ]

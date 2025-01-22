@@ -40,6 +40,7 @@ public enum NavigationTriggers
 public class NavigationService : INavigationService<NavigationStates, NavigationTriggers>
 {
     private readonly StateMachine _stateMachine;
+    private readonly RunInfo _runInfo;
     private Dictionary<NavigationStates, Dictionary<NavigationTriggers, bool>> _triggersEnabled = new();
     
     private NavigationStates _currentState;
@@ -67,15 +68,21 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
         new NavigationTriggerInfo<NavigationTriggers>(NavigationTriggers.Cancel, "Cancel")
     };
     
-    public NavigationService(StateMachine stateMachine, SequencingService sequencingService, ISupportsInitialization[] initializables)
+    public NavigationService(
+        StateMachine stateMachine, SequencingService sequencingService, RunInfo runInfo,
+        ISupportsInitialization[] initializables)
     {
         _stateMachine = stateMachine;
+        _runInfo = runInfo;
         
         var handler = HandleStateChange;
         _stateMachine.WhenAnyValue(s => s.CurrentState)
             .Subscribe(handler);
         
         // Set up the navigation button enabled/disabled status
+        _runInfo.WhenAnyValue(x => x.CyclesError, x => x.LanesError)
+            .Select(x => string.IsNullOrEmpty(x.Item1) && string.IsNullOrEmpty(x.Item2))
+            .Subscribe(enabled => UpdateTriggerEnabled(NavigationStates.GatherRunInfo, NavigationTriggers.Next, enabled));
         
         // enable the Next button only when all have been initialized
         var needsInitialization = initializables
