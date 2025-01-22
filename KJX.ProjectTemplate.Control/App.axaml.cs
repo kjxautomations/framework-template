@@ -105,6 +105,7 @@ public partial class App : Application
         
         builder.RegisterType<RunInfo>().AsSelf().WithAttributeFiltering().SingleInstance();
         builder.RegisterType<SequencingService>().AsSelf().WithAttributeFiltering().SingleInstance();
+        builder.RegisterType<TemperatureMonitoringService>().AsSelf().As<IBackgroundService>().WithAttributeFiltering().SingleInstance();
         
         Container = builder.Build();
         Logger = Container.Resolve<ILogger<Application>>();

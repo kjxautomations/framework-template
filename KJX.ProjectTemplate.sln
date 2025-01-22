@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Control
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Engineering", "KJX.ProjectTemplate.Engineering\KJX.ProjectTemplate.Engineering.csproj", "{20706429-F8EF-4F56-984C-EF985BD067B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Tests", "KJX.Tests\KJX.Tests.csproj", "{0925550B-CD28-4693-8D7E-1D2FA9B4B4B7}"
+EndProject
 
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,5 +45,9 @@ Global
 		{20706429-F8EF-4F56-984C-EF985BD067B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20706429-F8EF-4F56-984C-EF985BD067B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20706429-F8EF-4F56-984C-EF985BD067B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0925550B-CD28-4693-8D7E-1D2FA9B4B4B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0925550B-CD28-4693-8D7E-1D2FA9B4B4B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0925550B-CD28-4693-8D7E-1D2FA9B4B4B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0925550B-CD28-4693-8D7E-1D2FA9B4B4B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
