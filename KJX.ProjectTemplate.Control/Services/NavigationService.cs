@@ -39,6 +39,16 @@ public enum NavigationTriggers
 
 public class NavigationService : INavigationService<NavigationStates, NavigationTriggers>
 {
+    private readonly StateMachine _stateMachine;
+    private Dictionary<NavigationStates, Dictionary<NavigationTriggers, bool>> _triggersEnabled = new();
+    
+    private NavigationStates _currentState;
+    public NavigationStates CurrentState
+    {
+        get => _currentState;
+        private set => SetField(ref _currentState, value);
+    }
+    
     public ObservableCollection<NavigationStateInfo<NavigationStates>> BreadcrumbStates { get; } =
     [
         new NavigationStateInfo<NavigationStates>(NavigationStates.Welcome, "Welcome") { IsActive = true },
@@ -56,21 +66,60 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
         new NavigationTriggerInfo<NavigationTriggers>(NavigationTriggers.Next, "Next") { IsEnabled = true },
         new NavigationTriggerInfo<NavigationTriggers>(NavigationTriggers.Cancel, "Cancel")
     };
-
-    private NavigationStates _currentState;
-    public NavigationStates CurrentState
+    
+    public NavigationService(StateMachine stateMachine, SequencingService sequencingService, ISupportsInitialization[] initializables)
     {
-        get => _currentState;
-        private set => SetField(ref _currentState, value);
+        _stateMachine = stateMachine;
+        
+        var handler = HandleStateChange;
+        _stateMachine.WhenAnyValue(s => s.CurrentState)
+            .Subscribe(handler);
+        
+        // Set up the navigation button enabled/disabled status
+        
+        // enable the Next button only when all have been initialized
+        var needsInitialization = initializables
+            .Select(item => item.WhenAnyValue(x => x.IsInitialized))
+            .CombineLatest()
+            .Select(isInitializedArray => isInitializedArray.Any(isInitialized => !isInitialized));
+        needsInitialization.Subscribe(anyNotInitialized => UpdateTriggerEnabled(NavigationStates.Initialize, NavigationTriggers.Next, !anyNotInitialized));
+        
+        // sequencing screen
+        sequencingService.WhenAnyValue(x => x.State)
+            .Subscribe(s =>
+            {
+                foreach (var state in new[] { NavigationStates.Sequencing, NavigationStates.ReadyToSequence })
+                {
+                    UpdateTriggerEnabled(state, NavigationTriggers.Next,
+                        !OperatingSystem.IsBrowser() && (s == SequencingState.Complete || s == SequencingState.Idle));
+                }
+            });
+        // the finish screen
+        this.WhenAnyValue(x => x.CurrentState)
+            .Subscribe((s) =>
+            {
+                if (s == NavigationStates.SequencingComplete || s == NavigationStates.SequencingAborted)
+                {
+                    UpdateTriggerEnabled(s, NavigationTriggers.Next,
+                        sequencingService.State is SequencingState.Complete or SequencingState.Cancelled);
+                } 
+            });
+        sequencingService.WhenAnyValue(x => x.State)
+            .Subscribe(s =>
+            {
+                if (CurrentState == NavigationStates.SequencingComplete || CurrentState == NavigationStates.SequencingAborted)
+                {
+                    UpdateTriggerEnabled(CurrentState, NavigationTriggers.Next, 
+                        s is SequencingState.Complete or SequencingState.Cancelled);
+                }
+            });
     }
 
     public async Task SendTrigger(NavigationTriggers trigger)
     {
         await _stateMachine.SendTrigger(trigger);
     }
-
-    Dictionary<NavigationStates, Dictionary<NavigationTriggers, bool>> _triggersEnabled = new();
-
+    
     private void UpdateTriggerEnabled(NavigationStates state, NavigationTriggers trigger, bool enabled)
     {
         if (!_triggersEnabled.ContainsKey(state))
@@ -85,27 +134,6 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
             }
         }
     }
-
-    private readonly StateMachine _stateMachine;
-   
-    public NavigationService(StateMachine stateMachine, 
-        ISupportsInitialization[] initializables)
-    {
-        _stateMachine = stateMachine;
-        Action<NavigationStates> handler = HandleStateChange;
-        _stateMachine.WhenAnyValue(s => s.CurrentState)
-            .Subscribe(handler);
-        
-        // set up the navigation button enabled/disabled status
-        
-        // enable the Next button only when all have been initialized
-        var needsInitialization = initializables
-            .Select(item => item.WhenAnyValue(x => x.IsInitialized))
-            .CombineLatest()
-            .Select(isInitializedArray => isInitializedArray.Any(isInitialized => !isInitialized));
-        needsInitialization.Subscribe(anyNotInitialized => UpdateTriggerEnabled(NavigationStates.Initialize, NavigationTriggers.Next, !anyNotInitialized));
-    }
-
     
     private void HandleStateChange(NavigationStates newState)
     {
@@ -141,9 +169,9 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
                 }
             }
         }
-        
     }
 
+    //INotifyPropertyChanged implementation
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -158,15 +186,4 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
         OnPropertyChanged(propertyName);
         return true;
     }
-}
-
-public class NavigationMenuType
-{
-    public NavigationMenuType(Type type)
-    {
-        ViewModel = type;
-    }
-    
-    public string MenuLabel { get; set; }
-    public Type ViewModel { get; }
 }
