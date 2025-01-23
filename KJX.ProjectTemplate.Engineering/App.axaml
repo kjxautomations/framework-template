@@ -1,6 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:core="clr-namespace:KJX.ProjectTemplate.Core;assembly=KJX.ProjectTemplate.Core"
+             xmlns:core="clr-namespace:KJX.Core;assembly=KJX.Core"
              x:Class="KJX.ProjectTemplate.Engineering.App"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->

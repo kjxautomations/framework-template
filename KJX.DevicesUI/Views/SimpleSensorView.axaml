@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:KJX.DevicesUI.ViewModels"
+             xmlns:avalonia="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:SimpleSensorViewModel"
+             x:Class="KJX.DevicesUI.Views.SimpleSensorView">
+    <Design.DataContext>
+        <viewModels:SimpleSensorViewModel />
+    </Design.DataContext>
+        <Border BorderThickness="1" BorderBrush="DimGray" CornerRadius="10" Padding="10">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Name}"
+                           FontSize="15" FontWeight="Bold" Margin="5" 
+                           HorizontalAlignment="Center" />
+                <avalonia:CartesianChart Series="{Binding Series}" 
+                                         XAxes="{Binding XAxis}"
+                                         YAxes="{Binding YAxis}"
+                                         DrawMarginFrame="{Binding MarginFrame}"
+                                         Height="300" Width="500" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Command="{Binding EnableDisableRecording}"
+                            Content="{Binding EnableRecordingButtonContent}"
+                            Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <Button Command="{Binding InitializeCommand}"
+                            Content="Initialize"
+                            Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5"
+                            HorizontalAlignment="Left" >
+                    <TextBlock Text="Sensor Reading" />
+                    <TextBlock Margin="5,0,5,0">:</TextBlock>
+                    <TextBlock Text="{Binding Value}" 
+                               FontWeight="Black" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+</UserControl>

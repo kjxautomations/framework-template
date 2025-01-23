@@ -1,9 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using KJX.ProjectTemplate.Core.ViewModels;
-using KJX.ProjectTemplate.Devices;
-using KJX.ProjectTemplate.DevicesUI.ViewModels;
+using KJX.Core.ViewModels;
+using KJX.Devices;
+using KJX.DevicesUI.ViewModels;
 
 namespace KJX.ProjectTemplate.Engineering.ViewModels;
 

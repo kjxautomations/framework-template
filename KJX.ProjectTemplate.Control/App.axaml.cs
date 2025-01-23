@@ -5,18 +5,20 @@ using System.Threading;
 using System.Xml;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Autofac.Features.AttributeFilters;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using KJX.ProjectTemplate.Core;
-using KJX.ProjectTemplate.Config;
+using KJX.Core;
+using KJX.Config;
+using KJX.Core.Interfaces;
 using KJX.ProjectTemplate.Control.Models;
 using KJX.ProjectTemplate.Control.Services;
 using KJX.ProjectTemplate.Control.ViewModels;
-using KJX.ProjectTemplate.Core.Services;
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Core.Services;
+using KJX.Core.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -100,6 +102,10 @@ public partial class App : Application
             .As<INotificationService>()
             .WithParameter("context", SynchronizationContext.Current)
             .SingleInstance();
+        
+        builder.RegisterType<RunInfo>().AsSelf().WithAttributeFiltering().SingleInstance();
+        builder.RegisterType<SequencingService>().AsSelf().WithAttributeFiltering().SingleInstance();
+        builder.RegisterType<TemperatureMonitoringService>().AsSelf().As<IBackgroundService>().WithAttributeFiltering().SingleInstance();
         
         Container = builder.Build();
         Logger = Container.Resolve<ILogger<Application>>();

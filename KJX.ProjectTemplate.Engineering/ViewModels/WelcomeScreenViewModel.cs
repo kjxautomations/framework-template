@@ -1,4 +1,4 @@
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Core.ViewModels;
 
 namespace KJX.ProjectTemplate.Engineering.ViewModels;
 

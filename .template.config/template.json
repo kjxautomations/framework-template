@@ -14,75 +14,18 @@
     "type": "solution"
   },
   "preferNameDirectory": true,
-  "symbols": {
-    "EngineeringProject": {
-      "type": "parameter",
-      "description": "Defines if your solution will include an Engineering facing user interface",
-      "datatype": "bool",
-      "defaultValue": true
-    },
-    "ControlSoftwareProject": {
-      "type": "parameter",
-      "description": "Defines if your solution will include a Control SW user interface",
-      "datatype": "bool",
-      "defaultValue": true
-    }
-  },
-  "primaryOutputs": [
-    {
-      "condition": "(EngineeringProject)",
-      "path": "KJX.ProjectTemplate.Engineering/KJX.ProjectTemplate.Engineering.csproj"
-    },
-    {
-      "condition": "(ControlSoftwareProject)",
-      "path": "KJX.ProjectTemplate.Control/KJX.ProjectTemplate.Control.csproj"
-    }
-  ],
   "sources": [
     {
       "modifiers": [
         {
-          "condition": "(!EngineeringProject)",
           "exclude": [
-            "KJX.ProjectTemplate.Engineering/**"
-          ]
-        },
-        {
-          "condition": "(!ControlSoftwareProject)",
-          "exclude": [
-            "KJX.ProjectTemplate.Control/**"
+            "FirmwareExamples/**",
+            "../KJX.Nuget.csproj",
+            ".idea/**",
+            ".git/**"
           ]
         }
       ]
-    }
-  ],
-  "postActions": [
-    {
-      "description": "Add projects to solution",
-      "condition": "(EngineeringProject)",
-      "applyFileRenamesToArgs": [],
-      "manualInstructions": [{
-        "text": "Add engineering project to solution manually."
-      }
-      ],
-      "args": {
-        "inRoot": true
-      },
-      "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
-      "continueOnError": true
-    },
-    {
-      "description": "Add control software project to solution",
-      "condition": "(ControlSoftwareProject)",
-      "applyFileRenamesToArgs": [],
-      "manualInstructions": [{
-        "text": "Add control software project to solution manually."
-      }],
-      "args": {
-        "inRoot": true
-      },
-      "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
-      "continueOnError": true
     }
   ]
 }

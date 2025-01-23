@@ -8,9 +8,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using KJX.ProjectTemplate.Config;
-using KJX.ProjectTemplate.Core;
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Config;
+using KJX.Core;
+using KJX.Core.Interfaces;
+using KJX.Core.ViewModels;
 using KJX.ProjectTemplate.Engineering.ViewModels;
 using KJX.ProjectTemplate.Engineering.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,7 +76,7 @@ public partial class App : Application
             typeof(IPropertyBindingHook));
         
         //Register all view and view-model types
-        foreach (var uiAssembly in new[] { Assembly.GetExecutingAssembly(), Assembly.Load("KJX.ProjectTemplate.DevicesUI") })
+        foreach (var uiAssembly in new[] { Assembly.GetExecutingAssembly(), Assembly.Load("KJX.DevicesUI") })
         {
             builder.RegisterAssemblyTypes(uiAssembly)
                 .Where(t => t.IsSubclassOf(typeof(ViewModelBase)))

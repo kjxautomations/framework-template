@@ -4,8 +4,8 @@ using System.Reactive;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using KJX.ProjectTemplate.Control.Views;
-using KJX.ProjectTemplate.Core;
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Core.Interfaces;
+using KJX.Core.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

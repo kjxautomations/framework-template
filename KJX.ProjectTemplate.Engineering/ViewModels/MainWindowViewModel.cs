@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using Autofac;
 using Avalonia;
-using KJX.ProjectTemplate.Core.ViewModels;
+using KJX.Core.ViewModels;
 using KJX.ProjectTemplate.Engineering.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
