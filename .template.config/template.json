@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "KJX Automations, LLC",
-  "classifications": ["Desktop", "C#", "WPF","Instrumentation", "Device Control"],
+  "classifications": ["Desktop", "C#","Instrumentation", "Device Control"],
   "identity": "KJX.ProjectTemplate",
   "groupIdentity": "KJX.ProjectTemplate.Templates",
   "defaultName": "InstrumentationProject",
