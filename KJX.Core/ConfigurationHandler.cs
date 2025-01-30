@@ -4,6 +4,9 @@ using KJX.Config;
 
 namespace KJX.Core;
 
+/// <summary>
+/// Registers types based on the configuration system.
+/// </summary>
 public static class ConfigurationHandler
 {
     public static void PopulateContainerBuilder(ContainerBuilder builder, HashSet<ConfigSection> configItems)

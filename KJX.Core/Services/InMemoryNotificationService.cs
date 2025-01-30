@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.Logging;
 using KJX.Core.Interfaces;
+using KJX.Core.Models;
 
 namespace KJX.Core.Services;
 
