@@ -1,5 +1,8 @@
 namespace KJX.Devices;
 
+/// <summary>
+/// Interface for a simple motor.
+/// </summary>
 public interface IMotor 
 {
     public string Name { get; }
@@ -31,6 +34,9 @@ public interface IMotor
     public double MinimumPositionIncrement { get;  }
 }
 
+/// <summary>
+/// Interface for a simple stepper motor. Extended from IMotor.
+/// </summary>
 public interface IStepperMotor : IMotor
 {
     /// <summary>

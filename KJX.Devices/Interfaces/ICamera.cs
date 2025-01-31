@@ -3,6 +3,9 @@ using System.Runtime.Versioning;
 
 namespace KJX.Devices;
 
+/// <summary>
+/// Representative of basic properties exposed for typical camera operations.
+/// </summary>
 [Flags]
 public enum CameraProperties
 {
@@ -13,7 +16,9 @@ public enum CameraProperties
 }
 
 
-
+/// <summary>
+/// Interface for a generic camera implementation.
+/// </summary>
 public interface ICamera : ISupportsInitialization
 {
     public CameraProperties SupportedProperties { get; }
