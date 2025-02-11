@@ -16,16 +16,14 @@ namespace KJX.Core.Services;
 public class InMemoryNotificationService : INotificationService
 {
     public required ILogger<INotificationService> Logger { get; init; }
+    public ObservableCollection<NotificationRecord> Notifications => _records;
 
     public InMemoryNotificationService(SynchronizationContext context)
     {
         _executionContext = context;
         _records = new ObservableCollection<NotificationRecord>();
     }
-
     
-    public ObservableCollection<NotificationRecord> Notifications => _records;
-
     public void AddNotification(NotificationType type, string message, string sourceFilePath = "", int sourceLineNumber = 0)
     {
         if (type == NotificationType.Exception)
