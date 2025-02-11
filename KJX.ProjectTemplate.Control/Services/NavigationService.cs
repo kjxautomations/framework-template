@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using KJX.Core.Interfaces;
 using KJX.ProjectTemplate.Control.Models;
 using KJX.Devices;
+using KJX.Core.Models;
 using ReactiveUI;
 
 namespace KJX.ProjectTemplate.Control.Services;

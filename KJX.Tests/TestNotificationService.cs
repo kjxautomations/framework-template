@@ -1,5 +1,6 @@
 using KJX.Core.Interfaces;
 using KJX.Core.Services;
+using KJX.Core.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
 

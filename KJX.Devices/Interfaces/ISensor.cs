@@ -1,5 +1,8 @@
 namespace KJX.Devices;
 
+/// <summary>
+/// Interface supporting named sensors.
+/// </summary>
 public interface ISensor : ISupportsInitialization
 {
     /// <summary>

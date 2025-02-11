@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Avalonia;
 using KJX.Core.Interfaces;
+using KJX.Core.Models;
 using KJX.Core.ViewModels;
 using KJX.ProjectTemplate.Control.Services;
 using Microsoft.Extensions.Logging;

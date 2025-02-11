@@ -1,5 +1,8 @@
 ﻿namespace KJX.Devices;
 
+/// <summary>
+/// Interface for devices that support and/or require initialization. 
+/// </summary>
 public interface ISupportsInitialization
 {
     public bool IsInitialized { get; }
@@ -11,6 +14,9 @@ public interface ISupportsInitialization
     public ushort InitializationGroup { get;  } 
 }
 
+/// <summary>
+/// Typical of stages and motors, an interface for devices that require a knowledge of their origin.
+/// </summary>
 public interface ISupportsHoming 
 {
     public bool IsHomed { get; }

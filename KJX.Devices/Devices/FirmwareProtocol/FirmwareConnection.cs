@@ -8,16 +8,15 @@ namespace KJX.Devices.FirmwareProtocol;
 
 public class FirmwareConnection(string ipAddress, ushort port) : SupportsInitialization
 {
-    public required ILogger<FirmwareConnection> Logger { get; init; }
-
-    private Socket? _socket;
-
     class CallContext
     {
         public UInt32 SequenceNumber { get; set; }
         public Action<Response> OnResponse { get; set; }
     }
+    public required ILogger<FirmwareConnection> Logger { get; init; }
+    public new ushort InitializationGroup => 5;
 
+    private Socket? _socket;
     private readonly Dictionary<UInt32, CallContext> _calls = new Dictionary<UInt32, CallContext>();
     private UInt32 _sequenceNumber = 0;
     private readonly object _lock = new object();
@@ -64,9 +63,7 @@ public class FirmwareConnection(string ipAddress, ushort port) : SupportsInitial
         _socket?.Dispose();
         _socket = null;
     }
-
-    public new ushort InitializationGroup => 5;
-
+    
     /// <summary>
     /// A simple wrapper that sends a request and waits for a Nack/Ack response
     /// </summary>

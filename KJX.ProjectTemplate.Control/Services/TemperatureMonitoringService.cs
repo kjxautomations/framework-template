@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Autofac.Features.AttributeFilters;
 using KJX.Core.Interfaces;
+using KJX.Core.Models;
 using KJX.Devices;
 using ReactiveUI;
 

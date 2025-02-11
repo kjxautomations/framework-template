@@ -8,6 +8,11 @@ using KJX.Core.Interfaces;
 
 namespace KJX.Core.ViewModels;
 
+/// <summary>
+/// Base view-model class for state-based views. Used for views that use state for transitions.
+/// </summary>
+/// <typeparam name="TState"></typeparam>
+/// <typeparam name="TTrigger"></typeparam>
 public abstract class StateViewModelBase<TState, TTrigger> : ViewModelBase, IValidatableViewModel
     where TState : System.Enum 
     where TTrigger : System.Enum
