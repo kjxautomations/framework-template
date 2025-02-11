@@ -2,7 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:core1="clr-namespace:KJX.Core;assembly=KJX.Core"
              x:Class="KJX.ProjectTemplate.Control.App"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Default"
+             Name="Sample Control Application">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
              <Application.Styles>
