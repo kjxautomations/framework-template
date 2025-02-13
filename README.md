@@ -33,8 +33,9 @@ utilizing [Avalonia](https://avaloniaui.net/) for cross-platform support.
 
 ### Getting Started
 
-Open the FrameworkSample.sln in the latest Visual Studio or Rider. There are projects for a desktop and browser-based version, as 
-well as a unit test project.
+Getting Started
+Open the solution file in the latest Visual Studio or Rider. The _Engineering_ project includes an interface that exposes manual device control. 
+The _Control_ project includes a wizard-style UI, offering a more guided workflow.
 
 ### Need more?
 
