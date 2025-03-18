@@ -42,6 +42,7 @@ public class SimpleCameraViewModel : ViewModelBase
                 {
                     SupportedResolutions.AddRange(_camera.SupportedResolutions());
                     SelectedResolutionIndex = SupportedResolutions.IndexOf(_camera.Resolution);
+                    SupportsResolution = SupportedResolutions.Count > 0;
                 }
                 else
                 {
@@ -99,23 +100,9 @@ public class SimpleCameraViewModel : ViewModelBase
     }
 
 
-    [Reactive] 
-    public bool SupportsExposure { get; private set; }
-
-    [Reactive]
-    public int Exposure { get; set; }
-    [Reactive]
-    public bool SupportsGain { get; private set; }
-        
-    [Reactive]
-    public int Gain { get; set; }
-    
     [Reactive]
     public bool SupportsResolution { get; private set; }
     
-    [Reactive]
-    public Size Resolution { get; set; }
-
     public ReactiveCommand<Unit, Unit> Initialize { get; }
     
     [Reactive]

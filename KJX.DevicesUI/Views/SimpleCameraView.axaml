@@ -8,12 +8,14 @@
              x:Class="KJX.DevicesUI.Views.SimpleCameraView"
              x:DataType="viewModels:SimpleCameraViewModel">
     <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal">
-            <Button Command="{Binding Initialize}">Initialize</Button>
-            <ComboBox SelectedIndex="{Binding Path=SelectedResolutionIndex}"
-                      ItemsSource="{Binding Path=SupportedResolutions}" 
-                      IsEnabled="{Binding SupportsResolution}">
-            </ComboBox>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding Initialize}">Initialize</Button>
+                <ComboBox SelectedIndex="{Binding Path=SelectedResolutionIndex}"
+                          ItemsSource="{Binding Path=SupportedResolutions}" 
+                          IsEnabled="{Binding SupportsResolution}">
+                </ComboBox>
+            </StackPanel>
             <views:DeviceSettingsControlView DataContext="{Binding DeviceSettings}"/>
         </StackPanel>
         <CheckBox IsEnabled="{Binding IsInitialized}" IsChecked="{Binding StreamImages}">Stream images</CheckBox>
