@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:global="clr-namespace:"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="KJX.DevicesUI.Views.AdvancedDeviceSettingsView"
+        Title="Advanced Settings">
+    <Window.DataContext>
+        <global:DeviceSettingsViewModel />
+    </Window.DataContext>
+
+    <ItemsControl ItemsSource="{Binding AdvancedProperties}">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Expander Header="{Binding Key}" IsExpanded="True">
+                    <ItemsControl ItemsSource="{Binding Value}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" Width="150"/>
+                                    <StackPanel Orientation="Vertical" IsEnabled="{Binding !IsBusy}">
+                                        <NumericUpDown Value="{Binding Value, Mode=TwoWay}" 
+                                                       Increment="{Binding Increment}" 
+                                                       IsVisible="{Binding IsNumeric}"
+                                                       Minimum="{Binding Min}"
+                                                       Maximum="{Binding Max}"/>
+                                        <CheckBox IsChecked="{Binding Value, Mode=TwoWay}"
+                                                  IsVisible="{Binding IsBoolean}"/>
+                                        <ComboBox ItemsSource="{Binding EnumValues}" 
+                                                  SelectedItem="{Binding Value, Mode=TwoWay}"
+                                                  IsVisible="{Binding IsEnum}"/>
+                                        <TextBox Text="{Binding Value, Mode=TwoWay}"
+                                                 IsVisible="{Binding IsString}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Expander>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</Window>

@@ -37,5 +37,11 @@ public class LinearStepperMotor : StepperMotorBase, ISupportsHoming
         Position = 0;
     }
 
+    [Range(-10, 10, 0.1)]
+    [Group("Advanced")]
     public double HomeOffset { get; set; }
+    
+    [Range(0, 100, 1)]
+    [Group("Advanced")]
+    public int HoldingCurrent { get; set; }
 }

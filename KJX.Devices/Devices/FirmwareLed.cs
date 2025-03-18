@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace KJX.Devices;
 
 public class FirmwareLed(FirmwareConnection connection, LedType ledType)
-    : SupportsInitialization, ILed
+    : DeviceBase, ILed
 {
     private bool _enabled;
     public required ILogger<FirmwareLed> Logger { get; init; }

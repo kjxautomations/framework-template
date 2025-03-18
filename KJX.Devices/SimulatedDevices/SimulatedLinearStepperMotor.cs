@@ -11,28 +11,40 @@ public class SimulatedLinearStepperMotor : StepperMotorBase, ISupportsHoming
     {
         Name = name;
     }
-    
+
     protected override void DoInitialize()
     {
         Logger.LogInformation("Initializing");
-        
+
     }
 
     protected override void DoMoveSteps(int numberOfSteps)
     {
+        IsBusy = true;
+        Thread.Sleep(1000);
+        IsBusy = false;
     }
 
     private bool _isHomed;
-    public bool IsHomed 
+
+    public bool IsHomed
     {
         get => _isHomed;
         private set => SetField(ref _isHomed, value);
     }
+
     public void Home()
     {
         IsHomed = true;
         Position = 0;
     }
 
+    [Range(-10, 10, 0.1)]
+    [Group("Advanced")]
     public double HomeOffset { get; set; }
+    
+    [Range(0, 100, 1)]
+    [Group("Advanced")]
+    public int HoldingCurrent { get; set; }
+
 }

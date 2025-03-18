@@ -18,6 +18,7 @@ namespace KJX.DevicesUI.ViewModels;
 public class SimpleCameraViewModel : ViewModelBase
 {
     public string Name { get; }
+    public DeviceSettingsViewModel DeviceSettings { get; }
 
     private readonly ICamera _camera;
 
@@ -29,6 +30,7 @@ public class SimpleCameraViewModel : ViewModelBase
             _camera.WhenAnyValue(x => x.IsInitialized)
                 .ObserveOn(AvaloniaScheduler.Instance)
                 .Select(x => !x));
+        DeviceSettings = new DeviceSettingsViewModel(_camera);
         _camera.WhenAnyValue(x => x.IsInitialized)
             .ObserveOn(AvaloniaScheduler.Instance)
             .Subscribe(x =>
@@ -39,16 +41,11 @@ public class SimpleCameraViewModel : ViewModelBase
                 if (IsInitialized)
                 {
                     SupportedResolutions.AddRange(_camera.SupportedResolutions());
-                    SupportsGain = (_camera.SupportedProperties & CameraProperties.Gain) == CameraProperties.Gain;
-                    SupportsExposure = (_camera.SupportedProperties & CameraProperties.Exposure) ==
-                                       CameraProperties.Exposure;
-                    SupportsResolution = (_camera.SupportedProperties & CameraProperties.Resolution) ==
-                                         CameraProperties.Resolution;
                     SelectedResolutionIndex = SupportedResolutions.IndexOf(_camera.Resolution);
                 }
                 else
                 {
-                    SupportsResolution = SupportsExposure = SupportsGain = false;
+                    SupportsResolution = false;
                 }
 
             });

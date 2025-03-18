@@ -4,7 +4,7 @@ namespace KJX.Devices;
 /// Simple LED interface.
 /// Simple LED's are either on or off, hence the Enabled boolean in this scenario. 
 /// </summary>
-public interface ILed
+public interface ILed : IDevice
 {
     bool Enabled { get; set; }
 }

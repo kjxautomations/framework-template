@@ -1,6 +1,6 @@
 namespace KJX.Devices.Logic;
 
-public abstract class MotorBase : SupportsInitialization, IMotor
+public abstract class MotorBase : DeviceBase, IMotor
 {
     public string Units { get; protected set; }
     public string Name { get; set; }
@@ -12,6 +12,8 @@ public abstract class MotorBase : SupportsInitialization, IMotor
     }
 
     double _acceleration;
+    [Range(0, 100, 1)]
+    [Group("Basic")]
     public required double Acceleration
     {
         get => _acceleration;
@@ -24,6 +26,8 @@ public abstract class MotorBase : SupportsInitialization, IMotor
     }
 
     private double _velocity;
+    [Range(0, 100, 1)]
+    [Group("Basic")]
     public required double Velocity
     {
         get => _velocity;

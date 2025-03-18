@@ -10,7 +10,7 @@ using KJX.Devices.Logic;
 
 namespace KJX.Devices;
 
-public class SimulatedCamera : SupportsInitialization, ICamera
+public class SimulatedCamera : DeviceBase, ICamera
 {
     public string Name { get; }
     int lastImageIndex = 0;
@@ -39,9 +39,11 @@ public class SimulatedCamera : SupportsInitialization, ICamera
     {
         
     }
-
-    public CameraProperties SupportedProperties => CameraProperties.Resolution;
+    [Range(0, 1000, 1)]
+    [Group("Basic")]
     public int Exposure { get; set; }
+    [Range(0, 100, 1)]
+    [Group("Basic")]
     public int Gain { get; set; }
     public System.Drawing.Size[] SupportedResolutions()
     {

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace KJX.Devices.Logic;
 
-public abstract class SensorBase : SupportsInitialization, ISensor
+public abstract class SensorBase : DeviceBase, ISensor
 {
     private double _value;
     private Func<double>? _syntheticValueFunction;

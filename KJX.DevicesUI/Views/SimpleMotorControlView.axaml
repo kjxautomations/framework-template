@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:KJX.DevicesUI.ViewModels"
+             xmlns:views="clr-namespace:KJX.DevicesUI.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="viewModels:SimpleMotorControlViewModel"
              x:Class="KJX.DevicesUI.Views.SimpleMotorControlView">
@@ -12,17 +13,8 @@
     <Border BorderThickness="1" BorderBrush="DimGray" CornerRadius="10" Padding="10">
         <StackPanel>
             <Label Content="{Binding Name}" Margin="0,0,0,10" FontWeight="Bold"/>
+            <views:DeviceSettingsControlView DataContext="{Binding DeviceSettings}"/>
             <Grid ColumnDefinitions="Auto, 10, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
-                <TextBlock Grid.Row="0" Grid.Column="0">Acceleration: </TextBlock>
-                <NumericUpDown Grid.Row="0" Grid.Column="2"
-                               Value="{Binding Acceleration}"
-                               Increment="0.1" />
-            
-                <TextBlock Grid.Row="1" Grid.Column="0">Velocity: </TextBlock>
-                <NumericUpDown Grid.Row="1" Grid.Column="2"
-                               Value="{Binding Velocity}" 
-                               Increment="0.1"/>
-            
                 <TextBlock Grid.Row="2" Grid.Column="0">Position to move to: </TextBlock>
                 <NumericUpDown Grid.Row="2" Grid.Column="2"
                                Value="{Binding PositionToMoveTo}" 

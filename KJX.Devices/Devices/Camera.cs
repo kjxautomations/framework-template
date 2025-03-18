@@ -3,7 +3,7 @@ using KJX.Devices.Logic;
 
 namespace KJX.Devices;
 
-public class Camera : SupportsInitialization, ICamera
+public class Camera : DeviceBase, ICamera
 {
     public string Name { get; }
 
@@ -16,9 +16,11 @@ public class Camera : SupportsInitialization, ICamera
     {
         
     }
-
-    public CameraProperties SupportedProperties => CameraProperties.Resolution;
+    [Range(0, 1000, 1)]
+    [Group("Basic")]
     public int Exposure { get; set; }
+    [Range(0, 100, 1)]
+    [Group("Basic")]
     public int Gain { get; set; }
     public System.Drawing.Size[] SupportedResolutions()
     {
