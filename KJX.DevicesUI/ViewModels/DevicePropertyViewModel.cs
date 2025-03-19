@@ -9,8 +9,8 @@ using ReactiveUI.Fody.Helpers;
 
 public class DevicePropertyViewModel : INotifyPropertyChanged
 {
-    public IDevice Device { get; }
-    private PropertyInfo Property { get; }
+    public IDevice? Device { get; }
+    private PropertyInfo? Property { get; }
     private RangeAttribute? _rangeAttribute;
 
 
@@ -57,7 +57,7 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
     
     public Array? EnumValues => IsEnum ? Enum.GetValues(Property.PropertyType) : null;
 
-    public DevicePropertyViewModel(IDevice device, PropertyInfo property)
+    public DevicePropertyViewModel(IDevice device, PropertyInfo? property)
     {
         Device = device;
         Property = property;
@@ -76,7 +76,13 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
             }
 
         };
+    }
 
+    // dummy constructor for design-time data
+    public DevicePropertyViewModel()
+    {
+        Device = null;
+        Property = null;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
