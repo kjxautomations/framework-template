@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Linq;
 using Avalonia.Threading;
 using KJX.Core.ViewModels;
 using KJX.Devices;
@@ -41,16 +42,16 @@ public class SimpleMotorControlViewModel : ViewModelBase
         
         _motor.WhenAnyValue(m => m.Position).BindTo(this, x => x.Position);
         
-        MoveToPositionCommand = ReactiveCommand.Create((double position) => MoveToPosition(position));
+        MoveToPositionCommand = ReactiveCommand.CreateFromTask<double>(MoveToPosition);
     }
 
     public DeviceSettingsViewModel DeviceSettings { get; }
 
-    private void MoveToPosition(double newPosition)
+    private async Task MoveToPosition(double newPosition)
     {
         try
         {
-            _motor.MoveTo(newPosition);
+            await Task.Run(() => _motor.MoveTo(newPosition));
         }
         catch (Exception e)
         {
