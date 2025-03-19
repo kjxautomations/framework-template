@@ -16,10 +16,10 @@ public class Camera : DeviceBase, ICamera
     {
         
     }
-    [Range(0, 1000, 1)]
+    [RangeIncrement(0, 1000, 1)]
     [Group("Basic")]
     public int Exposure { get; set; }
-    [Range(0, 100, 1)]
+    [RangeIncrement(0, 100, 1)]
     [Group("Basic")]
     public int Gain { get; set; }
     public System.Drawing.Size[] SupportedResolutions()

@@ -12,7 +12,7 @@ public abstract class MotorBase : DeviceBase, IMotor
     }
 
     double _acceleration;
-    [Range(0, 100, 1)]
+    [RangeIncrement(0, 100, 1)]
     [Group("Basic")]
     public required double Acceleration
     {
@@ -26,7 +26,7 @@ public abstract class MotorBase : DeviceBase, IMotor
     }
 
     private double _velocity;
-    [Range(0, 100, 1)]
+    [RangeIncrement(0, 100, 1)]
     [Group("Basic")]
     public required double Velocity
     {

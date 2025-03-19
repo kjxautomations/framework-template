@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -61,10 +62,10 @@ public abstract class DeviceBase : IDevice
         if (property == null)
             throw new InvalidOperationException($"Property {propertyName} not found.");
 
-        var rangeAttribute = property.GetCustomAttribute<RangeAttribute>();
-        if (rangeAttribute != null && !rangeAttribute.IsValid(value.ToDouble(null)))
+        var rangeAttribute = property.GetCustomAttribute<RangeAttribute>(inherit:true);
+        if (rangeAttribute != null && !rangeAttribute.IsValid(value))
             throw new ArgumentOutOfRangeException(propertyName, value, 
-                $"Value {value} is out of range ({rangeAttribute.Min} - {rangeAttribute.Max}).");
+                $"Value {value} is out of range ({rangeAttribute.Minimum} - {rangeAttribute.Maximum}).");
 
         field = value;
         OnPropertyChanged(propertyName);

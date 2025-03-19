@@ -1,28 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace KJX.Devices.Logic;
 
 using System;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class RangeAttribute : Attribute
+public class RangeIncrementAttribute : RangeAttribute
 {
-    public double Min { get; }
-    public double Max { get; }
-    public double Increment { get; }
+    public object? Increment { get; }
 
-    public RangeAttribute(double min, double max, double increment)
+    public RangeIncrementAttribute(double min, double max, double increment) : base(min, max)
     {
-        Min = min;
-        Max = max;
         Increment = increment;
     }
-
-    public bool IsValid(IConvertible? value)
+    public RangeIncrementAttribute(int min, int max, int increment) : base(min, max)
     {
-        if (value == null)
-            return false;
-
-        var doubleValue = value.ToDouble(null);
-        return doubleValue >= Min && doubleValue <= Max;
+        Increment = increment;
     }
 }
 

@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Avalonia.Threading;
 using KJX.Devices;
@@ -9,9 +10,8 @@ using ReactiveUI.Fody.Helpers;
 public class DevicePropertyViewModel : INotifyPropertyChanged
 {
     public IDevice Device { get; }
-    public PropertyInfo Property { get; }
-    private object? _value;
-    private RangeAttribute _rangeAttribute;
+    private PropertyInfo Property { get; }
+    private RangeAttribute? _rangeAttribute;
 
 
     public string Name => Property.Name;
@@ -31,17 +31,24 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
             if (Device.IsBusy)
                 throw new InvalidOperationException($"{Name} cannot be set while the device is busy.");
 
-            if (_rangeAttribute != null && !_rangeAttribute.IsValid(value as IConvertible))
+            if (_rangeAttribute != null && !_rangeAttribute.IsValid(value))
                 throw new ArgumentOutOfRangeException(Name, value, 
-                    $"Value {value} is out of range ({_rangeAttribute.Min} - {_rangeAttribute.Max}).");
+                    $"Value {value} is out of range ({_rangeAttribute.Minimum} - {_rangeAttribute.Maximum}).");
 
             Property.SetValue(Device, Convert.ChangeType(value, Property.PropertyType), null);
-            _value = value;
             OnPropertyChanged(nameof(Value));
         }
     }
 
-    public double Increment => Property.GetCustomAttribute<RangeAttribute>()?.Increment ?? 1.0;
+    public double Increment
+    {
+        get
+        {
+            if (_rangeAttribute is RangeIncrementAttribute rangeIncrementAttribute)
+                return (double)rangeIncrementAttribute.Increment;
+            return 1.0;
+        }
+    }
 
     public bool IsNumeric => Property.PropertyType == typeof(int) || Property.PropertyType == typeof(double) || Property.PropertyType == typeof(float);
     public bool IsBoolean => Property.PropertyType == typeof(bool);
@@ -54,12 +61,11 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
     {
         Device = device;
         Property = property;
-        _value = Property.GetValue(device);
-        _rangeAttribute = property.GetCustomAttribute<RangeAttribute>();
+        _rangeAttribute = property.GetCustomAttribute<RangeAttribute>(inherit: true);
         if (_rangeAttribute != null)
         {
-            Min = _rangeAttribute.Min;
-            Max = _rangeAttribute.Max;
+            Min = Convert.ToDouble(_rangeAttribute.Minimum);
+            Max = Convert.ToDouble(_rangeAttribute.Maximum);
         }
         Device.PropertyChanged += (sender, args) =>
         {
