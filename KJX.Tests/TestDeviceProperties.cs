@@ -59,8 +59,8 @@ public class TestDeviceProperties
         var adv2 = vm.AdvancedProperties["Advanced2"];
         Assert.That(adv2.Count, Is.EqualTo(2));
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => basic2.Value = basic2.Max + 1);
-        Assert.Throws<ArgumentOutOfRangeException>(() => basic2.Value = basic2.Min - 1);
+        Assert.Throws<ArgumentOutOfRangeException>(() => basic2.Value = 100);
+        Assert.Throws<ArgumentOutOfRangeException>(() => basic2.Value = -100);
         Assert.DoesNotThrow(() => basic2.Value = 3);
         
         dummyDevice.SetBusy(true);

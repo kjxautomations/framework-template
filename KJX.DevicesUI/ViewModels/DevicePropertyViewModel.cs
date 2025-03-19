@@ -20,8 +20,8 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
     [Reactive]
     public bool IsBusy { get; private set; }
     
-    public double? Min { get; }
-    public double? Max { get; }
+    public object? Min { get; }
+    public object? Max { get; }
 
     public object? Value
     {
@@ -40,12 +40,12 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
         }
     }
 
-    public double Increment
+    public object Increment
     {
         get
         {
             if (_rangeAttribute is RangeIncrementAttribute rangeIncrementAttribute)
-                return (double)rangeIncrementAttribute.Increment;
+                return rangeIncrementAttribute.Increment;
             return 1.0;
         }
     }
@@ -64,8 +64,8 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
         _rangeAttribute = property.GetCustomAttribute<RangeAttribute>(inherit: true);
         if (_rangeAttribute != null)
         {
-            Min = Convert.ToDouble(_rangeAttribute.Minimum);
-            Max = Convert.ToDouble(_rangeAttribute.Maximum);
+            Min = _rangeAttribute.Minimum;
+            Max = _rangeAttribute.Maximum;
         }
         Device.PropertyChanged += (sender, args) =>
         {
