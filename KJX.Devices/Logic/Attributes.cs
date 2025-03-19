@@ -7,7 +7,7 @@ using System;
 [AttributeUsage(AttributeTargets.Property)]
 public class RangeIncrementAttribute : RangeAttribute
 {
-    public object? Increment { get; }
+    public object Increment { get; }
 
     public RangeIncrementAttribute(double min, double max, double increment) : base(min, max)
     {

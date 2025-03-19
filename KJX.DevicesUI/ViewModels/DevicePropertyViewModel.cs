@@ -40,13 +40,13 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
         }
     }
 
-    public object Increment
+    public object? Increment
     {
         get
         {
             if (_rangeAttribute is RangeIncrementAttribute rangeIncrementAttribute)
                 return rangeIncrementAttribute.Increment;
-            return 1.0;
+            return null;
         }
     }
 
