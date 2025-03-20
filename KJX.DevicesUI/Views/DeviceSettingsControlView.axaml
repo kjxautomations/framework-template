@@ -22,34 +22,40 @@
             </ItemsControl>
         </StackPanel>
 
-        <Button Content="Advanced Settings" 
+        <Button Content="Advanced Settings"
                 Click="Button_OnClick"
                 IsVisible="{Binding HasAdvancedProperties}"/>
-        
 
-        <Popup IsOpen = "False"
+        <Popup IsOpen="False"
                PlacementTarget="{Binding ElementName=ShowOptionsButton}"
                PlacementAnchor="TopRight"
                PlacementGravity="BottomRight"
                PlacementConstraintAdjustment="SlideX, SlideY"
                x:Name="AdvancedOptionsPopup">
             <Border Background="LightGray" BorderBrush="Black" BorderThickness="1"
-                    Padding="10" >
-                <ItemsControl ItemsSource="{Binding AdvancedProperties}">
-                    <ItemsControl.ItemTemplate>
+                    Padding="10">
+                <TabControl ItemsSource="{Binding AdvancedProperties}">
+                    <TabControl.ItemTemplate>
                         <DataTemplate>
-                            <Expander Header="{Binding Key}" IsExpanded="True">
-                                <ItemsControl ItemsSource="{Binding Value}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <views:ParameterControlView DataContext="{Binding}" />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </Expander>
+                            <TextBlock Text="{Binding Key}" />
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <ScrollViewer>
+                                <WrapPanel>
+                                    <ItemsControl ItemsSource="{Binding Value}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <views:ParameterControlView DataContext="{Binding}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </WrapPanel>
+                            </ScrollViewer>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
             </Border>
         </Popup>
     </DockPanel>
