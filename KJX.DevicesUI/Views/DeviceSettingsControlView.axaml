@@ -23,7 +23,34 @@
         </StackPanel>
 
         <Button Content="Advanced Settings" 
-                Command="{Binding ShowAdvancedCommand}" DockPanel.Dock="Bottom"
+                Click="Button_OnClick"
                 IsVisible="{Binding HasAdvancedProperties}"/>
+        
+
+        <Popup IsOpen = "False"
+               PlacementTarget="{Binding ElementName=ShowOptionsButton}"
+               PlacementAnchor="TopRight"
+               PlacementGravity="BottomRight"
+               PlacementConstraintAdjustment="SlideX, SlideY"
+               x:Name="AdvancedOptionsPopup">
+            <Border Background="LightGray" BorderBrush="Black" BorderThickness="1"
+                    Padding="10" >
+                <ItemsControl ItemsSource="{Binding AdvancedProperties}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Expander Header="{Binding Key}" IsExpanded="True">
+                                <ItemsControl ItemsSource="{Binding Value}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <views:ParameterControlView DataContext="{Binding}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+        </Popup>
     </DockPanel>
 </UserControl>
