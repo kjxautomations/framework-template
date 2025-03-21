@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Autofac.Features.AttributeFilters;
+using KJX.Devices.Logic;
 
 namespace KJX.Tests;
 
@@ -175,4 +176,47 @@ public class BackgroundThreadSynchronizationContext : SynchronizationContext
     {
         return this; // Or create a new instance if needed
     }
+}
+
+public enum TestEnum
+{
+    Value1,
+    Value2,
+    Value3
+};
+
+public class DummyDeviceWithProperties : DeviceBase
+{
+    protected override void DoInitialize()
+    {
+        
+    }
+    
+    public void SetBusy(bool busy)
+    {
+        IsBusy = busy;
+    }
+
+    [Group("Basic")] 
+    public string Basic1 { get; set; } = "foo";
+
+    [Group("Basic")]
+    [Devices.Logic.RangeIncrement(-10, 10, 0.1)]
+    public float Basic2 { get; set; } = 5;
+
+    [Group("Basic")]
+    public bool Basic3 { get; set; } = true;
+
+    [Group("Basic")]
+    public TestEnum Basic4 { get; set; } = TestEnum.Value2;
+
+    [Devices.Logic.RangeIncrement(-10, 10, 0.1)]
+    [Group("Advanced1")]
+    public double Advanced1 { get; set; } = 6;
+
+    [Devices.Logic.RangeIncrement(0, 100, 1)]
+    [Group("Advanced2")]
+    public int Advanced2 { get; set; } = 7;
+    [Group("Advanced2")]
+    public int Advanced3 { get; set; } = 7;
 }

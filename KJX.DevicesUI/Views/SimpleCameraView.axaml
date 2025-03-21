@@ -3,21 +3,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:KJX.DevicesUI.ViewModels"
+             xmlns:views="clr-namespace:KJX.DevicesUI.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KJX.DevicesUI.Views.SimpleCameraView"
              x:DataType="viewModels:SimpleCameraViewModel">
     <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal">
-            <Button Command="{Binding Initialize}">Initialize</Button>
-            <ComboBox SelectedIndex="{Binding Path=SelectedResolutionIndex}"
-                      ItemsSource="{Binding Path=SupportedResolutions}" 
-                      IsEnabled="{Binding SupportsResolution}">
-            </ComboBox>
-            <Label>Exposure:</Label>
-            <NumericUpDown Increment="1" Minimum="1" Maximum="1000" Value="{Binding Path=Exposure}" IsEnabled="{Binding SupportsExposure}"/>
-            <Label>Gain:</Label>
-            <NumericUpDown Increment="1" Minimum="1" Maximum="255" Value="{Binding Path=Gain}" IsEnabled="{Binding SupportsGain}"/>
-
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding Initialize}">Initialize</Button>
+                <ComboBox SelectedIndex="{Binding Path=SelectedResolutionIndex}"
+                          ItemsSource="{Binding Path=SupportedResolutions}" 
+                          IsEnabled="{Binding SupportsResolution}">
+                </ComboBox>
+            </StackPanel>
+            <views:DeviceSettingsControlView DataContext="{Binding DeviceSettings}"/>
         </StackPanel>
         <CheckBox IsEnabled="{Binding IsInitialized}" IsChecked="{Binding StreamImages}">Stream images</CheckBox>
         <Image x:Name="Image" Source="{Binding Image}" Stretch="UniformToFill"/>

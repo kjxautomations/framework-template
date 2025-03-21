@@ -3,7 +3,7 @@ namespace KJX.Devices;
 /// <summary>
 /// Interface for a simple motor.
 /// </summary>
-public interface IMotor 
+public interface IMotor : IDevice
 {
     public string Name { get; }
     // mostly for UI display, things like "mm" or "degrees"

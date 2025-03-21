@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace KJX.Devices.FirmwareProtocol;
 
-public class FirmwareConnection(string ipAddress, ushort port) : SupportsInitialization
+public class FirmwareConnection(string ipAddress, ushort port) : DeviceBase
 {
     class CallContext
     {

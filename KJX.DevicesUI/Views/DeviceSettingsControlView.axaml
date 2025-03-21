@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:global="clr-namespace:"
+             xmlns:dui="clr-namespace:KJX.DevicesUI"
+             xmlns:views="clr-namespace:KJX.DevicesUI.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="KJX.DevicesUI.Views.DeviceSettingsControlView">
+    <UserControl.DataContext>
+        <global:DeviceSettingsViewModel />
+    </UserControl.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Basic Settings" FontWeight="Bold" />
+            <ItemsControl ItemsSource="{Binding BasicProperties}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <views:ParameterControlView DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+        <Button Content="Advanced Settings"
+                Click="Button_OnClick"
+                IsVisible="{Binding HasAdvancedProperties}"/>
+
+        <Popup IsOpen="False"
+               PlacementTarget="{Binding ElementName=ShowOptionsButton}"
+               PlacementAnchor="TopRight"
+               PlacementGravity="BottomRight"
+               PlacementConstraintAdjustment="SlideX, SlideY"
+               x:Name="AdvancedOptionsPopup">
+            <Border Background="LightGray" BorderBrush="Black" BorderThickness="1"
+                    Padding="10">
+                <TabControl ItemsSource="{Binding AdvancedProperties}">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Key}" />
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <ScrollViewer>
+                                <WrapPanel>
+                                    <ItemsControl ItemsSource="{Binding Value}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <views:ParameterControlView DataContext="{Binding}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </WrapPanel>
+                            </ScrollViewer>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+            </Border>
+        </Popup>
+    </DockPanel>
+</UserControl>

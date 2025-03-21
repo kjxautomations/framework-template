@@ -14,7 +14,6 @@ public class TemperatureSensor : SensorBase
     protected override void DoInitialize()
     {
         Logger.LogInformation("Initializing");
-       
     }
 
     public override void ReadSensor()
