@@ -37,7 +37,7 @@ public partial class App : Application
         InitAutoFac();
         AvaloniaXamlLoader.Load(this);
     }
-
+    
     private void InitAutoFac()
     {
         //Build a new Autofac container.
@@ -57,7 +57,13 @@ public partial class App : Application
         var configPath = Path.Combine(assemblyPath, "system_config.ini");
         var systemsPath = Path.Combine(assemblyPath, "SystemConfigs");
         cfg = ConfigLoader.LoadConfig(configPath, systemsPath);
-        ConfigurationHandler.PopulateContainerBuilder(builder, cfg);
+        
+        var configHandler = new ConfigurationHandler();
+        configHandler.PopulateContainerBuilder(builder, cfg, true);
+        // save the config handler in Autofac to enable the UI to later use it to edit the config
+        // For a specific project, the config handler can be extended to save the config to wherever it is stored
+        // in this sample application, the config is serialized and displayed in a text box
+        builder.RegisterInstance(configHandler);
         
         //Creates and sets the Autofac resolver as the Locator
         var autofacResolver = builder.UseAutofacDependencyResolver();

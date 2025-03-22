@@ -60,7 +60,7 @@ public partial class App : Application
         var configPath = Path.Combine(assemblyPath, "system_config.ini");
         var systemsPath = Path.Combine(assemblyPath, "SystemConfigs");
         cfg = ConfigLoader.LoadConfig(configPath, systemsPath);
-        ConfigurationHandler.PopulateContainerBuilder(builder, cfg);
+        (new ConfigurationHandler()).PopulateContainerBuilder(builder, cfg);
         
         // Creates and sets the Autofac resolver as the Locator
         var autofacResolver = builder.UseAutofacDependencyResolver();

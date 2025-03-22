@@ -7,12 +7,14 @@ namespace KJX.Tests;
 public class ConfigurationHandlerTests
 {
     private IContainer _container;
+    private ConfigurationHandler _configHandler;
     [SetUp]
     public void SetUp()
     {
         var cfg = ConfigLoader.LoadConfig("ConfigTestFiles/SystemConfigXYMotor.ini");
         var builder = new ContainerBuilder();
-        ConfigurationHandler.PopulateContainerBuilder(builder, cfg);
+        _configHandler = new ConfigurationHandler();
+        _configHandler.PopulateContainerBuilder(builder, cfg, true);
         _container = builder.Build();
     }
 
@@ -52,5 +54,20 @@ public class ConfigurationHandlerTests
 
         var combo = _container.Resolve<DummyComboMotor>();
         Assert.That(combo.XMotor, Is.SameAs(x1));
+    }
+    [Test]
+    public void TestDefaultValuesAreSaved()
+    {
+        var x1 = _container.Resolve<DummyXMotor>();
+        Assert.That(x1.IntProp, Is.EqualTo(1));
+        var defaults = _configHandler.GetDefaultValues();
+        Assert.That(defaults.Count, Is.EqualTo(1));
+        Assert.That(defaults.First().Value.Count, Is.EqualTo(2));
+        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(1));
+        Assert.That(defaults.First().Value["DummyProp"], Is.EqualTo("I am X"));
+        
+        x1.IntProp = 2;
+
+        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(1));
     }
 }

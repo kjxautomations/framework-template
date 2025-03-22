@@ -1,5 +1,3 @@
-using IniFile;
-
 namespace KJX.Config;
 
 public class ConfigSection(Type type, string name)

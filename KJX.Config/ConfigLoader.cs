@@ -65,6 +65,11 @@ public static class ConfigLoader
             throw new ConfigError($"Error loading main config file '{configFile}'", e);
         }
     }
+    
+    public static bool IsSupportedType(Type type)
+    {
+        return type.IsPrimitive || type == typeof(string);
+    }
 
     /// <summary>
     /// Take the final loaded ConfigSection and convert all the properties to the correct type.
@@ -79,12 +84,8 @@ public static class ConfigLoader
             return prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0 ||
                    prop.GetCustomAttributes(typeof(RequiredMemberAttribute), true).Length > 0;
         }
-        bool IsSimpleType(PropertyInfo prop)
-        {
-            return prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string);
-        }
         var allPropertiesWithRequiredAttribute = section.Type.GetProperties()
-            .Where(p => IsRequired(p) && IsSimpleType(p))
+            .Where(p => IsRequired(p) && IsSupportedType(p.PropertyType))
             .Select(p => p.Name)
             .ToList();
         var convertedProperties = new Dictionary<string, object>();
@@ -94,8 +95,7 @@ public static class ConfigLoader
             if (prop == null || !prop.CanWrite)
                 throw new InvalidDataException(
                     $"{item.Key} not found in type {section.Type.Name} as a settable property");
-            var converter = TypeDescriptor.GetConverter(prop.PropertyType);
-            var convertedObject = converter.ConvertFromString(item.Value.ToString());
+            var convertedObject = ParseObject(prop.PropertyType, item.Value.ToString());
             if (convertedObject == null)
             {
                 throw new InvalidDataException($"Unable to convert '{item.Value}' to '{prop.PropertyType.Name}'");
@@ -121,6 +121,13 @@ public static class ConfigLoader
         }
     }
 
+    public static object? ParseObject(Type type, string? itemValue)
+    {
+        var converter = TypeDescriptor.GetConverter(type);
+        var convertedObject = converter.ConvertFromString(itemValue);
+        return convertedObject;
+    }
+    
     private static void ParseMergeSections(HashSet<ConfigSection> existingSections, IEnumerable<Section> sections)
     {
         foreach (var section in sections)
