@@ -70,6 +70,11 @@ public static class ConfigLoader
     {
         return type.IsPrimitive || type == typeof(string);
     }
+    public static bool IsRequired(PropertyInfo prop)
+    {
+        return prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0 ||
+               prop.GetCustomAttributes(typeof(RequiredMemberAttribute), true).Length > 0;
+    }
 
     /// <summary>
     /// Take the final loaded ConfigSection and convert all the properties to the correct type.
@@ -79,22 +84,17 @@ public static class ConfigLoader
     /// <exception cref="InvalidDataException"></exception>
     private static void VerifyAndConvertProperties(ConfigSection section)
     {
-        bool IsRequired(PropertyInfo prop)
-        {
-            return prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0 ||
-                   prop.GetCustomAttributes(typeof(RequiredMemberAttribute), true).Length > 0;
-        }
         var allPropertiesWithRequiredAttribute = section.Type.GetProperties()
             .Where(p => IsRequired(p) && IsSupportedType(p.PropertyType))
             .Select(p => p.Name)
-            .ToList();
-        var convertedProperties = new Dictionary<string, object>();
+            .ToHashSet();
+        var convertedProperties = new List<ConfigProperty>();
         foreach (var item in section.Properties)
         {
-            var prop = section.Type.GetProperty(item.Key);
+            var prop = section.Type.GetProperty(item.Name);
             if (prop == null || !prop.CanWrite)
                 throw new InvalidDataException(
-                    $"{item.Key} not found in type {section.Type.Name} as a settable property");
+                    $"{item.Name} not found in type {section.Type.Name} as a settable property");
             var convertedObject = ParseObject(prop.PropertyType, item.Value.ToString());
             if (convertedObject == null)
             {
@@ -103,18 +103,21 @@ public static class ConfigLoader
             if (!PropertyValidator.TryValidateProperty(prop, convertedObject, out var validationResults))
             {
                 throw new InvalidDataException(
-                    $"Validation failed for property '{item.Key}' in section '{section.Name}': {string.Join(", ", validationResults.Select(x => x.ErrorMessage))}");
+                    $"Validation failed for property '{item.Name}' in section '{section.Name}': {string.Join(", ", validationResults.Select(x => x.ErrorMessage))}");
             }
-            convertedProperties.Add(item.Key, convertedObject);
-            allPropertiesWithRequiredAttribute.Remove(item.Key);
+            
+            convertedProperties.Add(new ConfigProperty()
+            {
+                Name = item.Name, 
+                Value = convertedObject, 
+                IsRequired = allPropertiesWithRequiredAttribute.Contains(item.Name),
+                PropertyInfo = prop
+            });
+            allPropertiesWithRequiredAttribute.Remove(item.Name);
         }
         section.Properties.Clear();
-        // copyConvertedProperties to the section
-        foreach (var item in convertedProperties)
-        {
-            section.Properties.Add(item.Key, item.Value);
-        }
-
+        section.Properties.AddRange(convertedProperties);
+        
         if (allPropertiesWithRequiredAttribute.Any())
         {
             throw new InvalidDataException($"Required properties did not have values provided in section '{section.Name}': {string.Join(", ", allPropertiesWithRequiredAttribute)}");
@@ -213,7 +216,13 @@ public static class ConfigLoader
         {
             if (item.Name.StartsWith(InterfacePrefix) || item.Name == SimulatedLabel)
                 continue;
-            result.Properties[item.Name] = item.Value;
+            result.Properties.Add(new ConfigProperty()
+            {
+                Name = item.Name, 
+                Value = item.Value, 
+                IsRequired = false, // these will be filled in properly when the value is converted
+                PropertyInfo = null
+            });
         }
     }
 

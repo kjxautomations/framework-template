@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Autofac.Features.AttributeFilters;
 using KJX.Devices.Logic;
@@ -35,6 +36,41 @@ public class DummyMotor : IMotorInterface, IInitializable
 
 public class DummyXMotor : DummyMotor
 {
+}
+
+public class DummyMotorWithNotifyPropertyChanged : IMotorInterface, IInitializable, INotifyPropertyChanged
+{
+    private double _position;
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public void RaisePropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public void MoveTo(double location)
+    {
+        Position = location;
+    }
+
+    public double Position
+    {
+        get => _position;
+        set
+        {
+            if (value.Equals(_position)) return;
+            _position = value;
+            RaisePropertyChanged(nameof(Position));
+        }
+    }
+
+    public void DoInitialize()
+    {
+        IsInitialized = true;
+        
+    }
+
+    public bool IsInitialized { get; private set; }
 }
 
 public class SimulatedDummyXMotor : DummyMotor

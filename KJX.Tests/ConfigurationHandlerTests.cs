@@ -35,9 +35,11 @@ public class ConfigurationHandlerTests
     public void TestResolveAllByInterface()
     {
         var motors = _container.Resolve<IEnumerable<IMotorInterface>>();
-        Assert.That(motors.Count(), Is.EqualTo(3));
+        Assert.That(motors.Count(), Is.EqualTo(4));
         Assert.That(motors.Any(x => x is DummyXMotor));
         Assert.That(motors.Any(x => x is DummyYMotor));
+        Assert.That(motors.Any(x => x is DummyMotorWithNotifyPropertyChanged));
+        Assert.That(motors.Any(x => x is DummyComboMotor));
     }
 
     [Test]
@@ -63,11 +65,27 @@ public class ConfigurationHandlerTests
         var defaults = _configHandler.GetDefaultValues();
         Assert.That(defaults.Count, Is.EqualTo(1));
         Assert.That(defaults.First().Value.Count, Is.EqualTo(2));
-        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(1));
-        Assert.That(defaults.First().Value["DummyProp"], Is.EqualTo("I am X"));
+        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(0));
+        Assert.That(defaults.First().Value["DummyProp"], Is.Null);
+        Assert.That(x1.IntProp, Is.EqualTo(1));
+        
+        Assert.That(_configHandler.HasDirtyValues, Is.False);
+        Assert.That(_configHandler.HasObjectsThatDoNotImplementINotifyPropertyChanged, Is.True);
         
         x1.IntProp = 2;
+        // defaults are not overwritten
+        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(0));
+        Assert.That(_configHandler.HasDirtyValues, Is.False);
 
-        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(1));
+        var x2 = _container.Resolve<DummyXMotor>();
+        
+        // make sure I didn't mess up the singleton behavior
+        Assert.That(x2.IntProp, Is.EqualTo(2));
+        
+        // now resolve the one that supports INotifyPropertyChanged
+        var x3 = _container.Resolve<DummyMotorWithNotifyPropertyChanged>();
+        Assert.That(_configHandler.HasDirtyValues, Is.False);
+        x3.Position = 3;
+        Assert.That(_configHandler.HasDirtyValues, Is.True);
     }
 }
