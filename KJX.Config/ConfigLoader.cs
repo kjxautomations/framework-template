@@ -88,13 +88,13 @@ public static class ConfigLoader
             .Where(p => IsRequired(p) && IsSupportedType(p.PropertyType))
             .Select(p => p.Name)
             .ToHashSet();
-        var convertedProperties = new List<ConfigProperty>();
+        var convertedProperties = new Dictionary<string, object>();
         foreach (var item in section.Properties)
         {
-            var prop = section.Type.GetProperty(item.Name);
+            var prop = section.Type.GetProperty(item.Key);
             if (prop == null || !prop.CanWrite)
                 throw new InvalidDataException(
-                    $"{item.Name} not found in type {section.Type.Name} as a settable property");
+                    $"{item.Key} not found in type {section.Type.Name} as a settable property");
             var convertedObject = ParseObject(prop.PropertyType, item.Value.ToString());
             if (convertedObject == null)
             {
@@ -103,20 +103,13 @@ public static class ConfigLoader
             if (!PropertyValidator.TryValidateProperty(prop, convertedObject, out var validationResults))
             {
                 throw new InvalidDataException(
-                    $"Validation failed for property '{item.Name}' in section '{section.Name}': {string.Join(", ", validationResults.Select(x => x.ErrorMessage))}");
+                    $"Validation failed for property '{item.Key}' in section '{section.Name}': {string.Join(", ", validationResults.Select(x => x.ErrorMessage))}");
             }
             
-            convertedProperties.Add(new ConfigProperty()
-            {
-                Name = item.Name, 
-                Value = convertedObject, 
-                IsRequired = allPropertiesWithRequiredAttribute.Contains(item.Name),
-                PropertyInfo = prop
-            });
-            allPropertiesWithRequiredAttribute.Remove(item.Name);
+            convertedProperties[item.Key] = convertedObject;
+            allPropertiesWithRequiredAttribute.Remove(item.Key);
         }
-        section.Properties.Clear();
-        section.Properties.AddRange(convertedProperties);
+        section.Properties = convertedProperties;
         
         if (allPropertiesWithRequiredAttribute.Any())
         {
@@ -216,13 +209,7 @@ public static class ConfigLoader
         {
             if (item.Name.StartsWith(InterfacePrefix) || item.Name == SimulatedLabel)
                 continue;
-            result.Properties.Add(new ConfigProperty()
-            {
-                Name = item.Name, 
-                Value = item.Value, 
-                IsRequired = false, // these will be filled in properly when the value is converted
-                PropertyInfo = null
-            });
+            result.Properties[item.Name] = item.Value;
         }
     }
 

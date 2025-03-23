@@ -36,14 +36,14 @@ public class ConfigLoaderTests
         Assert.That(typeof(AwesomeXMotor), Is.SameAs(xmotor.Type));
         Assert.That(xmotor.Interfaces.Contains(typeof(IInitializable)), Is.True); 
         Assert.That(xmotor.Interfaces.Contains(typeof(IMotorInterface)), Is.True); 
-        Assert.That(xmotor.Properties.Find(x => x.Name == "DummyProp").ToString(), Is.EqualTo("Doo"));
+        Assert.That(xmotor.Properties["DummyProp"].ToString(), Is.EqualTo("Doo"));
 
         var ymotor = cfg.First(x => x.Name == "YMotor");
         Assert.That(ymotor, Is.Not.Null);
         Assert.That(typeof(DummyYMotor), Is.SameAs(ymotor.Type));
         Assert.That(ymotor.Interfaces.Contains(typeof(IInitializable)), Is.True); 
         Assert.That(ymotor.Interfaces.Contains(typeof(IMotorInterface)), Is.True); 
-        Assert.That(ymotor.Properties.Find(x => x.Name == "DummyProp").ToString(), Is.EqualTo("Dabba"));
+        Assert.That(ymotor.Properties["DummyProp"].ToString(), Is.EqualTo("Dabba"));
 
     }
     [Test]
@@ -56,7 +56,7 @@ public class ConfigLoaderTests
         Assert.That(typeof(DummyXMotor), Is.SameAs(xmotor.Type));
         Assert.That(xmotor.Interfaces.Contains(typeof(IInitializable)), Is.True); 
         Assert.That(xmotor.Interfaces.Contains(typeof(IMotorInterface)), Is.True); 
-        Assert.That(xmotor.Properties.Find(x => x.Name == "DummyProp").ToString(), Is.EqualTo("Wilma"));
+        Assert.That(xmotor.Properties["DummyProp"].ToString(), Is.EqualTo("Wilma"));
     }
     
     [Test]
@@ -160,13 +160,13 @@ public class ConfigLoaderTests
         var cfg = ConfigLoader.LoadConfig("ConfigTestFiles/PropertyValidationGoodRequiredPropertiesAttribute.ini");
         Assert.That(cfg.Count, Is.EqualTo(1));
         var obj = cfg.First();
-        Assert.That(obj.Properties.Find(x => x.Name == "RequiredString").ToString(), Is.EqualTo("bar"));
-        Assert.That(obj.Properties.Find(x => x.Name == "NotRequiredInt").ToString(), Is.EqualTo("3"));
+        Assert.That(obj.Properties["RequiredString"].ToString(), Is.EqualTo("bar"));
+        Assert.That(obj.Properties["NotRequiredInt"].ToString(), Is.EqualTo("3"));
         cfg = ConfigLoader.LoadConfig("ConfigTestFiles/PropertyValidationGoodRequiredPropertiesKeyword.ini");
         Assert.That(cfg.Count, Is.EqualTo(1));
         obj = cfg.First();
-        Assert.That(obj.Properties.Find(x => x.Name == "RequiredString").ToString(), Is.EqualTo("bar"));
-        Assert.That(obj.Properties.Find(x => x.Name == "NotRequiredInt").ToString(), Is.EqualTo("3"));
+        Assert.That(obj.Properties["RequiredString"].ToString(), Is.EqualTo("bar"));
+        Assert.That(obj.Properties["NotRequiredInt"].ToString(), Is.EqualTo("3"));
 
     }
 }

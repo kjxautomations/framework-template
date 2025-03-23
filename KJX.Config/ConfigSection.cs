@@ -5,5 +5,5 @@ public class ConfigSection(Type type, string name)
     public string Name { get; init; } = name;
     public Type Type { get; set; } = type;
     public HashSet<Type> Interfaces { get; } = new();
-    public List<ConfigProperty> Properties { get; } = new();
+    public Dictionary<string, object> Properties { get; set; } = new();
 }

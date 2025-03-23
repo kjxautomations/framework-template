@@ -5,6 +5,7 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Core.Resolving.Pipeline;
 using Autofac.Features.AttributeFilters;
+using Avalonia.Input;
 using KJX.Config;
 
 namespace KJX.Core;
@@ -43,13 +44,7 @@ public class ConfigurationHandler : INotifyPropertyChanged
                         // Call the next middleware in the pipeline to create the object with all constructor arguments AND
                         // all properties that are "required" set.
                         next(context);
-                        SaveDefaultValues(section, context.Instance);
-                        
-                        // now set the properties that were not autowired
-                        foreach (var prop in section.Properties.Where(x => !x.IsRequired))
-                        {
-                            prop.PropertyInfo.SetValue(context.Instance, prop.Value);
-                        }
+                        SaveInitialValues(section, context.Instance);
                     });
                 });
             }
@@ -69,12 +64,23 @@ public class ConfigurationHandler : INotifyPropertyChanged
                 {
                     npc.PropertyChanged += (sender, args) =>
                     {
-                        if (HasDirtyValues)
-                            return;
-                        lock (_defaults)
+                        lock (_initialValues)
                         {
-                            if (_defaults[section].ContainsKey(args.PropertyName))
-                                HasDirtyValues = true;
+                            // see if the value is different from the initial value, and update _changedValues accordingly
+                            if (_initialValues[section].TryGetValue(args.PropertyName, out var initialValue))
+                            {
+                                var currentValue = obj.Instance.GetType().GetProperty(args.PropertyName)?.GetValue(obj.Instance, null);
+                                var key = new Tuple<ConfigSection, string>( section, args.PropertyName );
+                                if (!Equals(_initialValues[section][args.PropertyName], currentValue))
+                                {
+                                    _changedValues.Add(key);
+                                }
+                                else 
+                                {
+                                    _changedValues.Remove(key);
+                                }
+                            }
+                            HasDirtyValues = _changedValues.Any();
                         }
                     };
                 }
@@ -84,11 +90,10 @@ public class ConfigurationHandler : INotifyPropertyChanged
                 }
             });
             
-            // autowire the properties for injection. If we're tracking editing (saving default values)
-            // only inject the required ones. Otherwise, inject all properties.
-            foreach (var prop in saveDefaults ? item.Properties.Where(x => x.IsRequired) : item.Properties)
+            // autowire the properties for injection.
+            foreach (var prop in item.Properties)
             {
-                reg = reg.WithProperty(prop.Name, prop.Value);
+                reg = reg.WithProperty(prop.Key, prop.Value);
             }
             reg = reg.PropertiesAutowired();
 
@@ -96,11 +101,12 @@ public class ConfigurationHandler : INotifyPropertyChanged
         }
     }
 
-    private Dictionary<ConfigSection, Dictionary<string, object?>> _defaults = new();
+    private Dictionary<ConfigSection, Dictionary<string, object?>> _initialValues = new();
+    private HashSet<Tuple<ConfigSection, string>> _changedValues = new();
     private bool _hasDirtyValues;
     private bool _hasObjectsThatDoNotImplementINotifyPropertyChanged;
 
-    private void SaveDefaultValues(ConfigSection section, object obj)
+    private void SaveInitialValues(ConfigSection section, object obj)
     {
         // save the values of the publicly settable properties of the object. Only save types that are 
         // settable via config (i.e. simple types)
@@ -108,15 +114,15 @@ public class ConfigurationHandler : INotifyPropertyChanged
             .Where(p => ConfigLoader.IsSupportedType(p.PropertyType))
             .Where(p => p.CanWrite)
             .ToDictionary(p => p.Name, p => p.GetValue(obj, null));
-        lock (_defaults)
-            _defaults[section] = properties;
+        lock (_initialValues)
+            _initialValues[section] = properties;
         
     }
-    public Dictionary<ConfigSection, Dictionary<string, object?>> GetDefaultValues()
+    public Dictionary<ConfigSection, Dictionary<string, object?>> GetInitialValues()
     {
-        lock (_defaults)
+        lock (_initialValues)
         {
-            return new(_defaults);
+            return new(_initialValues);
         }
     }
 

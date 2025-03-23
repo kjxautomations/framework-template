@@ -62,19 +62,18 @@ public class ConfigurationHandlerTests
     {
         var x1 = _container.Resolve<DummyXMotor>();
         Assert.That(x1.IntProp, Is.EqualTo(1));
-        var defaults = _configHandler.GetDefaultValues();
-        Assert.That(defaults.Count, Is.EqualTo(1));
-        Assert.That(defaults.First().Value.Count, Is.EqualTo(2));
-        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(0));
-        Assert.That(defaults.First().Value["DummyProp"], Is.Null);
-        Assert.That(x1.IntProp, Is.EqualTo(1));
+        var initialValues = _configHandler.GetInitialValues();
+        Assert.That(initialValues.Count, Is.EqualTo(1));
+        Assert.That(initialValues.First().Value.Count, Is.EqualTo(2));
+        Assert.That(initialValues.First().Value["IntProp"], Is.EqualTo(1));
+        Assert.That(initialValues.First().Value["DummyProp"], Is.EqualTo("I am X"));
         
         Assert.That(_configHandler.HasDirtyValues, Is.False);
         Assert.That(_configHandler.HasObjectsThatDoNotImplementINotifyPropertyChanged, Is.True);
         
         x1.IntProp = 2;
         // defaults are not overwritten
-        Assert.That(defaults.First().Value["IntProp"], Is.EqualTo(0));
+        Assert.That(initialValues.First().Value["IntProp"], Is.EqualTo(1));
         Assert.That(_configHandler.HasDirtyValues, Is.False);
 
         var x2 = _container.Resolve<DummyXMotor>();
