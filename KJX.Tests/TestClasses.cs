@@ -89,6 +89,14 @@ public class DummyMotorWithNotifyPropertyChanged : IMotorInterface, IInitializab
     public bool IsInitialized { get; private set; }
 }
 
+public class DummyDataObjectWithoutINotifyPropertyChanged
+{
+    [Group("Basic")]
+    public int IntProp { get; set; }
+    [Group("Basic")]
+    public string StringProp { get; set; } = "A good value";
+}
+
 public class SimulatedDummyXMotor : DummyMotor
 {
 }

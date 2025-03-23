@@ -105,4 +105,16 @@ public class ConfigurationHandlerTests
         Assert.That(_configHandler.HasDirtyValues, Is.False);
         Assert.That(_configHandler.GetChangedValues(), Is.Empty);
     }
+    
+    [Test]
+    public void TestNonDefaultValuesSavedWhenNoINotifyPropertyChanged()
+    {
+        var x1 = _container.Resolve<DummyDataObjectWithoutINotifyPropertyChanged>();
+        Assert.That(_configHandler.HasObjectsThatDoNotImplementINotifyPropertyChanged, Is.True);
+        x1.IntProp = 2;
+        var changes = _configHandler.GetChangedValues();
+        Assert.That(changes.Count, Is.EqualTo(1));
+        Assert.That(changes.First().Value.Count, Is.EqualTo(1));
+        Assert.That(changes.First().Value["IntProp"], Is.EqualTo(2));
+    }
 }

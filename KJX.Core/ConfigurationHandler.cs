@@ -77,7 +77,7 @@ public class ConfigurationHandler : INotifyPropertyChanged
                         lock (_initialValues)
                         {
                             // see if the value is different from the initial value, and update _changedValues accordingly
-                            if (_initialValues[section].TryGetValue(args.PropertyName, out var initialValue))
+                            if (_initialValues[section.Name].TryGetValue(args.PropertyName, out var initialValue))
                             {
                                 var currentValue = obj.Instance.GetType().GetProperty(args.PropertyName)
                                     ?.GetValue(obj.Instance, null);
@@ -106,6 +106,8 @@ public class ConfigurationHandler : INotifyPropertyChanged
                 else
                 {
                     HasObjectsThatDoNotImplementINotifyPropertyChanged = true;
+                    lock (_objectsWithoutINotifyPropertyChanged)
+                        _objectsWithoutINotifyPropertyChanged[section.Name] = obj.Instance;
                 }
             });
             
@@ -120,8 +122,9 @@ public class ConfigurationHandler : INotifyPropertyChanged
         }
     }
 
-    private Dictionary<ConfigSection, Dictionary<string, object>> _initialValues = new();
+    private Dictionary<string, Dictionary<string, object>> _initialValues = new();
     private Dictionary<string, Dictionary<string, object>> _changedValues = new();
+    private Dictionary<string, object> _objectsWithoutINotifyPropertyChanged = new();
     private bool _hasDirtyValues;
     private bool _hasObjectsThatDoNotImplementINotifyPropertyChanged;
 
@@ -135,10 +138,10 @@ public class ConfigurationHandler : INotifyPropertyChanged
             .Where(p => p.GetCustomAttribute<GroupAttribute>() != null)
             .ToDictionary(p => p.Name, p => p.GetValue(obj, null));
         lock (_initialValues)
-            _initialValues[section] = properties;
+            _initialValues[section.Name] = properties;
         
     }
-    public Dictionary<ConfigSection, Dictionary<string, object>> GetInitialValues()
+    public Dictionary<string, Dictionary<string, object>> GetInitialValues()
     {
         lock (_initialValues)
         {
@@ -148,7 +151,24 @@ public class ConfigurationHandler : INotifyPropertyChanged
 
     public Dictionary<string, Dictionary<string, object>> GetChangedValues()
     {
-        return _changedValues;
+        // get all the changed values from the objects that don't support INotifyPropertyChanged
+        var changedValues = new Dictionary<string, Dictionary<string, object>>();
+        foreach (var section in _objectsWithoutINotifyPropertyChanged)
+        {
+            var properties = section.Value.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => ConfigLoader.IsSupportedType(p.PropertyType))
+                .Where(p => p.CanWrite)
+                .Where(p => p.GetCustomAttribute<GroupAttribute>() != null)
+                .Where(p => !Equals(_initialValues[section.Key][p.Name], p.GetValue(section.Value, null)))
+                .ToDictionary(p => p.Name, p => p.GetValue(section.Value, null));
+            changedValues[section.Key] = properties;
+        }
+        // add the changed values from the objects that support INotifyPropertyChanged
+        foreach (var section in _changedValues)
+        {
+            changedValues[section.Key] = new(section.Value);
+        }
+        return changedValues;
     }
 
     public bool HasDirtyValues
