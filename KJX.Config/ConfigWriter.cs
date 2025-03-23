@@ -15,7 +15,7 @@ namespace KJX.Config;
 /// </summary>
 public class ConfigWriter
 {
-    public static void SaveEditedConfig(Stream originalConfig, Stream newConfig,
+    public static string SaveEditedConfig(TextReader originalConfig, 
         Dictionary<string, Dictionary<string, object>> newValues)
     {
         var parser = new Ini(originalConfig);
@@ -34,6 +34,6 @@ public class ConfigWriter
                 sectionValues[newValue.Key] = newValue.Value.ToString(); 
             }
         }
-        parser.SaveTo(newConfig);
+        return parser.ToString();
     }
 }

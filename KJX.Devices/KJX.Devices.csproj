@@ -44,4 +44,8 @@
       <Protobuf Include="Devices\FirmwareProtocol\firmware.proto" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
+    </ItemGroup>
+
 </Project>

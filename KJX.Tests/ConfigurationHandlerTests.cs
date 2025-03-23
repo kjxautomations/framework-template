@@ -84,7 +84,25 @@ public class ConfigurationHandlerTests
         // now resolve the one that supports INotifyPropertyChanged
         var x3 = _container.Resolve<DummyMotorWithNotifyPropertyChanged>();
         Assert.That(_configHandler.HasDirtyValues, Is.False);
-        x3.Position = 3;
+        x3.IntProp = 3;
         Assert.That(_configHandler.HasDirtyValues, Is.True);
+    }
+    [Test]
+    public void TestChangeBackToDefaultNotSaved()
+    {
+        var x1 = _container.Resolve<DummyMotorWithNotifyPropertyChanged>();
+        x1.IntProp = 2;
+        Assert.That(_configHandler.HasDirtyValues, Is.True);
+        x1.IntProp = 0;
+        Assert.That(_configHandler.HasDirtyValues, Is.False);
+        Assert.That(_configHandler.GetChangedValues(), Is.Empty);
+    }
+    [Test]
+    public void TestOnlyPropertiesWithGroupAttributeAreSaved()
+    {
+        var x1 = _container.Resolve<DummyMotorWithNotifyPropertyChanged>();
+        x1.Position = 2;
+        Assert.That(_configHandler.HasDirtyValues, Is.False);
+        Assert.That(_configHandler.GetChangedValues(), Is.Empty);
     }
 }

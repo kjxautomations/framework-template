@@ -33,6 +33,10 @@ public partial class App : Application
     public IContainer? Container { get; private set; }
     public ILogger? Logger { get; private set; }
     
+    public string? ConfigPath { get; private set; }
+    
+    public ConfigurationHandler? ConfigHandler { get; private set; }
+    
     public override void Initialize()
     {
         InitAutoFac();
@@ -55,17 +59,13 @@ public partial class App : Application
         var assembly = Assembly.GetExecutingAssembly();
         HashSet<ConfigSection> cfg;
         var assemblyPath = Path.GetDirectoryName(assembly.Location);
-        var configPath = Path.Combine(assemblyPath, "system_config.ini");
+        ConfigPath = Path.Combine(assemblyPath, "system_config.ini");
         var systemsPath = Path.Combine(assemblyPath, "SystemConfigs");
-        using (var stm = File.OpenRead(configPath))
+        using (var stm = File.OpenRead(ConfigPath))
             cfg = ConfigLoader.LoadConfig(stm, systemsPath);
         
-        var configHandler = new ConfigurationHandler();
-        configHandler.PopulateContainerBuilder(builder, cfg, true);
-        // save the config handler in Autofac to enable the UI to later use it to edit the config
-        // For a specific project, the config handler can be extended to save the config to wherever it is stored
-        // in this sample application, the config is serialized and displayed in a text box
-        builder.RegisterInstance(configHandler);
+        ConfigHandler = new ConfigurationHandler();
+        ConfigHandler.PopulateContainerBuilder(builder, cfg, true);
         
         //Creates and sets the Autofac resolver as the Locator
         var autofacResolver = builder.UseAutofacDependencyResolver();
@@ -121,7 +121,7 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel(ConfigHandler),
             };
         }
 

@@ -62,22 +62,41 @@ public class ConfigurationHandler : INotifyPropertyChanged
                 // flag that there are dirty properties if any property changes
                 if (obj.Instance is INotifyPropertyChanged npc)
                 {
+                    // for speed, cache the names of all the properties that are settable via config
+                    // i.e. have the Group attribute that drives the dynamic UI
+                    var properties = obj.Instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .Where(p => ConfigLoader.IsSupportedType(p.PropertyType))
+                        .Where(p => p.CanWrite)
+                        .Where(p => p.GetCustomAttribute<GroupAttribute>() != null)
+                        .Select(p => p.Name)
+                        .ToList();
                     npc.PropertyChanged += (sender, args) =>
                     {
+                        if (!properties.Contains(args.PropertyName))
+                            return;
                         lock (_initialValues)
                         {
                             // see if the value is different from the initial value, and update _changedValues accordingly
                             if (_initialValues[section].TryGetValue(args.PropertyName, out var initialValue))
                             {
-                                var currentValue = obj.Instance.GetType().GetProperty(args.PropertyName)?.GetValue(obj.Instance, null);
-                                var key = new Tuple<ConfigSection, string>( section, args.PropertyName );
-                                if (!Equals(_initialValues[section][args.PropertyName], currentValue))
+                                var currentValue = obj.Instance.GetType().GetProperty(args.PropertyName)
+                                    ?.GetValue(obj.Instance, null);
+                                if (!Equals(initialValue, currentValue))
                                 {
-                                    _changedValues.Add(key);
+                                    if (!_changedValues.ContainsKey(section.Name))
+                                        _changedValues[section.Name] = new();
+                                    _changedValues[section.Name][args.PropertyName] = currentValue;
                                 }
-                                else 
+                                else
                                 {
-                                    _changedValues.Remove(key);
+                                    if (_changedValues.TryGetValue(section.Name, out var sectionValues))
+                                    {
+                                        sectionValues.Remove(args.PropertyName);
+                                        if (sectionValues.Count == 0)
+                                        {
+                                            _changedValues.Remove(section.Name);
+                                        }
+                                    }
                                 }
                             }
                             HasDirtyValues = _changedValues.Any();
@@ -101,29 +120,35 @@ public class ConfigurationHandler : INotifyPropertyChanged
         }
     }
 
-    private Dictionary<ConfigSection, Dictionary<string, object?>> _initialValues = new();
-    private HashSet<Tuple<ConfigSection, string>> _changedValues = new();
+    private Dictionary<ConfigSection, Dictionary<string, object>> _initialValues = new();
+    private Dictionary<string, Dictionary<string, object>> _changedValues = new();
     private bool _hasDirtyValues;
     private bool _hasObjectsThatDoNotImplementINotifyPropertyChanged;
 
     private void SaveInitialValues(ConfigSection section, object obj)
     {
         // save the values of the publicly settable properties of the object. Only save types that are 
-        // settable via config (i.e. simple types)
+        // settable via config (i.e. simple types) and have the Group attribute
         var properties = obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => ConfigLoader.IsSupportedType(p.PropertyType))
             .Where(p => p.CanWrite)
+            .Where(p => p.GetCustomAttribute<GroupAttribute>() != null)
             .ToDictionary(p => p.Name, p => p.GetValue(obj, null));
         lock (_initialValues)
             _initialValues[section] = properties;
         
     }
-    public Dictionary<ConfigSection, Dictionary<string, object?>> GetInitialValues()
+    public Dictionary<ConfigSection, Dictionary<string, object>> GetInitialValues()
     {
         lock (_initialValues)
         {
             return new(_initialValues);
         }
+    }
+
+    public Dictionary<string, Dictionary<string, object>> GetChangedValues()
+    {
+        return _changedValues;
     }
 
     public bool HasDirtyValues

@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace KJX.Devices.Logic;
+namespace KJX.Config;
 
 using System;
-
+/// <summary>
+/// These classes are used for configurable objects to generate dynamic UIs and do change tracking
+/// </summary>
 [AttributeUsage(AttributeTargets.Property)]
 public class RangeIncrementAttribute : RangeAttribute
 {

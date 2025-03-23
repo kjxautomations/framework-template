@@ -63,7 +63,7 @@ public static class ConfigLoader
     
     public static bool IsSupportedType(Type type)
     {
-        return type.IsPrimitive || type == typeof(string);
+        return type.IsPrimitive || type == typeof(string) || type.IsEnum;
     }
     public static bool IsRequired(PropertyInfo prop)
     {

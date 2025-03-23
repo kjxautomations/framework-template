@@ -2,34 +2,14 @@ using KJX.Config;
 
 namespace KJX.Tests;
 
-// little hack class that intercepts the Dispose of MemoryStream and saves off the contents
-public class MemoryStreamSpy : MemoryStream
-{
-    public MemoryStreamSpy()
-    {
-    }
-
-    public byte[]? SavedBuffer { get; private set; }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            SavedBuffer = ToArray();
-        }
-
-        base.Dispose(disposing);
-    }
-}
-
 [TestFixture]
 public class ConfigWriterTests
 {
     [Test]
     public void TestSetValuesWhenItemOnlyInSystemCreatesSection()
     {
-        var result = new MemoryStreamSpy();
-        using (var cfgFile = File.OpenRead("ConfigTestFiles/SystemConfigWithSystemType.ini"))
+        string result;
+        using (var cfgFile = new StreamReader("ConfigTestFiles/SystemConfigWithSystemType.ini"))
         {
             var changes = new Dictionary<string, Dictionary<string, object>>
             {
@@ -40,10 +20,10 @@ public class ConfigWriterTests
                     }
                 }
             };
-            ConfigWriter.SaveEditedConfig(cfgFile, result, changes);
+            result = ConfigWriter.SaveEditedConfig(cfgFile, changes);
         }
-        var fileContents = System.Text.Encoding.UTF8.GetString(result.SavedBuffer!);
-        Assert.That(fileContents, Is.EqualTo(
+        
+        Assert.That(result, Is.EqualTo(
 @"[System]
 SystemType= TestSystem
 
@@ -62,8 +42,8 @@ DummyProp=DooDoo
     [Test]
     public void TestSetValuesWhenItemIsInMainConfig()
     {
-        var result = new MemoryStreamSpy();
-        using (var cfgFile = File.OpenRead("ConfigTestFiles/SystemConfigWithSystemType.ini"))
+        string result;
+        using (var cfgFile = new StreamReader("ConfigTestFiles/SystemConfigWithSystemType.ini"))
         {
             var changes = new Dictionary<string, Dictionary<string, object>>
             {
@@ -74,10 +54,10 @@ DummyProp=DooDoo
                     }
                 }
             };
-            ConfigWriter.SaveEditedConfig(cfgFile, result, changes);
+            result = ConfigWriter.SaveEditedConfig(cfgFile, changes);
         }
-        var fileContents = System.Text.Encoding.UTF8.GetString(result.SavedBuffer!);
-        Assert.That(fileContents, Is.EqualTo(
+        
+        Assert.That(result, Is.EqualTo(
             @"[System]
 SystemType= TestSystem
 
@@ -91,5 +71,4 @@ DummyProp= DooDoo
 "
         ));
     }
-    
 }

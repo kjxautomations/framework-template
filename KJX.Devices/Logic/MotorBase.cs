@@ -1,3 +1,5 @@
+using KJX.Config;
+
 namespace KJX.Devices.Logic;
 
 public abstract class MotorBase : DeviceBase, IMotor
@@ -80,6 +82,7 @@ public abstract class MotorBaseSupportsHoming : MotorBase, ISupportsHoming
         get => _isHomed;
         private set => SetField(ref _isHomed, value);
     }
+    [Group("Advanced")]
     public double HomeOffset
     {
         get => _homeOffset;

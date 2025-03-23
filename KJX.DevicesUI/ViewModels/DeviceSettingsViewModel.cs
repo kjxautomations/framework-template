@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
+using KJX.Config;
 using KJX.Devices;
 using KJX.Devices.Logic;
 
