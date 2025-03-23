@@ -14,11 +14,6 @@ public static class ConfigLoader
     private const string InterfacePrefix = "_interface";
     private const string SimulatedLabel = "_simulated";
 
-    public static HashSet<ConfigSection> LoadConfig(string configFile, string? systemsDirectory = null)
-    {
-        using var stream = new FileStream(configFile, FileMode.Open, FileAccess.Read);
-        return LoadConfig(stream, systemsDirectory);
-    }
     public static HashSet<ConfigSection> LoadConfig(Stream configFile, string? systemsDirectory = null)
     {
         // load the main config file

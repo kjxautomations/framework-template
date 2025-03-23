@@ -59,7 +59,8 @@ public partial class App : Application
         var assemblyPath = Path.GetDirectoryName(assembly.Location);
         var configPath = Path.Combine(assemblyPath, "system_config.ini");
         var systemsPath = Path.Combine(assemblyPath, "SystemConfigs");
-        cfg = ConfigLoader.LoadConfig(configPath, systemsPath);
+        using (var stm = File.OpenRead(configPath))
+            cfg = ConfigLoader.LoadConfig(stm, systemsPath);
         (new ConfigurationHandler()).PopulateContainerBuilder(builder, cfg);
         
         // Creates and sets the Autofac resolver as the Locator

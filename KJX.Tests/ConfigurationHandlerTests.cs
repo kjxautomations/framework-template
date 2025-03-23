@@ -11,7 +11,7 @@ public class ConfigurationHandlerTests
     [SetUp]
     public void SetUp()
     {
-        var cfg = ConfigLoader.LoadConfig("ConfigTestFiles/SystemConfigXYMotor.ini");
+        var cfg = ConfigLoaderTests.LoadConfig("ConfigTestFiles/SystemConfigXYMotor.ini");
         var builder = new ContainerBuilder();
         _configHandler = new ConfigurationHandler();
         _configHandler.PopulateContainerBuilder(builder, cfg, true);
