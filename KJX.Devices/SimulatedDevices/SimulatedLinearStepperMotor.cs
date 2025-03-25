@@ -1,3 +1,4 @@
+using KJX.Config;
 using KJX.Devices.Logic;
 using Microsoft.Extensions.Logging;
 
@@ -21,11 +22,13 @@ public class SimulatedLinearStepperMotor : StepperMotorBase, ISupportsHoming
     protected override void DoMoveSteps(int numberOfSteps)
     {
         IsBusy = true;
-        Thread.Sleep(1000);
+        Thread.Sleep(10);
         IsBusy = false;
     }
 
     private bool _isHomed;
+    private double _homeOffset;
+    private int _holdingCurrent;
 
     public bool IsHomed
     {
@@ -41,10 +44,17 @@ public class SimulatedLinearStepperMotor : StepperMotorBase, ISupportsHoming
 
     [RangeIncrement(-10, 10, 0.1)]
     [Group("Advanced")]
-    public double HomeOffset { get; set; }
-    
+    public double HomeOffset
+    {
+        get => _homeOffset;
+        set => SetField(ref _homeOffset, value);
+    }
+
     [RangeIncrement(0, 100, 1)]
     [Group("Advanced")]
-    public int HoldingCurrent { get; set; }
-
+    public int HoldingCurrent
+    {
+        get => _holdingCurrent;
+        set => SetField(ref _holdingCurrent, value);
+    }
 }

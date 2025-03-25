@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Devices.Utils;
+using KJX.Config;
 using KJX.Devices.Logic;
 
 namespace KJX.Devices;

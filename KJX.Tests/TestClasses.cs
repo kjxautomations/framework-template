@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Autofac.Features.AttributeFilters;
+using KJX.Config;
 using KJX.Devices.Logic;
 
 namespace KJX.Tests;
@@ -18,7 +20,9 @@ public interface IInitializable
 
 public class DummyMotor : IMotorInterface, IInitializable
 {
+    [Group("Basic")]
     public string? DummyProp { get; init; }
+    [Group("Basic")]
     public int IntProp { get; set; }
     public void MoveTo(double location)
     {
@@ -35,6 +39,62 @@ public class DummyMotor : IMotorInterface, IInitializable
 
 public class DummyXMotor : DummyMotor
 {
+}
+
+public class DummyMotorWithNotifyPropertyChanged : IMotorInterface, IInitializable, INotifyPropertyChanged
+{
+    private double _position;
+    private int _intProp;
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public void RaisePropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    [Group("Basic")]
+    public int IntProp
+    {
+        get => _intProp;
+        set
+        {
+            if (value == _intProp) return;
+            _intProp = value;
+            RaisePropertyChanged(nameof(IntProp));
+        }
+    }
+
+    public void MoveTo(double location)
+    {
+        Position = location;
+    }
+
+    public double Position
+    {
+        get => _position;
+        set
+        {
+            if (value.Equals(_position)) return;
+            _position = value;
+            RaisePropertyChanged(nameof(Position));
+        }
+    }
+
+    public void DoInitialize()
+    {
+        IsInitialized = true;
+        
+    }
+
+    public bool IsInitialized { get; private set; }
+}
+
+public class DummyDataObjectWithoutINotifyPropertyChanged
+{
+    [Group("Basic")]
+    public int IntProp { get; set; }
+    [Group("Basic")]
+    public string StringProp { get; set; } = "A good value";
 }
 
 public class SimulatedDummyXMotor : DummyMotor
@@ -201,7 +261,7 @@ public class DummyDeviceWithProperties : DeviceBase
     public string Basic1 { get; set; } = "foo";
 
     [Group("Basic")]
-    [Devices.Logic.RangeIncrement(-10, 10, 0.1)]
+    [RangeIncrement(-10, 10, 0.1)]
     public float Basic2 { get; set; } = 5;
 
     [Group("Basic")]
@@ -210,11 +270,11 @@ public class DummyDeviceWithProperties : DeviceBase
     [Group("Basic")]
     public TestEnum Basic4 { get; set; } = TestEnum.Value2;
 
-    [Devices.Logic.RangeIncrement(-10, 10, 0.1)]
+    [RangeIncrement(-10, 10, 0.1)]
     [Group("Advanced1")]
     public double Advanced1 { get; set; } = 6;
 
-    [Devices.Logic.RangeIncrement(0, 100, 1)]
+    [RangeIncrement(0, 100, 1)]
     [Group("Advanced2")]
     public int Advanced2 { get; set; } = 7;
     [Group("Advanced2")]

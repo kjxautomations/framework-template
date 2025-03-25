@@ -1,3 +1,4 @@
+using KJX.Config;
 using KJX.Devices.Logic;
 
 

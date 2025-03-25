@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Xml;
 using Autofac;
@@ -32,12 +33,16 @@ public partial class App : Application
     public IContainer? Container { get; private set; }
     public ILogger? Logger { get; private set; }
     
+    public string? ConfigPath { get; private set; }
+    
+    public ConfigurationHandler? ConfigHandler { get; private set; }
+    
     public override void Initialize()
     {
         InitAutoFac();
         AvaloniaXamlLoader.Load(this);
     }
-
+    
     private void InitAutoFac()
     {
         //Build a new Autofac container.
@@ -54,10 +59,13 @@ public partial class App : Application
         var assembly = Assembly.GetExecutingAssembly();
         HashSet<ConfigSection> cfg;
         var assemblyPath = Path.GetDirectoryName(assembly.Location);
-        var configPath = Path.Combine(assemblyPath, "system_config.ini");
+        ConfigPath = Path.Combine(assemblyPath, "system_config.ini");
         var systemsPath = Path.Combine(assemblyPath, "SystemConfigs");
-        cfg = ConfigLoader.LoadConfig(configPath, systemsPath);
-        ConfigurationHandler.PopulateContainerBuilder(builder, cfg);
+        using (var stm = File.OpenRead(ConfigPath))
+            cfg = ConfigLoader.LoadConfig(stm, systemsPath);
+        
+        ConfigHandler = new ConfigurationHandler();
+        ConfigHandler.PopulateContainerBuilder(builder, cfg, true);
         
         //Creates and sets the Autofac resolver as the Locator
         var autofacResolver = builder.UseAutofacDependencyResolver();
@@ -113,7 +121,7 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel(ConfigHandler),
             };
         }
 

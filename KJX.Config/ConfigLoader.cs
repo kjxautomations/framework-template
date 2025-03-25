@@ -14,11 +14,6 @@ public static class ConfigLoader
     private const string InterfacePrefix = "_interface";
     private const string SimulatedLabel = "_simulated";
 
-    public static HashSet<ConfigSection> LoadConfig(string configFile, string? systemsDirectory = null)
-    {
-        using var stream = new FileStream(configFile, FileMode.Open, FileAccess.Read);
-        return LoadConfig(stream, systemsDirectory);
-    }
     public static HashSet<ConfigSection> LoadConfig(Stream configFile, string? systemsDirectory = null)
     {
         // load the main config file
@@ -65,6 +60,16 @@ public static class ConfigLoader
             throw new ConfigError($"Error loading main config file '{configFile}'", e);
         }
     }
+    
+    public static bool IsSupportedType(Type type)
+    {
+        return type.IsPrimitive || type == typeof(string) || type.IsEnum;
+    }
+    public static bool IsRequired(PropertyInfo prop)
+    {
+        return prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0 ||
+               prop.GetCustomAttributes(typeof(RequiredMemberAttribute), true).Length > 0;
+    }
 
     /// <summary>
     /// Take the final loaded ConfigSection and convert all the properties to the correct type.
@@ -74,19 +79,10 @@ public static class ConfigLoader
     /// <exception cref="InvalidDataException"></exception>
     private static void VerifyAndConvertProperties(ConfigSection section)
     {
-        bool IsRequired(PropertyInfo prop)
-        {
-            return prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0 ||
-                   prop.GetCustomAttributes(typeof(RequiredMemberAttribute), true).Length > 0;
-        }
-        bool IsSimpleType(PropertyInfo prop)
-        {
-            return prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string);
-        }
         var allPropertiesWithRequiredAttribute = section.Type.GetProperties()
-            .Where(p => IsRequired(p) && IsSimpleType(p))
+            .Where(p => IsRequired(p) && IsSupportedType(p.PropertyType))
             .Select(p => p.Name)
-            .ToList();
+            .ToHashSet();
         var convertedProperties = new Dictionary<string, object>();
         foreach (var item in section.Properties)
         {
@@ -94,8 +90,7 @@ public static class ConfigLoader
             if (prop == null || !prop.CanWrite)
                 throw new InvalidDataException(
                     $"{item.Key} not found in type {section.Type.Name} as a settable property");
-            var converter = TypeDescriptor.GetConverter(prop.PropertyType);
-            var convertedObject = converter.ConvertFromString(item.Value.ToString());
+            var convertedObject = ParseObject(prop.PropertyType, item.Value.ToString());
             if (convertedObject == null)
             {
                 throw new InvalidDataException($"Unable to convert '{item.Value}' to '{prop.PropertyType.Name}'");
@@ -105,22 +100,25 @@ public static class ConfigLoader
                 throw new InvalidDataException(
                     $"Validation failed for property '{item.Key}' in section '{section.Name}': {string.Join(", ", validationResults.Select(x => x.ErrorMessage))}");
             }
-            convertedProperties.Add(item.Key, convertedObject);
+            
+            convertedProperties[item.Key] = convertedObject;
             allPropertiesWithRequiredAttribute.Remove(item.Key);
         }
-        section.Properties.Clear();
-        // copyConvertedProperties to the section
-        foreach (var item in convertedProperties)
-        {
-            section.Properties.Add(item.Key, item.Value);
-        }
-
+        section.Properties = convertedProperties;
+        
         if (allPropertiesWithRequiredAttribute.Any())
         {
             throw new InvalidDataException($"Required properties did not have values provided in section '{section.Name}': {string.Join(", ", allPropertiesWithRequiredAttribute)}");
         }
     }
 
+    public static object? ParseObject(Type type, string? itemValue)
+    {
+        var converter = TypeDescriptor.GetConverter(type);
+        var convertedObject = converter.ConvertFromString(itemValue);
+        return convertedObject;
+    }
+    
     private static void ParseMergeSections(HashSet<ConfigSection> existingSections, IEnumerable<Section> sections)
     {
         foreach (var section in sections)

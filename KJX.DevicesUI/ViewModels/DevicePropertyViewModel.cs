@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Avalonia.Threading;
+using KJX.Config;
 using KJX.Devices;
 using KJX.Devices.Logic;
 using ReactiveUI;
