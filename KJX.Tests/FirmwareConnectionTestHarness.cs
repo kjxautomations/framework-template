@@ -1,7 +1,9 @@
+using System.Net.NetworkInformation;
 using KJX.Devices;
 using KJX.Devices.FirmwareProtocol;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Ping = KJX.Devices.FirmwareProtocol.Ping;
 
 namespace KJX.Tests;
 

@@ -172,9 +172,6 @@
 
 
     <ItemGroup>
-      <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
-      <ProjectReference Include="..\KJX.Core\KJX.Core.csproj" />
       <ProjectReference Include="..\KJX.DevicesUI\KJX.DevicesUI.csproj" />
-      <ProjectReference Include="..\KJX.Devices\KJX.Devices.csproj" />
     </ItemGroup>
 </Project>

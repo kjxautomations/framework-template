@@ -32,13 +32,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
-      <ProjectReference Include="..\KJX.Core\KJX.Core.csproj" />
-      <ProjectReference Include="..\KJX.DevicesUI\KJX.DevicesUI.csproj" />
-      <ProjectReference Include="..\KJX.Devices\KJX.Devices.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="ConfigTestFiles\SystemConfigNoSystemType.ini">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -112,6 +105,13 @@
 
     <ItemGroup>
       <Folder Include="obj\Debug\net8.0\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lib\KJX.Config\KJX.Config.csproj" />
+      <ProjectReference Include="..\Lib\KJX.Core\KJX.Core.csproj" />
+      <ProjectReference Include="..\Lib\KJX.DevicesUI\KJX.DevicesUI.csproj" />
+      <ProjectReference Include="..\Lib\KJX.Devices\KJX.Devices.csproj" />
     </ItemGroup>
 
 </Project>
