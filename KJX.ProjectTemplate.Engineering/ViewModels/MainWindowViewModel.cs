@@ -31,7 +31,9 @@ public class MainWindowViewModel : ViewModelBase
     public ObservableCollection<NavigationMenuType> NavigableMenuTypes { get; } =
     [
         new NavigationMenuType(typeof(WelcomeScreenViewModel)) { MenuLabel = "Welcome Screen" },
+#if (!AsTemplate)
         new NavigationMenuType(typeof(DeviceShowcaseViewModel)) { MenuLabel = "Devices Showcase" }
+#endif
     ];
 
     public MainWindowViewModel()
