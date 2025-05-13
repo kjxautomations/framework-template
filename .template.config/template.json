@@ -52,7 +52,7 @@
           ],
           "rename": {
             "KJX.ProjectTemplate.Control/system_config.template.ini": "KJX.ProjectTemplate.Control/system_config.ini",
-            "KJX.ProjectTepmlate.Engineering/system_config.template.ini": "KXJ.ProjectTemplate.Engineering/system_config.ini"
+            "KJX.ProjectTemplate.Engineering/system_config.template.ini": "KJX.ProjectTemplate.Engineering/system_config.ini"
           }
         },
         {
