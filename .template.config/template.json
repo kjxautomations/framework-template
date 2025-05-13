@@ -13,6 +13,14 @@
     "language": "C#",
     "type": "solution"
   },
+  "symbols": {
+    "AsTemplate" : {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": true,
+      "isEnabled": false
+    }
+  },
   "preferNameDirectory": true,
   "sources": [
     {
@@ -23,6 +31,29 @@
             "../KJX.Nuget.csproj",
             ".idea/**",
             ".git/**"
+          ]
+        },
+        {
+          "condition": "(AsTemplate)",
+          "exclude": [
+            "KJX.ProjectTemplate.Control/system_config.ini",
+            "KJX.ProjectTemplate.Control/Services/SequencingService.cs",
+            "KJX.ProjectTemplate.Control/Services/TemperatureMonitoringService.cs",
+            "KJX.ProjectTemplate.Control/ViewModels/GatherRunInfoScreenViewModel.cs",
+            "KJX.ProjectTemplate.Control/ViewModels/SequencingScreenViewModel.cs",
+            "KJX.ProjectTemplate.Control/ViewModels/WashingScreenViewModel.cs",
+            "KJX.ProjectTemplate.Control/Views/GatherRunInfoScreenView.*",
+            "KJX.ProjectTemplate.Control/Views/SequencingScreenView.*",
+            "KJX.ProjectTemplate.Control/Views/WashingScreenView.*"
+          ],
+          "rename": {
+            "KJX.ProjectTemplate.Control/system_config.template.ini": "KJX.ProjectTemplate.Control/system_config.ini"
+          }
+        },
+        {
+          "condition": "(!AsTemplate)",
+          "exclude": [
+            "KJX.ProjectTemplate.Control/system_config.template.ini"
           ]
         }
       ]

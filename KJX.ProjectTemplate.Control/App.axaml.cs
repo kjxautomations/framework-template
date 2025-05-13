@@ -103,10 +103,11 @@ public partial class App : Application
             .As<INotificationService>()
             .WithParameter("context", SynchronizationContext.Current)
             .SingleInstance();
-        
+#if (!AsTemplate)
         builder.RegisterType<RunInfo>().AsSelf().WithAttributeFiltering().SingleInstance();
         builder.RegisterType<SequencingService>().AsSelf().WithAttributeFiltering().SingleInstance();
         builder.RegisterType<TemperatureMonitoringService>().AsSelf().As<IBackgroundService>().WithAttributeFiltering().SingleInstance();
+#endif
         
         Container = builder.Build();
         Logger = Container.Resolve<ILogger<Application>>();

@@ -24,8 +24,9 @@ public class StateMachine : ReactiveObject
     private Stateless.StateMachine<NavigationStates, NavigationTriggers> _sm;
     private readonly ILogger<StateMachine> _logger;
     private readonly INotificationService _notificationService;
-    private readonly SequencingService _sequencingService;
-
+#if (!AsTemplate)
+    private readonly SequencingService _sequencingService; 
+    
     public StateMachine(SequencingService sequencingService, ILogger<StateMachine> logger,
         INotificationService notificationService)
     {
@@ -41,12 +42,30 @@ public class StateMachine : ReactiveObject
         AddPerStateHandlers();
         _sm.Activate();
     }
+#elif (AsTemplate)
+    public StateMachine(ILogger<StateMachine> logger, INotificationService notificationService) {
+        _logger = logger;
+        _notificationService = notificationService;
+        
+        _sm = new StateMachine<NavigationStates, NavigationTriggers>(() => CurrentState,
+            (s) => CurrentState = s);
+        this.WhenAnyValue(x => x.CurrentState)
+            .Subscribe(s => _logger.LogDebug("Current state is {0}", s));
+        AddTransitions();
+        AddPerStateHandlers();
+        _sm.Activate();
+    }
+#endif
 
     private void AddTransitions()
     {
         _sm.Configure(NavigationStates.Default)
             .Permit(NavigationTriggers.Next, NavigationStates.Welcome);
-        
+#if (AsTemplate)
+        //Configure navigation from Welcome Screen
+        _sm.Configure(NavigationStates.Welcome)
+            .Permit(NavigationTriggers.Previous, NavigationStates.Default);
+#elif (!AsTemplate)
         //Configure navigation from Welcome Screen
         _sm.Configure(NavigationStates.Welcome)
             .Permit(NavigationTriggers.Next, NavigationStates.Initialize);
@@ -90,8 +109,10 @@ public class StateMachine : ReactiveObject
             .Permit(NavigationTriggers.Abort, NavigationStates.WashingAborted);
         _sm.Configure(NavigationStates.WashingComplete)
             .Permit(NavigationTriggers.Next, NavigationStates.Welcome);
-    }
-    
+#endif
+}
+
+#if (!AsTemplate)
     async Task StartOrCancelSequencing(Stateless.StateMachine<NavigationStates, NavigationTriggers>.Transition transition)
     {
         // when we transition from ReadyToSequence to Sequencing, start the sequencing
@@ -113,9 +134,11 @@ public class StateMachine : ReactiveObject
             await Task.Run(() => _sequencingService.CancelSequencing());
         }
     } 
+#endif
 
     private void AddPerStateHandlers()
     {
+#if (!AsTemplate)
         // reset the RunInfo and all views to their initial state after the first time we enter the Initial state
         this.WhenAnyValue(s => s.CurrentState)
             .Skip(1)
@@ -147,6 +170,7 @@ public class StateMachine : ReactiveObject
 
         // for actually controlling the sequencing, we have to use an async method because cancelling is blocking
         _sm.OnTransitionedAsync(StartOrCancelSequencing);
+#endif
     }
 
     public async Task SendTrigger(NavigationTriggers trigger)
