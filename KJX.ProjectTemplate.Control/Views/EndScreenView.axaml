@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:KJX.ProjectTemplate.Control.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="KJX.ProjectTemplate.Control.Views.WelcomeScreenView"
-             x:DataType="viewModels:WelcomeScreenViewModel">
+             x:Class="KJX.ProjectTemplate.Control.Views.EndScreenView"
+             x:DataType="viewModels:EndScreenViewModel">
     <TextBlock FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" 
                Text="{Binding Message}"/>
 </UserControl>

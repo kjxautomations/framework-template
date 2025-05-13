@@ -28,8 +28,8 @@ public enum NavigationStates
     Washing,
     WashingComplete,
     WashingAborted,
-    End
 #endif
+    End
 }
 
 public enum NavigationTriggers
@@ -65,7 +65,7 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
         new NavigationStateInfo<NavigationStates>(NavigationStates.SequencingComplete, "Sequencing Complete"),
         new NavigationStateInfo<NavigationStates>(NavigationStates.Washing, "Washing"),
 #endif
-
+        new NavigationStateInfo<NavigationStates>(NavigationStates.End, "End")
     ];
 
     public ObservableCollection<NavigationTriggerInfo<NavigationTriggers>> ButtonTriggers { get; } = new()

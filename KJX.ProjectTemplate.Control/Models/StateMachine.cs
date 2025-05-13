@@ -64,9 +64,10 @@ public class StateMachine : ReactiveObject
 #if (AsTemplate)
         //Configure navigation from Welcome Screen
         _sm.Configure(NavigationStates.Welcome)
-            .Permit(NavigationTriggers.Previous, NavigationStates.Default);
-        _sm.Configure(NavigationStates.Welcome)
-            .Permit(NavigationTriggers.Next, NavigationStates.Default);
+            .Permit(NavigationTriggers.Next, NavigationStates.End);
+
+        _sm.Configure(NavigationStates.End)
+            .Permit(NavigationTriggers.Previous, NavigationStates.Welcome);
 #elif (!AsTemplate)
         //Configure navigation from Welcome Screen
         _sm.Configure(NavigationStates.Welcome)
@@ -110,9 +111,13 @@ public class StateMachine : ReactiveObject
         _sm.Configure(NavigationStates.Washing)
             .Permit(NavigationTriggers.Abort, NavigationStates.WashingAborted);
         _sm.Configure(NavigationStates.WashingComplete)
+            .Permit(NavigationTriggers.Next, NavigationStates.End);
+        
+        //End
+        _sm.Configure(NavigationStates.End)
             .Permit(NavigationTriggers.Next, NavigationStates.Welcome);
 #endif
-}
+    }
 
 #if (!AsTemplate)
     async Task StartOrCancelSequencing(Stateless.StateMachine<NavigationStates, NavigationTriggers>.Transition transition)
