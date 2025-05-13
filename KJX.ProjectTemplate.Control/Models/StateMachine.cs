@@ -65,6 +65,8 @@ public class StateMachine : ReactiveObject
         //Configure navigation from Welcome Screen
         _sm.Configure(NavigationStates.Welcome)
             .Permit(NavigationTriggers.Previous, NavigationStates.Default);
+        _sm.Configure(NavigationStates.Welcome)
+            .Permit(NavigationTriggers.Next, NavigationStates.Default);
 #elif (!AsTemplate)
         //Configure navigation from Welcome Screen
         _sm.Configure(NavigationStates.Welcome)
