@@ -18,6 +18,7 @@ public enum NavigationStates
 {
     Default,
     Welcome,
+#if (!AsTemplate)
     Initialize,
     GatherRunInfo,
     ReadyToSequence,
@@ -27,6 +28,7 @@ public enum NavigationStates
     Washing,
     WashingComplete,
     WashingAborted,
+#endif
     End
 }
 
@@ -55,15 +57,15 @@ public class NavigationService : INavigationService<NavigationStates, Navigation
     public ObservableCollection<NavigationStateInfo<NavigationStates>> BreadcrumbStates { get; } =
     [
         new NavigationStateInfo<NavigationStates>(NavigationStates.Welcome, "Welcome") { IsActive = true },
-        new NavigationStateInfo<NavigationStates>(NavigationStates.Initialize, "Initialize Devices"),
 #if (!AsTemplate)
+        new NavigationStateInfo<NavigationStates>(NavigationStates.Initialize, "Initialize Devices"),
         new NavigationStateInfo<NavigationStates>(NavigationStates.GatherRunInfo, "Gather Run Info"),
         new NavigationStateInfo<NavigationStates>(NavigationStates.ReadyToSequence, "Ready to Sequence"),
         new NavigationStateInfo<NavigationStates>(NavigationStates.Sequencing, "Sequencing"),
         new NavigationStateInfo<NavigationStates>(NavigationStates.SequencingComplete, "Sequencing Complete"),
         new NavigationStateInfo<NavigationStates>(NavigationStates.Washing, "Washing"),
 #endif
-
+        new NavigationStateInfo<NavigationStates>(NavigationStates.End, "End")
     ];
 
     public ObservableCollection<NavigationTriggerInfo<NavigationTriggers>> ButtonTriggers { get; } = new()

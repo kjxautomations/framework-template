@@ -36,6 +36,9 @@
       <None Update="SystemConfigs\YourInstrument.ini">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="system_config.template.ini">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -49,5 +52,9 @@
       <ProjectReference Include="..\Lib\KJX.Core\KJX.Core.csproj" />
       <ProjectReference Include="..\Lib\KJX.DevicesUI\KJX.DevicesUI.csproj" />
       <ProjectReference Include="..\Lib\KJX.Devices\KJX.Devices.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets\" />
     </ItemGroup>
 </Project>
