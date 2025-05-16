@@ -1,8 +1,10 @@
 # **KJX Automations**
 
-Use our fully realized sample application to get a head start on your instrument
-control software (ICS). This example provides the infrastructure and patterns required for a 
-standard ICS application.
+Use our application template to get a head start on your instrument
+control software (ICS) needs. This example provides the infrastructure and patterns required for a 
+standard ICS application. Install the nuget package ([see below](#getting-started)) to install this template and get started.
+The package can also be used to generate a fully-realized sample application that encapsulates a 'typical' DNA sequencing workflow and 
+engineering application.
 
 ### Considerations for ICS
 
@@ -33,7 +35,21 @@ utilizing [Avalonia](https://avaloniaui.net/) for cross-platform support.
 
 ### Getting Started
 
-Getting Started
+This template repository is also available as an installable nuget package. Download the latest [Release](https://github.com/kjxautomations/framework-template/releases) and install 
+the package to begin using this in your IDE of choice.
+
+To install the nuget package via the CLI:
+
+```
+dotnet nuget install <path-to-pkg>
+```
+
+You can now select the template from your IDE.
+
+<p align="center">
+<img width="600" alt="Screenshot 2025-05-16 at 9 22 12 AM" src="https://github.com/user-attachments/assets/472df699-56b9-4d21-a899-bf1d5f266807" />
+</p>
+
 Open the solution file in the latest Visual Studio or Rider. The _Engineering_ project includes an interface that exposes manual device control. 
 The _Control_ project includes a wizard-style UI, offering a more guided workflow.
 
