@@ -41,7 +41,7 @@ the package to begin using this in your IDE of choice.
 To install the nuget package via the CLI:
 
 ```
-dotnet nuget install <path-to-pkg>
+dotnet new install <path-to-pkg>
 ```
 
 You can now select the template from your IDE.
