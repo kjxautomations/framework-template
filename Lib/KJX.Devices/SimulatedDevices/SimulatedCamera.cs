@@ -63,7 +63,6 @@ public class SimulatedCamera : DeviceBase, ICamera
     public IImageBuffer GetImage()
     {
         var index = (int)(Math.Abs(_xMotor.Position + _yMotor.Position)) % _images.Length;
-        System.Diagnostics.Debug.WriteLine($"Image index: {index}");
         IImageBuffer result = new  ManagedImageBuffer() { Buffer = _images[index].Buffer.Clone() as byte[], Resolution = _images[index].Resolution };
         var blurs = Math.Min(10, Math.Abs(_zMotor.Position*10));
         for (var blur = 0; blur < blurs; blur++)
