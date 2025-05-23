@@ -6,7 +6,7 @@ namespace KJX.Devices.Logic;
 public abstract class SensorBase : DeviceBase, ISensor
 {
     private double _value;
-    private Func<double>? _syntheticValueFunction;
+    private Func<double> _syntheticValueFunction;
 
     public string Name { get; init; }
     
@@ -22,9 +22,9 @@ public abstract class SensorBase : DeviceBase, ISensor
     }
 
     public abstract void ReadSensor();
-    public event Action<double>? ValueUpdated;
+    public event Action<double> ValueUpdated;
 
-    public void OverrideSensorValue(Func<double>? valueFunction)
+    public void OverrideSensorValue(Func<double> valueFunction)
     {
         _syntheticValueFunction = valueFunction;
     }

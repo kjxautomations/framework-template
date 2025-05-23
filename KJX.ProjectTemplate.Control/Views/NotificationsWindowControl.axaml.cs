@@ -12,7 +12,7 @@ public partial class NotificationsWindowControl : UserControl
         InitializeComponent();
         
     }
-    private void DataGrid_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void DataGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         foreach (NotificationRecord item in e.AddedItems)
         {
@@ -22,7 +22,7 @@ public partial class NotificationsWindowControl : UserControl
     
     public event Action Close;
 
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    private void Button_OnClick(object sender, RoutedEventArgs e)
     {
         Close?.Invoke();
     }

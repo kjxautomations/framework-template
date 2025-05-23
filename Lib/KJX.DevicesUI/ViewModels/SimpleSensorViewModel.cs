@@ -85,7 +85,7 @@ public class SimpleSensorViewModel : ViewModelBase
                 Value = value;
             });
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // this catches a timing issue when the UI is closed. It is safe to eat this exception
         }

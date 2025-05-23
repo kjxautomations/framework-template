@@ -47,7 +47,7 @@ public class NotificationsViewModel : ViewModelBase
         }
     }
     
-    private void RecordsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void RecordsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.OldItems != null)
             foreach (NotificationRecord removed in e.OldItems)
@@ -57,7 +57,7 @@ public class NotificationsViewModel : ViewModelBase
                 added.PropertyChanged += NotificationOnPropertyChanged;
         UpdateCounters();
     }
-    private void NotificationOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void NotificationOnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(NotificationRecord.HasBeenRead))
             return;

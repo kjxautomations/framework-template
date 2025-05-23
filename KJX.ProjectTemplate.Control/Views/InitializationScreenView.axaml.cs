@@ -11,9 +11,4 @@ public partial class InitializationScreenView : UserControl
     {
         InitializeComponent();
     }
-    
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
 }

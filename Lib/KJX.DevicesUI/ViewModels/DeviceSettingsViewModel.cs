@@ -7,12 +7,12 @@ using KJX.Devices.Logic;
 
 public class DeviceSettingsViewModel
 {
-    public ObservableCollection<DevicePropertyViewModel>? BasicProperties { get; }
+    public ObservableCollection<DevicePropertyViewModel> BasicProperties { get; }
     
-    public ObservableCollection<KeyValuePair<string, ObservableCollection<DevicePropertyViewModel>>>? 
+    public ObservableCollection<KeyValuePair<string, ObservableCollection<DevicePropertyViewModel>>> 
         AdvancedProperties { get; }
     
-    public IDevice? Device { get; }
+    public IDevice Device { get; }
     public DeviceSettingsViewModel() { }
     
     public bool HasAdvancedProperties => AdvancedProperties?.Count > 0;

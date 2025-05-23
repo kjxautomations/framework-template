@@ -16,11 +16,11 @@ public class FirmwareConnection(string ipAddress, ushort port) : DeviceBase
     public required ILogger<FirmwareConnection> Logger { get; init; }
     public new ushort InitializationGroup => 5;
 
-    private Socket? _socket;
+    private Socket _socket;
     private readonly Dictionary<UInt32, CallContext> _calls = new Dictionary<UInt32, CallContext>();
     private UInt32 _sequenceNumber = 0;
     private readonly object _lock = new object();
-    private AsyncSocketReceiver<FirmwareConnection>? _asyncSocketReceiver = null;
+    private AsyncSocketReceiver<FirmwareConnection> _asyncSocketReceiver = null;
 
     protected override void DoInitialize()
     {
@@ -69,15 +69,15 @@ public class FirmwareConnection(string ipAddress, ushort port) : DeviceBase
     /// </summary>
     public void SendRequest(NodeId recipient, Request request)
     {
-        Response? response = null;
+        Response response = null;
         SendCommandGetResponse(recipient, request, (r) => { response = r; });
-        if (response?.Nak is not null)
+        if (response is { Nak: not null })
         {
             Logger.LogError("Failed to send request: {ErrorCode}", response.Nak.ErrorCode);
             throw new ApplicationException("Failed to send request");
         }
 
-        if (response?.Ack is null)
+        if (response == null || response.Ack is null)
         {
             Logger.LogError("Failed to send request: no response");
             throw new ApplicationException("Failed to send request");

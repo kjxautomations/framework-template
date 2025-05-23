@@ -18,7 +18,7 @@ public class NotificationRecord : INotifyPropertyChanged
     public required string Message { get; init; }
     public required NotificationType NotificationType { get; init; }
     public required DateTime When { get; init; }
-    public Exception? Exception { get; init; }
+    public Exception Exception { get; init; }
 
     public bool HasBeenRead
     {
@@ -26,14 +26,14 @@ public class NotificationRecord : INotifyPropertyChanged
         set => SetField(ref _hasBeenRead, value);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    private void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return;
         field = value;

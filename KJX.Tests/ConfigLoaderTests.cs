@@ -5,7 +5,7 @@ namespace KJX.Tests;
 #pragma warning disable CS8602  
 public class ConfigLoaderTests
 {
-    public static HashSet<ConfigSection> LoadConfig(string configFile, string? systemsDirectory = null)
+    public static HashSet<ConfigSection> LoadConfig(string configFile, string systemsDirectory = null)
     {
         using var stream = new FileStream(configFile, FileMode.Open, FileAccess.Read);
         return ConfigLoader.LoadConfig(stream, systemsDirectory);
