@@ -22,7 +22,7 @@ public interface ISensor : IDevice
     /// <summary>
     /// An event that is fired every time the sensor receives a new value
     /// </summary>
-    public event Action<double>? ValueUpdated;
+    public event Action<double> ValueUpdated;
     
     /// <summary>
     /// A method for overriding the behavior of the sensor for testing purposes

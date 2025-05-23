@@ -55,7 +55,7 @@ public class SimpleMotorControlViewModel : ViewModelBase
         }
         catch (Exception e)
         {
-            Dispatcher.UIThread.Invoke(() => 
+            await Dispatcher.UIThread.Invoke(() => 
                 MessageBoxManager.GetMessageBoxStandard("Error Moving Motor to Position",
                 e.Message, ButtonEnum.Ok, Icon.Error).ShowWindowAsync());
         }

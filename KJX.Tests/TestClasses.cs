@@ -21,7 +21,7 @@ public interface IInitializable
 public class DummyMotor : IMotorInterface, IInitializable
 {
     [Group("Basic")]
-    public string? DummyProp { get; init; }
+    public string DummyProp { get; init; }
     [Group("Basic")]
     public int IntProp { get; set; }
     public void MoveTo(double location)
@@ -45,7 +45,7 @@ public class DummyMotorWithNotifyPropertyChanged : IMotorInterface, IInitializab
 {
     private double _position;
     private int _intProp;
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     public void RaisePropertyChanged(string propertyName)
     {
@@ -132,7 +132,7 @@ public class DummyComboMotor : IMotorInterface, IInitializable
 
 public class ObjectWithPropertyValidation
 {
-    [Required] public string? RequiredString { get; set; }
+    [Required] public string RequiredString { get; set; }
 
     [System.ComponentModel.DataAnnotations.Range(0, 100)]
     public int RangeInt { get; set; }
@@ -144,18 +144,18 @@ public interface IUnsupportedInterface
 
 public class ObjectWithRequiredPropertiesAttribute
 {
-    [Required] public string? RequiredString { get; set; }
+    [Required] public string RequiredString { get; set; }
 
     public int NotRequiredInt { get; set; }
 }
 public class ObjectWithRequiredPropertiesKeyword
 {
-    public required string? RequiredString { get; set; }
+    public required string RequiredString { get; set; }
 
     public int NotRequiredInt { get; set; }
     
     // we don't verify these - leave these for the DI container
-    public required IInitializable? RequiredObject { get; set; }
+    public required IInitializable RequiredObject { get; set; }
 }
 
 

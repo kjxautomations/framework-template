@@ -16,7 +16,7 @@ public class TestSimulatedLinearMotor
         motor.PropertyChanged += MotorOnPropertyChanged;
         string propertyName = null;
 
-        void MotorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        void MotorOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             propertyName = e.PropertyName;
         }

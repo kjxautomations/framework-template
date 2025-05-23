@@ -23,7 +23,7 @@ public class AsyncSocketReceiver<T>
     private AutoResetEvent _responsesAvailable = new(false);
     private ILogger<T> _logger;
 
-    public event EventHandler<Response>? ResponseReceived;
+    public event EventHandler<Response> ResponseReceived;
 
     public AsyncSocketReceiver(Socket socket, ILogger<T> logger)
     {

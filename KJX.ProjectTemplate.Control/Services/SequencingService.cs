@@ -34,7 +34,7 @@ public class SequencingService : INotifyPropertyChanged
     private readonly ICamera _camera;
     private readonly IMotor _xMotor;
     private readonly IMotor _yMotor;
-    private Task? _sequencingTask;
+    private Task _sequencingTask;
     private readonly IMotor _zMotor;
     private bool _cancel;
     private SequencingState _state;
@@ -45,8 +45,8 @@ public class SequencingService : INotifyPropertyChanged
         private set => SetField(ref _state, value);
     }
 
-    public event Action<IImageBuffer>? ImageCaptured;
-    public event StepChanged? StepChanged;
+    public event Action<IImageBuffer> ImageCaptured;
+    public event StepChanged StepChanged;
 
     public SequencingService(RunInfo runInfo, ICamera camera,
         [KeyFilter("XMotor")] IMotor xMotor,
@@ -148,14 +148,14 @@ public class SequencingService : INotifyPropertyChanged
     }
 
     //INotifyPropertyChanged implementation
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;
         field = value;

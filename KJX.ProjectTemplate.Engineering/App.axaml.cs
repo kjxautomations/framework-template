@@ -30,12 +30,12 @@ namespace KJX.ProjectTemplate.Engineering;
 
 public partial class App : Application
 {
-    public IContainer? Container { get; private set; }
-    public ILogger? Logger { get; private set; }
+    public IContainer Container { get; private set; }
+    public ILogger Logger { get; private set; }
     
-    public string? ConfigPath { get; private set; }
+    public string ConfigPath { get; private set; }
     
-    public ConfigurationHandler? ConfigHandler { get; private set; }
+    public ConfigurationHandler ConfigHandler { get; private set; }
     
     public override void Initialize()
     {

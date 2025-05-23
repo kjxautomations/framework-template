@@ -33,8 +33,8 @@ namespace KJX.ProjectTemplate.Control;
 
 public partial class App : Application
 {
-    public IContainer? Container { get; private set; }
-    public ILogger? Logger { get; private set; }
+    public IContainer Container { get; private set; }
+    public ILogger Logger { get; private set; }
 
     public override void Initialize()
     {
@@ -108,7 +108,6 @@ public partial class App : Application
         builder.RegisterType<SequencingService>().AsSelf().WithAttributeFiltering().SingleInstance();
         builder.RegisterType<TemperatureMonitoringService>().AsSelf().As<IBackgroundService>().WithAttributeFiltering().SingleInstance();
 #endif
-        
         Container = builder.Build();
         Logger = Container.Resolve<ILogger<Application>>();
         // add logging
@@ -131,7 +130,7 @@ public partial class App : Application
         
         // start up the state machine
         var stateMachine = Container.Resolve<StateMachine>();
-        stateMachine.SendTrigger(NavigationTriggers.Next);
+        stateMachine.SendTrigger(NavigationTriggers.Next).Wait();
     }
     
 

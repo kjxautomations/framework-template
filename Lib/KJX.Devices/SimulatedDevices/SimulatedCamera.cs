@@ -14,8 +14,7 @@ namespace KJX.Devices;
 public class SimulatedCamera : DeviceBase, ICamera
 {
     public string Name { get; }
-    int lastImageIndex = 0;
-
+    
     private IImageBuffer[] _images;
     private readonly IMotor _xMotor;
     private readonly IMotor _yMotor;

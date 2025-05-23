@@ -30,7 +30,7 @@ public class SequencingScreenViewModel : StateViewModelBase<NavigationStates, Na
 
     private static string StartingColor => "gray";
     [Reactive] public IImage Image { get; private set; }
-    [Reactive] public string? StatusMessage { get; private set; }
+    [Reactive] public string StatusMessage { get; private set; }
     public ObservableCollection<ObservableCollection<string>> TileColors { get; set; } = [];
 
     
