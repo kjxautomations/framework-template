@@ -109,7 +109,6 @@ public partial class App : Application
         builder.RegisterType<TemperatureMonitoringService>().AsSelf().As<IBackgroundService>().WithAttributeFiltering().SingleInstance();
 #endif
         Container = builder.Build();
-        Logger = Container.Resolve<ILogger<Application>>();
         // add logging
         // Configure NLog
         // load an XMLReader to read the nlog.config embedded resource
@@ -119,8 +118,11 @@ public partial class App : Application
 
         // Configure logging using NLog
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+#pragma warning disable CS0618 // Type or member is obsolete
         loggerFactory.AddNLog();
-        
+#pragma warning restore CS0618 // Type or member is obsolete
+        Logger = Container.Resolve<ILogger<Application>>();
+
         // resolve the services that need to be started
         var backgroundServices = Container.Resolve<IEnumerable<IBackgroundService>>();
         foreach (var svc in backgroundServices)

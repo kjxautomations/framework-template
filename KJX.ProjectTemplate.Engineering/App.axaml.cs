@@ -96,7 +96,6 @@ public partial class App : Application
         //TODO: what to do about the notification service
         
         Container = builder.Build();
-        Logger = Container.Resolve<ILogger<Application>>();
         
         //Add logging, configure NLog and load the XMLReader to read the nlog.config resource
         using var reader = XmlReader.Create(Assembly.GetExecutingAssembly().GetManifestResourceStream("KJX.ProjectTemplate.Engineering.nlog.config"));
@@ -105,7 +104,12 @@ public partial class App : Application
         
         //Configure logging using NLog
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+#pragma warning disable CS0618 // Type or member is obsolete
         loggerFactory.AddNLog();
+#pragma warning restore CS0618 // Type or member is obsolete
+
+        Logger = Container.Resolve<ILogger<Application>>();
+
         
         //Resolve the services that need to be started
         var backgroundServices = Container.Resolve<IEnumerable<IBackgroundService>>();
