@@ -63,7 +63,7 @@ public class SimpleCameraViewModel : ViewModelBase
     public IImage Image { get; private set; }
 
     private Timer _timer = new Timer(TimeSpan.FromMilliseconds(50)) { AutoReset = false };
-    void TimerOnElapsed(object? sender, ElapsedEventArgs e)
+    void TimerOnElapsed(object sender, ElapsedEventArgs e)
     {
         var img = _camera.GetImage();
         Image = img.ConvertImage();

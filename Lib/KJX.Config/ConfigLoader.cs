@@ -14,13 +14,13 @@ public static class ConfigLoader
     private const string InterfacePrefix = "_interface";
     private const string SimulatedLabel = "_simulated";
 
-    public static HashSet<ConfigSection> LoadConfig(Stream configFile, string? systemsDirectory = null)
+    public static HashSet<ConfigSection> LoadConfig(Stream configFile, string systemsDirectory = null)
     {
         // load the main config file
         try
         {
             var parser = new Ini(configFile);
-            string? systemType = null;
+            string systemType = null;
             // get the [System] SystemType parameter
             var systemParam = parser.Where((section => section.Name == SystemSection)).ToList();
             if (systemParam.Count == 1)
@@ -112,7 +112,7 @@ public static class ConfigLoader
         }
     }
 
-    public static object? ParseObject(Type type, string? itemValue)
+    public static object ParseObject(Type type, string itemValue)
     {
         var converter = TypeDescriptor.GetConverter(type);
         var convertedObject = converter.ConvertFromString(itemValue);

@@ -8,7 +8,7 @@ namespace KJX.Devices;
 public class SimulatedTemperatureSensor : SensorBase
 {
     public required ILogger<SimulatedTemperatureSensor> Logger { get; init; }
-    private Timer? _timer;
+    private Timer _timer;
 
     public SimulatedTemperatureSensor(string name = "") : base(name)
     {
@@ -42,7 +42,7 @@ public class SimulatedTemperatureSensor : SensorBase
         _timer?.Start();
     }
 
-    private void ReadSensor(object? sender, ElapsedEventArgs e)
+    private void ReadSensor(object sender, ElapsedEventArgs e)
     {
         ReadSensor();
     }

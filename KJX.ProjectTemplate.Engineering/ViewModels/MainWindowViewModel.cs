@@ -59,7 +59,7 @@ public class MainWindowViewModel : ViewModelBase
         PaneOpenCloseIcon = IsPaneOpen ? "-" : "+";
     }
 
-    private void MenuItemSelection(NavigationMenuType? value)
+    private void MenuItemSelection(NavigationMenuType value)
     {
         if (value is null) return;
         var instance = (Application.Current as App).Container.Resolve(value.ViewModel);

@@ -10,14 +10,14 @@ using ReactiveUI.Fody.Helpers;
 
 public class DevicePropertyViewModel : INotifyPropertyChanged
 {
-    private IDevice? Device { get; }
-    private PropertyInfo? Property { get; }
-    private RangeAttribute? _rangeAttribute;
+    private IDevice Device { get; }
+    private PropertyInfo Property { get; }
+    private RangeAttribute _rangeAttribute;
     private bool _isBusy;
 
 
-    public string? Name => Property?.Name;
-    public string? Group => Property?.GetCustomAttribute<GroupAttribute>()?.Group ?? null;
+    public string Name => Property?.Name;
+    public string Group => Property?.GetCustomAttribute<GroupAttribute>()?.Group ?? null;
 
     public bool IsBusy
     {
@@ -30,10 +30,10 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
         }
     }
 
-    public object? Min { get; }
-    public object? Max { get; }
+    public object Min { get; }
+    public object Max { get; }
 
-    public object? Value
+    public object Value
     {
         get => Property?.GetValue(Device);
         set
@@ -50,7 +50,7 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
         }
     }
 
-    public object? Increment
+    public object Increment
     {
         get
         {
@@ -65,7 +65,7 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
     public bool IsEnum => Property != null && Property.PropertyType.IsEnum;
     public bool IsString => Property != null && Property.PropertyType == typeof(string);
     
-    public Array? EnumValues => IsEnum ? Enum.GetValues(Property.PropertyType) : null;
+    public Array EnumValues => IsEnum ? Enum.GetValues(Property.PropertyType) : null;
 
     public DevicePropertyViewModel(IDevice device, PropertyInfo property)
     {
@@ -93,7 +93,7 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
         Property = null;
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
     protected void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

@@ -33,8 +33,8 @@ namespace KJX.ProjectTemplate.Control;
 
 public partial class App : Application
 {
-    public IContainer? Container { get; private set; }
-    public ILogger? Logger { get; private set; }
+    public IContainer Container { get; private set; }
+    public ILogger Logger { get; private set; }
 
     public override void Initialize()
     {
@@ -108,9 +108,7 @@ public partial class App : Application
         builder.RegisterType<SequencingService>().AsSelf().WithAttributeFiltering().SingleInstance();
         builder.RegisterType<TemperatureMonitoringService>().AsSelf().As<IBackgroundService>().WithAttributeFiltering().SingleInstance();
 #endif
-        
         Container = builder.Build();
-        Logger = Container.Resolve<ILogger<Application>>();
         // add logging
         // Configure NLog
         // load an XMLReader to read the nlog.config embedded resource
@@ -120,8 +118,11 @@ public partial class App : Application
 
         // Configure logging using NLog
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+#pragma warning disable CS0618 // Type or member is obsolete
         loggerFactory.AddNLog();
-        
+#pragma warning restore CS0618 // Type or member is obsolete
+        Logger = Container.Resolve<ILogger<Application>>();
+
         // resolve the services that need to be started
         var backgroundServices = Container.Resolve<IEnumerable<IBackgroundService>>();
         foreach (var svc in backgroundServices)
@@ -131,7 +132,7 @@ public partial class App : Application
         
         // start up the state machine
         var stateMachine = Container.Resolve<StateMachine>();
-        stateMachine.SendTrigger(NavigationTriggers.Next);
+        stateMachine.SendTrigger(NavigationTriggers.Next).Wait();
     }
     
 
