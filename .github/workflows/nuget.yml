@@ -1,0 +1,23 @@
+name: Deploy to releases
+
+on: ['push']
+        
+jobs:
+  build:
+    runs-on: [windows-latest, ubuntu-latest, macos-latest]
+    
+    steps:
+      - uses: actions/checkout@v3
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Restore Dependencies
+        run: dotnet restore
+        
+      - name: Build package
+        run: dotnet build --configuration Release
+        
+      
