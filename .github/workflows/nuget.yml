@@ -20,4 +20,7 @@ jobs:
       - name: Build package
         run: dotnet build --configuration Release --no-restore
         
+      - name: Package project
+        run: dotnet pack --no-restore --no-build --configuration Release
+        
       
