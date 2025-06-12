@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Control", "KJX.ProjectTemplate.Control\KJX.ProjectTemplate.Control.csproj", "{A82A3BCC-12C7-4789-8515-4352C059247E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Control", "src\KJX.ProjectTemplate.Control\KJX.ProjectTemplate.Control.csproj", "{A82A3BCC-12C7-4789-8515-4352C059247E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Engineering", "KJX.ProjectTemplate.Engineering\KJX.ProjectTemplate.Engineering.csproj", "{20706429-F8EF-4F56-984C-EF985BD067B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.ProjectTemplate.Engineering", "src\KJX.ProjectTemplate.Engineering\KJX.ProjectTemplate.Engineering.csproj", "{20706429-F8EF-4F56-984C-EF985BD067B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Tests", "KJX.Tests\KJX.Tests.csproj", "{0925550B-CD28-4693-8D7E-1D2FA9B4B4B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Tests", "src\KJX.Tests\KJX.Tests.csproj", "{0925550B-CD28-4693-8D7E-1D2FA9B4B4B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJX.Config", "src\Lib\KJX.Config\KJX.Config.csproj", "{E44E138B-1604-454A-80EB-7CF26358D5E2}"
 EndProject
