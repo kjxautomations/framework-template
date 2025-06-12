@@ -5,8 +5,6 @@ on: ['push']
 jobs:
   build:
     runs-on: windows-latest
-    env:
-      PROJECT_PATH: ./src/
     
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +21,7 @@ jobs:
         run: dotnet restore ./src
         
       - name: Build package
-        run: dotnet build $PROJECT_PATH --configuration Release --no-restore
+        run: dotnet build ./src --configuration Release --no-restore
         
       - name: Package project
         run: dotnet pack --no-restore --no-build --configuration Release
