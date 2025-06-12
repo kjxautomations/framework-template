@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageType>Template</PackageType>
+        <PackageVersion>1.0.0</PackageVersion>
+        <PackageId>KJX.ProjectTemplate</PackageId>
+        <Title>KJX Automation Instrumentation Control Package</Title>
+        <Authors>KJX Automations, LLC</Authors>
+        <Description>A framework for creating instrumentation control and engineering software applications</Description>
+        <PackageTags>dotnet-new;templates;instrumentation</PackageTags>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <RepositoryUrl>https://github.com/kjxautomations/framework-template</RepositoryUrl>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Content Include="framework-template\**\*" 
+                 Exclude="framework-template\src\**\bin\**;framework-template\src\**\obj\**;framework-template\src\FirmwareExamples\**\**;framework-template\src\FirmwareExamples\**\**;framework-template\.git\**\**;framework-template\.idea\**\**" />
+        <Compile Remove="**\*" />
+    </ItemGroup>
+
+</Project>
