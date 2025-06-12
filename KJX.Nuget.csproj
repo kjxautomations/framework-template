@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <PackageType>Template</PackageType>
+        <PackageVersion>1.0.0</PackageVersion>
         <PackageId>KJX.ProjectTemplate</PackageId>
         <Title>KJX Automation Instrumentation Control Package</Title>
         <Authors>KJX Automations, LLC</Authors>
