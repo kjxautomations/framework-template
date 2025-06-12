@@ -1,6 +1,9 @@
 name: Deploy to releases
 
-on: ['push']
+on:
+  push:
+    tags:
+      - 'v*'
         
 jobs:
   build:
@@ -27,6 +30,7 @@ jobs:
         run: dotnet restore
         
       - name: Package project
-        run: dotnet pack --no-restore --no-build --configuration Release
+        run: dotnet pack --no-restore --no-build --configuration Release -o ./nupkgs /p:PackageVersion=${GITHUB_REF##*/v}
+
         
       
