@@ -17,8 +17,8 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <Content Include="framework-template\**\*" 
-                 Exclude="framework-template\src\**\bin\**;framework-template\src\**\obj\**;framework-template\src\FirmwareExamples\**\**;framework-template\src\FirmwareExamples\**\**;framework-template\.git\**\**;framework-template\.idea\**\**" />
+        <Content Include="src\**\*" 
+                 Exclude="src\**\bin\**;framework-template\src\**\obj\**;src\FirmwareExamples\**\**;src\FirmwareExamples\**\**;src\.git\**\**;src\.idea\**\**" />
         <Compile Remove="**\*" />
     </ItemGroup>
 
