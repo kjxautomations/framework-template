@@ -14,11 +14,14 @@ jobs:
         with:
           dotnet-version: 8.0.x
       
+      - name: Print working directory
+        run: pwd
+        
       - name: Restore Dependencies
-        run: cd src | dotnet restore
+        run: dotnet restore --packages src
         
       - name: Build package
-        run: cd src | dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore
         
       - name: Package project
         run: dotnet pack --no-restore --no-build --configuration Release
