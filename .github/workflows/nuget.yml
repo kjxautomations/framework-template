@@ -24,6 +24,6 @@ jobs:
         run: dotnet build ./src --configuration Release --no-restore
         
       - name: Package project
-        run: dotnet pack --no-restore --no-build --configuration Release
+        run: dotnet pack ./src --no-restore --no-build --configuration Release
         
       
