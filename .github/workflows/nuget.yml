@@ -1,7 +1,10 @@
 name: Deploy to releases
 
-on: ['push']
-        
+on:
+  push:
+    tags:
+      "v*"
+    
 jobs:
   build:
     runs-on: windows-latest
