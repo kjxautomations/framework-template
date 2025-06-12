@@ -172,8 +172,8 @@
 
 
     <ItemGroup>
-      <ProjectReference Include="..\Lib\KJX.Config\KJX.Config.csproj" />
-      <ProjectReference Include="..\Lib\KJX.Core\KJX.Core.csproj" />
-      <ProjectReference Include="..\Lib\KJX.Devices\KJX.Devices.csproj" />
+      <ProjectReference Include="..\src\Lib\KJX.Config\KJX.Config.csproj" />
+      <ProjectReference Include="..\src\Lib\KJX.Core\KJX.Core.csproj" />
+      <ProjectReference Include="..\src\Lib\KJX.Devices\KJX.Devices.csproj" />
     </ItemGroup>
 </Project>
