@@ -1,9 +1,6 @@
 name: Deploy to releases
 
-on:
-  push:
-    tags:
-      - 'v*'
+on: ['push']
         
 jobs:
   build:
@@ -19,25 +16,19 @@ jobs:
       
       - name: Print working directory
         run: pwd
-        
-      - name: Restore source dependencies
-        run: dotnet restore ./src
-        
-      - name: Build package
-        run: dotnet build ./src --configuration Release --no-restore
-        
-      - name: Restore Nuget project dependencies
-        run: dotnet restore
 
-      - name: Extract tag version
-        id: version
-        run: echo "PACKAGE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Extract version from Git tag
+        shell: bash
+        run: |
+            VERSION="${GITHUB_REF##*/}"
+            echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+            echo "✅ Extracted PACKAGE_VERSION=$VERSION"
+
+      - name: Confirm version value
+        run: echo "💡 Version for packaging is ${{ env.PACKAGE_VERSION }}"
       
       - name: Debug the version
         run: echo "Using version ${{ env.PACKAGE_VERSION }}"
-        
-      - name: Package project
-        run: dotnet pack --no-restore --no-build --configuration Release -o ./nupkgs -p:PackageVersion=${{ env.PACKAGE_VERSION }}
 
         
       
