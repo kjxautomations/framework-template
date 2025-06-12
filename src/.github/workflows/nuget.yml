@@ -18,7 +18,7 @@ jobs:
         run: pwd
         
       - name: Restore Dependencies
-        run: dotnet restore --packages src
+        run: dotnet restore
         
       - name: Build package
         run: dotnet build --configuration Release --no-restore
