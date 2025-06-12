@@ -32,9 +32,10 @@ jobs:
       - name: Extract version from Git tag
         shell: bash
         run: |
-            VERSION="${GITHUB_REF##*/}"
-            echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
-            echo "✅ Extracted PACKAGE_VERSION=$VERSION"
+            RAW_VERSION="${GITHUB_REF##*/}"
+            CLEANED_VERSION="$RAW_VERSION#v"
+            echo "PACKAGE_VERSION=$CLEANED_VERSION" >> $GITHUB_ENV
+            echo "Extracted PACKAGE_VERSION=$CLEANED_VERSION"
 
       - name: Confirm version value
         run: echo "Version for packaging is ${{ env.PACKAGE_VERSION }}"
