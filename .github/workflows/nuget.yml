@@ -51,3 +51,11 @@ jobs:
         
       - name: Push project to releases
         run: dotnet nuget push ${{ env.PKG_OUTPUT_DIR }}\KJX.ProjectTemplate.${{ env.PACKAGE_VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}
+        
+      - name: Upload .nupkg to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: ${{ env.PKG_OUTPUT_DIR }}\KJX.ProjectTemplate.${{ env.PACKAGE_VERSION }}.nupkg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
