@@ -1,0 +1,72 @@
+name: Deploy to releases
+
+on:
+  push:
+    tags:
+      "v*"
+    
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      NUGET_SOURCE_URL: 'https://nuget.pkg.github.com/kjxautomations/index.json'
+      PKG_OUTPUT_DIR: '${{ github.workspace }}\output'
+    
+    steps:
+      - uses: actions/checkout@v4
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      
+      - name: Print working directory
+        run: pwd
+        
+      - name: Restore source dependencies
+        run: dotnet restore ./src
+        
+      - name: Build package
+        run: dotnet build ./src --configuration Release --no-restore
+        
+      - name: Restore Nuget project dependencies
+        run: dotnet restore
+
+      - name: Extract version from Git tag
+        shell: bash
+        run: |
+            RAW_VERSION="${GITHUB_REF##*/v}"
+            CLEANED_VERSION="$RAW_VERSION"
+            echo "PACKAGE_VERSION=$CLEANED_VERSION" >> $GITHUB_ENV
+            echo "Extracted PACKAGE_VERSION=$CLEANED_VERSION"
+
+      - name: Confirm version value
+        run: echo "Version for packaging is ${{ env.PACKAGE_VERSION }}"
+
+      - name: Detect if pre-release
+        id: prerelease
+        shell: bash
+        run: |
+          if [[ "${{ env.PACKAGE_VERSION }}" == *"-"* ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          fi
+        
+      - name: Package project
+        run: dotnet pack --no-restore --no-build --configuration Release -o ${{ env.PKG_OUTPUT_DIR }} -p:PackageVersion=${{ env.PACKAGE_VERSION }}
+        
+      - name: Confirm package was built
+        run: ls ${{ env.PKG_OUTPUT_DIR }}
+        
+      - name: Push project to releases
+        run: dotnet nuget push ${{ env.PKG_OUTPUT_DIR }}\KJX.ProjectTemplate.${{ env.PACKAGE_VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}
+        
+      - name: Upload .nupkg to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: ${{ env.PKG_OUTPUT_DIR }}\KJX.ProjectTemplate.${{ env.PACKAGE_VERSION }}.nupkg
+          prerelease: ${{ steps.prerelease.outputs.prerelease }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

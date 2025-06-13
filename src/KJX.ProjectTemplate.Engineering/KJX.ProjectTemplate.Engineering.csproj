@@ -48,13 +48,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Assets\" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Lib\KJX.Config\KJX.Config.csproj" />
       <ProjectReference Include="..\Lib\KJX.Core\KJX.Core.csproj" />
       <ProjectReference Include="..\Lib\KJX.DevicesUI\KJX.DevicesUI.csproj" />
       <ProjectReference Include="..\Lib\KJX.Devices\KJX.Devices.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Assets\" />
     </ItemGroup>
 </Project>
