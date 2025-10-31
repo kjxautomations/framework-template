@@ -8,7 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 using KJX.Config;
 using KJX.Core;
 using KJX.Core.Interfaces;
@@ -97,18 +97,23 @@ public partial class App : Application
         
         Container = builder.Build();
         
-        //Add logging, configure NLog and load the XMLReader to read the nlog.config resource
-        using var reader = XmlReader.Create(Assembly.GetExecutingAssembly().GetManifestResourceStream("KJX.ProjectTemplate.Engineering.nlog.config"));
-        LogManager.Configuration = new XmlLoggingConfiguration(reader);
-        var serviceProvider = new AutofacServiceProvider(Container);
-        
-        //Configure logging using NLog
-        var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-#pragma warning disable CS0618 // Type or member is obsolete
-        loggerFactory.AddNLog();
-#pragma warning restore CS0618 // Type or member is obsolete
+            //Add logging, configure NLog and load the XMLReader to read the nlog.config resource
+            using var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("KJX.ProjectTemplate.Engineering.nlog.config"));
+            LogManager.Configuration = new XmlLoggingConfiguration(reader, "nlog.config");
+            
+            // Create a service collection to configure logging properly
+            var services = new ServiceCollection();
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddNLog();
+            });
+            
+            var serviceProvider = new AutofacServiceProvider(Container);
 
-        Logger = Container.Resolve<ILogger<Application>>();
+            // Get the logger factory (NLog is already configured through the service collection)
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            Logger = Container.Resolve<ILogger<Application>>();
 
         
         //Resolve the services that need to be started
