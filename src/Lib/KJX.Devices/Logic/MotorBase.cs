@@ -113,7 +113,7 @@ public abstract class StepperMotorBase : MotorBase, IStepperMotor
         Name = name;
     }
     
-    private uint _stepsPerUnit;
+    private uint _stepsPerUnit = 1;
     
     public uint StepsPerUnit
     {
