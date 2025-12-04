@@ -7,12 +7,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="viewModels:DeviceShowcaseViewModel"
              x:Class="KJX.ProjectTemplate.Engineering.Views.DeviceShowcaseView">
-    <StackPanel HorizontalAlignment="Center">
+    <StackPanel HorizontalAlignment="Stretch">
         <Label Content="{Binding HeaderLabel}" 
                HorizontalAlignment="Center" Margin="5"
                FontSize="30"
                FontWeight="Bold"/>
-        <TabControl>
+        <TabControl HorizontalAlignment="Stretch">
           <TabItem Header="Motors">
               <Border>
                   <ItemsControl ItemsSource="{Binding Motors}">

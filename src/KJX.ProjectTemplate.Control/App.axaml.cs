@@ -10,7 +10,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 using KJX.Core;
 using KJX.Config;
 using KJX.Core.Interfaces;
@@ -112,15 +112,21 @@ public partial class App : Application
         // add logging
         // Configure NLog
         // load an XMLReader to read the nlog.config embedded resource
-        using var reader = XmlReader.Create(Assembly.GetExecutingAssembly().GetManifestResourceStream("KJX.ProjectTemplate.Control.nlog.config"));
-        LogManager.Configuration = new XmlLoggingConfiguration(reader);
+        using var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("KJX.ProjectTemplate.Control.nlog.config"));
+        LogManager.Configuration = new XmlLoggingConfiguration(reader, "nlog.config");
+        
+        // Create a service collection to configure logging properly
+        var services = new ServiceCollection();
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.ClearProviders();
+            loggingBuilder.AddNLog();
+        });
+        
         var serviceProvider = new AutofacServiceProvider(Container);
 
-        // Configure logging using NLog
+        // Configure logging using NLog - no need to call AddNLog on ILoggerFactory anymore
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-#pragma warning disable CS0618 // Type or member is obsolete
-        loggerFactory.AddNLog();
-#pragma warning restore CS0618 // Type or member is obsolete
         Logger = Container.Resolve<ILogger<Application>>();
 
         // resolve the services that need to be started

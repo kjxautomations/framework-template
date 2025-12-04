@@ -26,7 +26,7 @@ public class ConfigLoaderTests
         Assert.That(cfg.Count, Is.EqualTo(1)); 
         var xmotor = cfg.First(x => x.Name == "XMotor");
         Assert.That(xmotor, Is.Not.Null);
-        Assert.That(typeof(DummyXMotor), Is.SameAs(xmotor.Type));
+        Assert.That(xmotor.Type, Is.SameAs(typeof(DummyXMotor)));
         Assert.That(xmotor.Interfaces.Contains(typeof(IInitializable)), Is.True); 
         Assert.That(xmotor.Interfaces.Contains(typeof(IMotorInterface)), Is.True); 
 
@@ -39,14 +39,14 @@ public class ConfigLoaderTests
         Assert.That(cfg.Count, Is.EqualTo(2)); 
         var xmotor = cfg.First(x => x.Name == "XMotor");
         Assert.That(xmotor, Is.Not.Null);
-        Assert.That(typeof(AwesomeXMotor), Is.SameAs(xmotor.Type));
+        Assert.That(xmotor.Type, Is.SameAs(typeof(AwesomeXMotor)));
         Assert.That(xmotor.Interfaces.Contains(typeof(IInitializable)), Is.True); 
         Assert.That(xmotor.Interfaces.Contains(typeof(IMotorInterface)), Is.True); 
         Assert.That(xmotor.Properties["DummyProp"].ToString(), Is.EqualTo("Doo"));
 
         var ymotor = cfg.First(x => x.Name == "YMotor");
         Assert.That(ymotor, Is.Not.Null);
-        Assert.That(typeof(DummyYMotor), Is.SameAs(ymotor.Type));
+        Assert.That(ymotor.Type, Is.SameAs(typeof(DummyYMotor)));
         Assert.That(ymotor.Interfaces.Contains(typeof(IInitializable)), Is.True); 
         Assert.That(ymotor.Interfaces.Contains(typeof(IMotorInterface)), Is.True); 
         Assert.That(ymotor.Properties["DummyProp"].ToString(), Is.EqualTo("Dabba"));
@@ -59,7 +59,7 @@ public class ConfigLoaderTests
         Assert.That(cfg.Count, Is.EqualTo(2)); 
         var xmotor = cfg.First(x => x.Name == "XMotor");
         Assert.That(xmotor, Is.Not.Null);
-        Assert.That(typeof(DummyXMotor), Is.SameAs(xmotor.Type));
+        Assert.That(xmotor.Type, Is.SameAs(typeof(DummyXMotor)));
         Assert.That(xmotor.Interfaces.Contains(typeof(IInitializable)), Is.True); 
         Assert.That(xmotor.Interfaces.Contains(typeof(IMotorInterface)), Is.True); 
         Assert.That(xmotor.Properties["DummyProp"].ToString(), Is.EqualTo("Wilma"));
@@ -72,10 +72,10 @@ public class ConfigLoaderTests
         Assert.That(cfg.Count, Is.EqualTo(2)); 
         var xmotor = cfg.First(x => x.Name == "XMotor");
         Assert.That(xmotor, Is.Not.Null);
-        Assert.That(typeof(SimulatedDummyXMotor), Is.SameAs(xmotor.Type));
+        Assert.That(xmotor.Type, Is.SameAs(typeof(SimulatedDummyXMotor)));
         var ymotor = cfg.First(x => x.Name == "YMotor");
         Assert.That(ymotor, Is.Not.Null);
-        Assert.That(typeof(DummyYMotor), Is.SameAs(ymotor.Type));
+        Assert.That(ymotor.Type, Is.SameAs(typeof(DummyYMotor)));
     }
 
 

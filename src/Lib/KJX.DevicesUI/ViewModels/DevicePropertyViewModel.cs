@@ -71,7 +71,10 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
     {
         Device = device;
         Property = property;
-        _rangeAttribute = property.GetCustomAttribute<RangeAttribute>(inherit: true);
+        // Try to get the derived type first, then fall back to base type
+        _rangeAttribute = property.GetCustomAttribute<RangeIncrementAttribute>(inherit: true) 
+                      ?? property.GetCustomAttribute<RangeAttribute>(inherit: true);
+        
         if (_rangeAttribute != null)
         {
             Min = _rangeAttribute.Minimum;
@@ -84,13 +87,6 @@ public class DevicePropertyViewModel : INotifyPropertyChanged
                 IsBusy = Device.IsBusy;
             }
         };
-    }
-
-    // dummy constructor for design-time data
-    public DevicePropertyViewModel()
-    {
-        Device = null;
-        Property = null;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
