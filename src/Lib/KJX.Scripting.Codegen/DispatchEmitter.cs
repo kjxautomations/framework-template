@@ -81,6 +81,8 @@ internal sealed partial class DispatchEmitter
 
             EmitMemberKinds(code, type);
             code.Line();
+            EmitMemberAccess(code, type);
+            code.Line();
             EmitInvoke(code, type);
             code.Line();
             EmitSubscribe(code, type);
@@ -114,6 +116,38 @@ internal sealed partial class DispatchEmitter
             code.Line("default:");
             code.Indent();
             code.Line("kind = default;");
+            code.Line("return false;");
+            code.Outdent();
+        }
+    }
+
+    private static void EmitMemberAccess(CodeBuilder code, ApiType type)
+    {
+        using (code.Block("public bool TryGetMemberAccess(string member, out ScriptApiMemberAccess access)"))
+        using (code.Block("switch (member)"))
+        {
+            foreach (var group in type.Members.GroupBy(member => member.Kind).OrderBy(group => group.Key))
+            {
+                foreach (var member in group)
+                    code.Line($"case {JsonText.CSharpLiteral(member.Name)}:");
+
+                var access = group.Key switch
+                {
+                    ApiMemberKind.Get => "Get",
+                    ApiMemberKind.Set => "Set",
+                    ApiMemberKind.Stream => "Stream",
+                    _ => "Invoke",
+                };
+
+                code.Indent();
+                code.Line($"access = ScriptApiMemberAccess.{access};");
+                code.Line("return true;");
+                code.Outdent();
+            }
+
+            code.Line("default:");
+            code.Indent();
+            code.Line("access = default;");
             code.Line("return false;");
             code.Outdent();
         }
@@ -375,6 +409,23 @@ internal sealed partial class DispatchEmitter
                 code.Line("dispatcher = null;");
                 code.Line("return false;");
             }
+        }
+
+        code.Line();
+        code.Doc("This assembly's scripting surface, in the form the RPC host consumes.");
+        using (code.Block("public sealed class ScriptApiCatalog : IScriptApiCatalog"))
+        {
+            code.Doc("The catalog for this assembly.");
+            code.Line("public static readonly ScriptApiCatalog Instance = new ScriptApiCatalog();");
+            code.Line();
+            code.Line("/// <inheritdoc />");
+            code.Line("public IReadOnlyList<IScriptApiDispatcher> Dispatchers => ScriptApiRegistry.Dispatchers;");
+            code.Line();
+            code.Line("/// <inheritdoc />");
+            code.Line("public string DescriptorJson => ScriptApiRegistry.DescriptorJson;");
+            code.Line();
+            code.Line("/// <inheritdoc />");
+            code.Line("public string DescriptorHash => ScriptApiRegistry.DescriptorHash;");
         }
 
         return FinishFile(code);

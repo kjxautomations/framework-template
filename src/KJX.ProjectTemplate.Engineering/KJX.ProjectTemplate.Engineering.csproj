@@ -59,5 +59,6 @@
       <ProjectReference Include="..\Lib\KJX.Core\KJX.Core.csproj" />
       <ProjectReference Include="..\Lib\KJX.DevicesUI\KJX.DevicesUI.csproj" />
       <ProjectReference Include="..\Lib\KJX.Devices\KJX.Devices.csproj" />
+      <ProjectReference Include="..\Lib\KJX.Scripting.Rpc\KJX.Scripting.Rpc.csproj" />
     </ItemGroup>
 </Project>

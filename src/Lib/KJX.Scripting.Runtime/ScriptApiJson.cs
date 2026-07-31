@@ -15,8 +15,13 @@ public static class ScriptApiJson
     {
         RequireArgumentObject(arguments, member);
 
-        if (!arguments.TryGetProperty(parameter, out var value) || value.ValueKind == JsonValueKind.Undefined)
+        // A request with no params at all is the same as one whose params lack this argument.
+        if (arguments.ValueKind != JsonValueKind.Object ||
+            !arguments.TryGetProperty(parameter, out var value) ||
+            value.ValueKind == JsonValueKind.Undefined)
+        {
             throw ScriptApiException.MissingArgument(member, parameter);
+        }
 
         return value;
     }
@@ -29,7 +34,8 @@ public static class ScriptApiJson
     {
         RequireArgumentObject(arguments, member);
 
-        if (arguments.TryGetProperty(parameter, out value) &&
+        if (arguments.ValueKind == JsonValueKind.Object &&
+            arguments.TryGetProperty(parameter, out value) &&
             value.ValueKind != JsonValueKind.Undefined &&
             value.ValueKind != JsonValueKind.Null)
         {

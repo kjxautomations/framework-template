@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -19,6 +20,9 @@ using KJX.ProjectTemplate.Control.Services;
 using KJX.ProjectTemplate.Control.ViewModels;
 using KJX.Core.Services;
 using KJX.Core.ViewModels;
+using KJX.Devices.Generated;
+using KJX.Scripting.Rpc;
+using KJX.Scripting.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -35,6 +39,12 @@ public partial class App : Application
 {
     public IContainer Container { get; private set; }
     public ILogger Logger { get; private set; }
+
+    /// <summary>
+    /// Serves the scripting API for the devices this application owns. Hosted in-process for
+    /// now: dispatch is a direct call into the same container the UI binds to.
+    /// </summary>
+    public ScriptApiHost ScriptingHost { get; private set; }
 
     public override void Initialize()
     {
@@ -142,11 +152,42 @@ public partial class App : Application
     }
     
 
+    /// <summary>
+    /// Starts the scripting endpoint. A failure here is logged and the application carries on:
+    /// losing the script interface must not stop someone operating the instrument by hand.
+    /// </summary>
+    private void StartScriptingHost()
+    {
+        try
+        {
+            // Local only by default. To serve remote clients, set Port and Token here, and point
+            // CertificatePath at a certificate.
+            var options = ScriptApiHostOptions.ForLocalInstrument("kjx-control");
+
+            ScriptingHost = ScriptApiHost.Create(
+                Container,
+                options,
+                new IScriptApiCatalog[] { ScriptApiCatalog.Instance },
+                Container.Resolve<ILoggerFactory>());
+
+            ScriptingHost.StartAsync().GetAwaiter().GetResult();
+        }
+        catch (Exception exception)
+        {
+            Logger?.LogError(exception, "The scripting host did not start.");
+            ScriptingHost = null;
+        }
+    }
+
     public override void OnFrameworkInitializationCompleted()
     {
+        StartScriptingHost();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new Views.MainWindow() { DataContext = Container.Resolve<MainWindowViewModel>() };
+
+            desktop.ShutdownRequested += (_, _) => ScriptingHost?.StopAsync().GetAwaiter().GetResult();
         }
 
         base.OnFrameworkInitializationCompleted();

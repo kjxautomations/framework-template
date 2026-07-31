@@ -22,7 +22,7 @@ public class TestGeneratedScriptApi
     public void Every_marked_device_interface_has_a_dispatcher()
     {
         Assert.That(ScriptApiRegistry.Dispatchers.Select(dispatcher => dispatcher.WireTypeName),
-            Is.EquivalentTo(new[] { "device", "led", "motor", "sensor", "stepper_motor" }));
+            Is.EquivalentTo(new[] { "device", "led", "motor", "sensor", "stepper_motor", "supports_homing" }));
     }
 
     [Test]

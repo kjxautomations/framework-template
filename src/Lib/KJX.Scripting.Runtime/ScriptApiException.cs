@@ -28,6 +28,24 @@ public static class ScriptApiErrorCodes
 
     /// <summary>The member was called the wrong way, e.g. subscribing to a plain call.</summary>
     public const int WrongMemberKind = -32005;
+
+    /// <summary>The session does not hold the control lease, and the member would change state.</summary>
+    public const int ControlRequired = -32006;
+
+    /// <summary>No device or handle goes by that id.</summary>
+    public const int TargetNotFound = -32000;
+
+    /// <summary>The request was cancelled, by the client or because the session ended.</summary>
+    public const int RequestCancelled = -32800;
+
+    /// <summary>The message was not valid JSON.</summary>
+    public const int ParseError = -32700;
+
+    /// <summary>The message was valid JSON but not a valid request.</summary>
+    public const int InvalidRequest = -32600;
+
+    /// <summary>The call failed inside the device.</summary>
+    public const int DeviceError = -32010;
 }
 
 /// <summary>

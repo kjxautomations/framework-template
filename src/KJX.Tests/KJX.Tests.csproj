@@ -80,6 +80,9 @@
       <None Update="ConfigTestFiles\SystemConfigXYMotor.ini">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="ConfigTestFiles\ScriptApiDevices.ini">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="ConfigTestFiles\PropertyValidationGoodConfig.ini">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -115,6 +118,14 @@
       <ProjectReference Include="..\Lib\KJX.Core\KJX.Core.csproj" />
       <ProjectReference Include="..\Lib\KJX.DevicesUI\KJX.DevicesUI.csproj" />
       <ProjectReference Include="..\Lib\KJX.Devices\KJX.Devices.csproj" />
+      <ProjectReference Include="..\Lib\KJX.Scripting\KJX.Scripting.csproj" />
+      <ProjectReference Include="..\Lib\KJX.Scripting.Rpc\KJX.Scripting.Rpc.csproj" />
+      <!-- The test project declares its own [ScriptApi] interfaces, so it runs the same analyzer
+           and generator the device assembly does. That also gives the host two catalogs to merge. -->
+      <ProjectReference Include="..\Lib\KJX.Scripting.Analyzer\KJX.Scripting.Analyzer.csproj"
+                        OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      <ProjectReference Include="..\Lib\KJX.Scripting.Codegen\KJX.Scripting.Codegen.csproj"
+                        OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

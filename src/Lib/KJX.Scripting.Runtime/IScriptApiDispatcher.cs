@@ -14,6 +14,41 @@ public enum ScriptApiMemberKind
 }
 
 /// <summary>
+/// What the member was written as. This is what decides whether a session that does not hold the
+/// control lease may call it: reading the instrument is always allowed, changing it is not.
+/// </summary>
+public enum ScriptApiMemberAccess
+{
+    /// <summary>A method. Assumed to change the instrument.</summary>
+    Invoke,
+
+    /// <summary>A property getter.</summary>
+    Get,
+
+    /// <summary>A property setter.</summary>
+    Set,
+
+    /// <summary>A subscription.</summary>
+    Stream,
+}
+
+/// <summary>
+/// One assembly's generated scripting surface. The host takes these rather than reaching for a
+/// static class, so that a composition root can decide which assemblies are exposed.
+/// </summary>
+public interface IScriptApiCatalog
+{
+    /// <summary>Every dispatch table the assembly generated.</summary>
+    IReadOnlyList<IScriptApiDispatcher> Dispatchers { get; }
+
+    /// <summary>The descriptor for this assembly's surface.</summary>
+    string DescriptorJson { get; }
+
+    /// <summary>The content hash of that descriptor.</summary>
+    string DescriptorHash { get; }
+}
+
+/// <summary>
 /// Turns the two reference forms on the wire into live objects and back. Implemented by the RPC
 /// host, which owns the device registry and the per-session handle table; the generated dispatch
 /// never resolves a reference itself.
@@ -63,6 +98,9 @@ public interface IScriptApiDispatcher
 
     /// <summary>Looks up how a member is invoked, without invoking it.</summary>
     bool TryGetMemberKind(string member, out ScriptApiMemberKind kind);
+
+    /// <summary>Looks up what a member was written as, which decides whether it changes state.</summary>
+    bool TryGetMemberAccess(string member, out ScriptApiMemberAccess access);
 
     /// <summary>
     /// Invokes a call. Arguments arrive as a by-name object; the result is the JSON value to
