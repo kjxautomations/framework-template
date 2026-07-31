@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace KJX.Scripting.Analyzer;
+namespace KJX.Scripting.Shared;
 
 /// <summary>How a type failed validation, or <see cref="TypeValidationKind.Ok"/>.</summary>
 internal enum TypeValidationKind
@@ -147,6 +147,25 @@ internal sealed class ScriptApiTypeModel
         named.GetAttributes().Any(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, _scriptApiAttribute));
 
     /// <summary>
+    /// The name an interface is known by on the wire: the explicit name passed to the attribute,
+    /// or the interface name minus a leading I, in snake_case.
+    /// </summary>
+    public string GetWireTypeName(INamedTypeSymbol type)
+    {
+        var attribute = type.GetAttributes()
+            .FirstOrDefault(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, _scriptApiAttribute));
+
+        if (attribute != null && attribute.ConstructorArguments.Length == 1 &&
+            attribute.ConstructorArguments[0].Value is string explicitName &&
+            !string.IsNullOrWhiteSpace(explicitName))
+        {
+            return explicitName;
+        }
+
+        return ScriptApiNaming.WireTypeName(type.Name);
+    }
+
+    /// <summary>
     /// The members that make up the scriptable surface: everything declared on the interface plus
     /// everything inherited from unmarked, non-exempt base interfaces. Members of a base interface
     /// that is itself marked are left out; the descriptor records the inheritance instead.
@@ -221,6 +240,68 @@ internal sealed class ScriptApiTypeModel
     /// <summary>True when the member is an <c>IAsyncEnumerable&lt;T&gt;</c>, i.e. a subscription.</summary>
     public bool IsStream(ITypeSymbol type) =>
         type is INamedTypeSymbol named && named.IsGenericType && Matches(named.OriginalDefinition, _asyncEnumerable);
+
+    /// <summary>Unwraps <c>IAsyncEnumerable&lt;T&gt;</c> to T.</summary>
+    public bool TryGetStreamElement(ITypeSymbol type, out ITypeSymbol element)
+    {
+        if (IsStream(type))
+        {
+            element = ((INamedTypeSymbol)type).TypeArguments[0];
+            return true;
+        }
+
+        element = null;
+        return false;
+    }
+
+    /// <summary>
+    /// Recognises the awaitable return shapes. <paramref name="result"/> is null for the
+    /// non-generic forms, which produce no value.
+    /// </summary>
+    public bool TryGetAwaitedResult(ITypeSymbol type, out ITypeSymbol result)
+    {
+        result = null;
+
+        if (Matches(type, _task) || Matches(type, _valueTask))
+            return true;
+
+        if (type is INamedTypeSymbol named && named.IsGenericType &&
+            (Matches(named.OriginalDefinition, _taskOfT) || Matches(named.OriginalDefinition, _valueTaskOfT)))
+        {
+            result = named.TypeArguments[0];
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>Unwraps <c>IReadOnlyList&lt;T&gt;</c> to T.</summary>
+    public bool TryGetListElement(ITypeSymbol type, out ITypeSymbol element)
+    {
+        if (type is INamedTypeSymbol named && named.IsGenericType &&
+            Matches(named.OriginalDefinition, _readOnlyList))
+        {
+            element = named.TypeArguments[0];
+            return true;
+        }
+
+        element = null;
+        return false;
+    }
+
+    /// <summary>Unwraps <c>T?</c> over a value type.</summary>
+    public static bool TryGetNullableValue(ITypeSymbol type, out ITypeSymbol underlying)
+    {
+        if (type is INamedTypeSymbol named &&
+            named.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+        {
+            underlying = named.TypeArguments[0];
+            return true;
+        }
+
+        underlying = null;
+        return false;
+    }
 
     /// <summary>True for the trailing, implicit <c>CancellationToken</c> parameter.</summary>
     public bool IsCancellationToken(ITypeSymbol type) => Matches(type, CancellationToken);

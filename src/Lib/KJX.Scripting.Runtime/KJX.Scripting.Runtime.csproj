@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <PackageId>KJX.Scripting.Runtime</PackageId>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!-- Nothing here may need reflection: the generated dispatch is the only caller. -->
+        <IsTrimmable>true</IsTrimmable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\KJX.Scripting\KJX.Scripting.csproj" />
+    </ItemGroup>
+
+</Project>

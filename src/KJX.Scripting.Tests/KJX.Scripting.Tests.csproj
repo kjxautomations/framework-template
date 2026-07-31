@@ -24,10 +24,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- Referenced as plain libraries: these tests drive the analyzer directly rather than
-             letting the compiler run it over this project. -->
+        <!-- Referenced as plain libraries: these tests drive the analyzer and the generator
+             directly rather than letting the compiler run them over this project. -->
         <ProjectReference Include="..\Lib\KJX.Scripting\KJX.Scripting.csproj" />
+        <ProjectReference Include="..\Lib\KJX.Scripting.Runtime\KJX.Scripting.Runtime.csproj" />
         <ProjectReference Include="..\Lib\KJX.Scripting.Analyzer\KJX.Scripting.Analyzer.csproj" />
+        <ProjectReference Include="..\Lib\KJX.Scripting.Codegen\KJX.Scripting.Codegen.csproj" />
     </ItemGroup>
 
 </Project>

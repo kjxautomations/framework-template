@@ -1,0 +1,218 @@
+{
+  "hash": "sha256:be9068bd4f5b1a903d80280d4e9ea9fec5407252fc3633021973a57ce5adf9c8",
+  "api": {
+    "version": 1,
+    "types": [
+      {
+        "name": "acquisition",
+        "clr": "Sample.Instruments.IAcquisition",
+        "doc": "An acquisition that has claimed channels and must be released.",
+        "extends": [
+          "hardware"
+        ],
+        "members": [
+          {
+            "name": "arm",
+            "kind": "call",
+            "access": "invoke",
+            "clr": "Arm",
+            "doc": "Arms the acquisition so that the next trigger starts it.",
+            "params": []
+          },
+          {
+            "name": "get_channels",
+            "kind": "call",
+            "access": "get",
+            "clr": "Channels",
+            "doc": "The channels this acquisition holds.",
+            "params": [],
+            "returns": {
+              "kind": "list",
+              "items": {
+                "kind": "int32"
+              }
+            }
+          },
+          {
+            "name": "read",
+            "kind": "call",
+            "access": "invoke",
+            "clr": "ReadAsync",
+            "doc": "Reads everything captured so far.",
+            "params": [],
+            "returns": {
+              "kind": "array",
+              "items": {
+                "kind": "float64"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "hardware",
+        "clr": "Sample.Instruments.IHardware",
+        "doc": "Anything the instrument can address.",
+        "members": [
+          {
+            "name": "get_id",
+            "kind": "call",
+            "access": "get",
+            "clr": "Id",
+            "doc": "The id this device is configured under.",
+            "params": [],
+            "returns": {
+              "kind": "string"
+            }
+          }
+        ]
+      },
+      {
+        "name": "pump",
+        "clr": "Sample.Instruments.IPump",
+        "doc": "A pump that a recipe can drive.",
+        "extends": [
+          "hardware"
+        ],
+        "members": [
+          {
+            "name": "get_flow_rate",
+            "kind": "call",
+            "access": "get",
+            "clr": "FlowRate",
+            "doc": "Millilitres per minute.",
+            "params": [],
+            "returns": {
+              "kind": "float64"
+            }
+          },
+          {
+            "name": "set_flow_rate",
+            "kind": "call",
+            "access": "set",
+            "clr": "FlowRate",
+            "doc": "Millilitres per minute.",
+            "params": [
+              {
+                "name": "value",
+                "type": {
+                  "kind": "float64"
+                },
+                "required": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "recipes",
+        "clr": "Sample.Instruments.IRecipeRunner",
+        "doc": "Starts acquisitions and runs recipes against them.",
+        "members": [
+          {
+            "name": "get_open",
+            "kind": "call",
+            "access": "get",
+            "clr": "Open",
+            "doc": "Every acquisition that is currently open.",
+            "params": [],
+            "returns": {
+              "kind": "array",
+              "items": {
+                "kind": "ref",
+                "name": "acquisition"
+              }
+            }
+          },
+          {
+            "name": "run",
+            "kind": "call",
+            "access": "invoke",
+            "clr": "RunAsync",
+            "doc": "Runs a recipe, driving a pump and reading from an acquisition.",
+            "params": [
+              {
+                "name": "pump",
+                "type": {
+                  "kind": "ref",
+                  "name": "pump"
+                },
+                "required": true,
+                "doc": "The pump to drive."
+              },
+              {
+                "name": "source",
+                "type": {
+                  "kind": "ref",
+                  "name": "acquisition"
+                },
+                "required": true,
+                "doc": "Where the readings come from."
+              },
+              {
+                "name": "steps",
+                "type": {
+                  "kind": "list",
+                  "items": {
+                    "kind": "dto",
+                    "name": "recipe_step"
+                  }
+                },
+                "required": true,
+                "doc": "The steps to run, in order."
+              }
+            ]
+          },
+          {
+            "name": "start",
+            "kind": "call",
+            "access": "invoke",
+            "clr": "Start",
+            "doc": "Claims channels and hands back a handle to the acquisition.",
+            "params": [
+              {
+                "name": "channels",
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "int32"
+                  }
+                },
+                "required": true,
+                "doc": "The channels to claim."
+              }
+            ],
+            "returns": {
+              "kind": "ref",
+              "name": "acquisition"
+            }
+          }
+        ]
+      }
+    ],
+    "dtos": [
+      {
+        "name": "recipe_step",
+        "clr": "Sample.Instruments.RecipeStep",
+        "doc": "One step of a recipe.",
+        "properties": [
+          {
+            "name": "name",
+            "type": {
+              "kind": "string"
+            },
+            "doc": "What the step is called."
+          },
+          {
+            "name": "duration",
+            "type": {
+              "kind": "duration"
+            },
+            "doc": "How long the step runs for."
+          }
+        ]
+      }
+    ],
+    "enums": []
+  }
+}

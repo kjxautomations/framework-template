@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using KJX.Scripting;
+
+namespace Sample.Instruments;
+
+/// <summary>What the pump is doing right now.</summary>
+public enum PumpState
+{
+    /// <summary>Not moving.</summary>
+    Idle = 0,
+
+    /// <summary>Filling the line.</summary>
+    Priming = 1,
+
+    /// <summary>Moving liquid.</summary>
+    Dispensing = 2,
+}
+
+/// <summary>One flow measurement.</summary>
+/// <param name="Microlitres">Volume moved since the previous reading.</param>
+/// <param name="Taken">When the reading was taken.</param>
+public readonly record struct FlowReading(double Microlitres, DateTimeOffset Taken);
+
+/// <summary>A syringe pump.</summary>
+[ScriptApi]
+public interface ISyringePump
+{
+    /// <summary>The name this pump is configured under.</summary>
+    string Name { get; }
+
+    /// <summary>Millilitres per minute.</summary>
+    double FlowRate { get; set; }
+
+    /// <summary>The largest flow the pump accepts, or null when it is unlimited.</summary>
+    double? MaximumFlowRate { get; set; }
+
+    /// <summary>What the pump is doing.</summary>
+    PumpState State { get; }
+
+    /// <summary>Draws liquid in.</summary>
+    /// <param name="microlitres">How much to draw.</param>
+    /// <param name="settle">How long to wait once the plunger stops.</param>
+    Task PrimeAsync(double microlitres, TimeSpan settle, CancellationToken cancellationToken = default);
+
+    /// <summary>Stops the pump immediately.</summary>
+    void Stop();
+
+    /// <summary>Runs a calibration pass and reports what it measured.</summary>
+    /// <param name="passes">How many times to repeat the measurement.</param>
+    /// <param name="state">The state to leave the pump in afterwards.</param>
+    Task<FlowReading> CalibrateAsync(int passes = 3, PumpState state = PumpState.Idle);
+
+    /// <summary>Every flow reading as it is measured, including repeats of the same value.</summary>
+    /// <param name="cancellationToken">Ends the subscription.</param>
+    IAsyncEnumerable<FlowReading> Flow(CancellationToken cancellationToken = default);
+}

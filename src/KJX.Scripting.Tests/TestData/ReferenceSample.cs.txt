@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using KJX.Scripting;
+
+namespace Sample.Instruments;
+
+/// <summary>Anything the instrument can address.</summary>
+[ScriptApi]
+public interface IHardware
+{
+    /// <summary>The id this device is configured under.</summary>
+    string Id { get; }
+}
+
+/// <summary>A pump that a recipe can drive.</summary>
+[ScriptApi]
+public interface IPump : IHardware
+{
+    /// <summary>Millilitres per minute.</summary>
+    double FlowRate { get; set; }
+}
+
+/// <summary>An acquisition that has claimed channels and must be released.</summary>
+[ScriptApi]
+public interface IAcquisition : IHardware
+{
+    /// <summary>The channels this acquisition holds.</summary>
+    IReadOnlyList<int> Channels { get; }
+
+    /// <summary>Arms the acquisition so that the next trigger starts it.</summary>
+    void Arm();
+
+    /// <summary>Reads everything captured so far.</summary>
+    Task<double[]> ReadAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>One step of a recipe.</summary>
+/// <param name="Name">What the step is called.</param>
+/// <param name="Duration">How long the step runs for.</param>
+public record RecipeStep(string Name, TimeSpan Duration);
+
+/// <summary>Starts acquisitions and runs recipes against them.</summary>
+[ScriptApi("recipes")]
+public interface IRecipeRunner
+{
+    /// <summary>Claims channels and hands back a handle to the acquisition.</summary>
+    /// <param name="channels">The channels to claim.</param>
+    IAcquisition Start(int[] channels);
+
+    /// <summary>Runs a recipe, driving a pump and reading from an acquisition.</summary>
+    /// <param name="pump">The pump to drive.</param>
+    /// <param name="source">Where the readings come from.</param>
+    /// <param name="steps">The steps to run, in order.</param>
+    Task RunAsync(IPump pump, IAcquisition source, IReadOnlyList<RecipeStep> steps, CancellationToken cancellationToken = default);
+
+    /// <summary>Every acquisition that is currently open.</summary>
+    IAcquisition[] Open { get; }
+}
