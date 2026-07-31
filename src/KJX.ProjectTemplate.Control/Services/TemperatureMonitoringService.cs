@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 using KJX.Core.Interfaces;
 using KJX.Core.Models;
@@ -24,7 +26,8 @@ public class TemperatureMonitoringService : IBackgroundService
     private readonly INavigationService<NavigationStates, NavigationTriggers> _navigationService;
     private readonly TemperatureMonitoringServiceConfig _config;
     private readonly SequencingService _sequencingService;
-    
+    private CancellationTokenSource _monitoring;
+
     public TemperatureMonitoringService(SequencingService sequencingService,
         INotificationService notificationService,
         INavigationService<NavigationStates, NavigationTriggers> navigationService,
@@ -40,16 +43,38 @@ public class TemperatureMonitoringService : IBackgroundService
     
     private void StartMonitoring()
     {
+        StopMonitoring();
         _sum = 0;
         _values.Clear();
-        _sensorToMonitor.ValueUpdated += ValueUpdated;
+        var monitoring = new CancellationTokenSource();
+        _monitoring = monitoring;
+        _ = MonitorSensor(monitoring);
     }
-    
+
     private void StopMonitoring()
     {
-        _sensorToMonitor.ValueUpdated -= ValueUpdated;
+        // Safe to call from inside ValueUpdated: the enumeration ends on the next reading and
+        // the token source is disposed by the loop that owns it.
+        Interlocked.Exchange(ref _monitoring, null)?.Cancel();
     }
-    
+
+    private async Task MonitorSensor(CancellationTokenSource monitoring)
+    {
+        try
+        {
+            await foreach (var reading in _sensorToMonitor.Readings(monitoring.Token).ConfigureAwait(false))
+                ValueUpdated(reading.Value);
+        }
+        catch (OperationCanceledException)
+        {
+            // monitoring was stopped
+        }
+        finally
+        {
+            monitoring.Dispose();
+        }
+    }
+
     public void Start()
     {
         _sequencingService.WhenAnyValue(x => x.State)

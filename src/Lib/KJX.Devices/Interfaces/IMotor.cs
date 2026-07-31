@@ -1,8 +1,11 @@
+using KJX.Scripting;
+
 namespace KJX.Devices;
 
 /// <summary>
 /// Interface for a simple motor.
 /// </summary>
+[ScriptApi]
 public interface IMotor : IDevice
 {
     public string Name { get; }
@@ -37,6 +40,7 @@ public interface IMotor : IDevice
 /// <summary>
 /// Interface for a simple stepper motor. Extended from IMotor.
 /// </summary>
+[ScriptApi]
 public interface IStepperMotor : IMotor
 {
     /// <summary>

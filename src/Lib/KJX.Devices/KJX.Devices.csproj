@@ -6,6 +6,9 @@
         <Nullable>disable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PackageId>KJX.Devices</PackageId>
+        <!-- The scripting codegen reads XML doc comments to produce Python docstrings and stubs. -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -46,6 +49,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\KJX.Config\KJX.Config.csproj" />
+      <ProjectReference Include="..\KJX.Scripting\KJX.Scripting.csproj" />
+      <!-- Enforces the script API rules on every [ScriptApi] interface in this project. -->
+      <ProjectReference Include="..\KJX.Scripting.Analyzer\KJX.Scripting.Analyzer.csproj"
+                        OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

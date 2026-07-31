@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <PackageId>KJX.Scripting.Analyzer</PackageId>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!-- Keeps the linked copy of ScriptApiNaming internal to this assembly. -->
+        <DefineConstants>$(DefineConstants);SCRIPTAPI_SHARED_SOURCE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Shared verbatim with the runtime so naming cannot drift between the two. The analyzer
+             must not take an assembly reference on KJX.Scripting: analyzers load without their
+             dependencies unless those are shipped alongside them. -->
+        <Compile Include="..\KJX.Scripting\ScriptApiNaming.cs" Link="Shared\ScriptApiNaming.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="AnalyzerReleases.Shipped.md" />
+        <None Include="AnalyzerReleases.Unshipped.md" />
+        <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+        <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+    </ItemGroup>
+
+</Project>

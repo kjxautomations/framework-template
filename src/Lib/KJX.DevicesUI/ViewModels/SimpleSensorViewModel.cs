@@ -15,9 +15,10 @@ using ReactiveUI.Fody.Helpers;
 
 namespace KJX.DevicesUI.ViewModels;
 
-public class SimpleSensorViewModel : ViewModelBase
+public class SimpleSensorViewModel : ViewModelBase, IDisposable
 {
     private readonly ISensor _sensor;
+    private readonly CancellationTokenSource _subscription = new();
     public string Name { get; }
     [Reactive] public double Value { get; set; }
     [Reactive] public bool RecordingEnabled { get; set; } = true;
@@ -55,13 +56,9 @@ public class SimpleSensorViewModel : ViewModelBase
         XAxis.FirstOrDefault()!.Name = "Count";
         YAxis.FirstOrDefault()!.Name = "Reading";
         
-        sensor.ValueUpdated += (value) =>
-        {
-            if (RecordingEnabled) 
-                SetValue(value);
-        };
-        
-        InitializeCommand = 
+        _ = PlotReadings();
+
+        InitializeCommand =
             ReactiveCommand.CreateFromTask(InitializeSensor, 
                 _sensor.WhenAnyValue(x => x.IsInitialized)
                     .Select(x => !x)
@@ -71,6 +68,33 @@ public class SimpleSensorViewModel : ViewModelBase
     private async Task InitializeSensor()
     {
         await Task.Run(() => _sensor.Initialize());
+    }
+
+    /// <summary>
+    /// Plots every reading the sensor takes, not only the ones that changed the value, so the
+    /// chart reflects the real sample rate.
+    /// </summary>
+    private async Task PlotReadings()
+    {
+        try
+        {
+            await foreach (var reading in _sensor.Readings(_subscription.Token).ConfigureAwait(false))
+            {
+                if (RecordingEnabled)
+                    SetValue(reading.Value);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // the view model is going away
+        }
+    }
+
+    public void Dispose()
+    {
+        _subscription.Cancel();
+        _subscription.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     private void SetValue(double value)
