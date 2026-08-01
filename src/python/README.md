@@ -2,7 +2,8 @@
 
 The Python side of the instrument's scripting API. This is the only hand-written client code:
 what a script can call comes from the descriptor the instrument serves on connect, which is
-generated from the C# interfaces.
+generated from the C# interfaces. See [KJX.Scripting](../Lib/KJX.Scripting/README.md) for the
+design and the wire protocol.
 
 ## Install
 
@@ -85,3 +86,20 @@ editor can be pointed at it.
 
 The stubs describe each device with the capabilities it actually has, so completion on
 `inst.XMotor.` lists `home` and completion on `inst.YMotor.` does not.
+
+## Tests
+
+`tests/test_units.py` needs nothing running. It covers the value conversions, the socket
+discovery, and the stub emitter — the last of those renders from the C# generator's own golden
+descriptor, so both ends of the pipeline are checked against each other:
+
+```
+PYTHONPATH=. python -m unittest tests.test_units -v
+```
+
+`tests/test_end_to_end.py` needs a live instrument, and reads `KJX_TEST_ENDPOINT`,
+`KJX_TEST_TOKEN` and `KJX_TEST_SOCKET` from the environment. The C# test
+`KJX.Tests.TestPythonClient` starts a host over the simulated devices, sets those, and runs the
+whole suite, so `dotnet test` covers this too. It is skipped, with an explanation, on a machine
+with no interpreter that can import `websockets`; set `KJX_PYTHON` to point at one.
+

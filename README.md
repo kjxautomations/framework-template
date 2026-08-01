@@ -32,6 +32,42 @@ utilizing [Avalonia](https://avaloniaui.net/) for cross-platform support.
 - Styling
 - Patterns for reusable and responsive UI components
 - Simulation
+- A Python scripting API, generated from your device interfaces
+
+### Scripting from Python
+
+Instruments get automated. Both applications host a scripting API so that a Python script can
+drive the same devices the UI does, over JSON-RPC on a local unix socket or, with a token, over
+the network.
+
+Nothing about that API is hand-written. Mark a device interface:
+
+```csharp
+[ScriptApi]
+public interface IMotor : IDevice
+{
+    double Position { get; }
+    void MoveTo(double newPosition);
+}
+```
+
+Add the device to `system_config.ini` as you would anyway, and a script can call it:
+
+```python
+from kjx_instrument import connect
+
+inst = connect()
+inst.XMotor.home()
+inst.XMotor.move_to(2.5)
+```
+
+A Roslyn analyzer holds the interfaces to shapes that can cross the boundary, and a source
+generator emits the RPC dispatch, the API descriptor and the Python type stubs from them. A device
+exposes exactly the interfaces its configuration lists, so a motor configured without homing has no
+`home()` — and your editor knows it, because the stubs are generated per instrument.
+
+See [KJX.Scripting](src/Lib/KJX.Scripting/README.md) for the design, and
+[kjx-instrument](src/python/README.md) for the Python client.
 
 ### Getting Started
 
