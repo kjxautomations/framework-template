@@ -160,7 +160,7 @@ public class TestScriptApiHost
         Assert.Multiple(() =>
         {
             Assert.That(error!.Code, Is.EqualTo(ScriptApiErrorCodes.MemberNotFound));
-            Assert.That(error.Data!["types"]!.AsArray().Select(type => type!.GetValue<string>()),
+            Assert.That(error.ErrorData!["types"]!.AsArray().Select(type => type!.GetValue<string>()),
                 Is.EqualTo(new[] { "motor" }));
         });
     }
@@ -207,7 +207,7 @@ public class TestScriptApiHost
         Assert.Multiple(() =>
         {
             Assert.That(error!.Code, Is.EqualTo(ScriptApiErrorCodes.InvalidParams));
-            Assert.That(error.Data!["parameter"]!.GetValue<string>(), Is.EqualTo("new_position"));
+            Assert.That(error.ErrorData!["parameter"]!.GetValue<string>(), Is.EqualTo("new_position"));
         });
     }
 
@@ -401,7 +401,7 @@ public class TestScriptApiHost
         Assert.Multiple(() =>
         {
             Assert.That(error!.Code, Is.EqualTo(ScriptApiErrorCodes.ControlRequired));
-            Assert.That(error.Data!["holder"], Is.Not.Null);
+            Assert.That(error.ErrorData!["holder"], Is.Not.Null);
         });
     }
 

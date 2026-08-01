@@ -36,6 +36,14 @@ public interface IScriptTestDevice
     /// <summary>Takes a claim, which the caller has to release.</summary>
     /// <param name="reason">Recorded on the claim.</param>
     IScriptTestClaim Claim(string reason);
+
+    /// <summary>Reads back the reason a claim was taken, given the claim itself.</summary>
+    /// <param name="claim">A claim this session holds.</param>
+    string ReasonFor(IScriptTestClaim claim);
+
+    /// <summary>Returns the duration it was given, doubled.</summary>
+    /// <param name="value">Any duration.</param>
+    TimeSpan Doubled(TimeSpan value);
 }
 
 /// <inheritdoc />
@@ -128,4 +136,10 @@ public sealed class ScriptTestDevice : IScriptTestDevice
 
         return claim;
     }
+
+    /// <inheritdoc />
+    public string ReasonFor(IScriptTestClaim claim) => claim.Reason;
+
+    /// <inheritdoc />
+    public TimeSpan Doubled(TimeSpan value) => value + value;
 }

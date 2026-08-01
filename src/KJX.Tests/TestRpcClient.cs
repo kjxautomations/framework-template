@@ -14,7 +14,7 @@ public sealed class RpcException(int code, string message, JsonNode data) : Exce
     public int Code { get; } = code;
 
     /// <summary>Whatever the host put in error.data.</summary>
-    public JsonNode Data { get; } = data;
+    public JsonNode ErrorData { get; } = data;
 }
 
 /// <summary>
