@@ -48,7 +48,12 @@ public partial class App : Application
 
     public override void Initialize()
     {
-        InitAutofac();
+        // The XAML previewer loads this assembly and runs App, so anything with a side effect on
+        // the instrument has to stay out of design time. Loading the XAML does not: that is what
+        // gives a previewed control the application's styles.
+        if (!Design.IsDesignMode)
+            InitAutofac();
+
         AvaloniaXamlLoader.Load(this);
     }
     private void InitAutofac()
@@ -138,17 +143,27 @@ public partial class App : Application
         // Configure logging using NLog - no need to call AddNLog on ILoggerFactory anymore
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         Logger = Container.Resolve<ILogger<Application>>();
+    }
 
+    /// <summary>
+    /// Everything that makes the application start behaving like an instrument, as opposed to
+    /// merely being wired together. Kept apart from <see cref="InitAutofac"/> so that what must
+    /// not happen at design time is a place rather than a condition.
+    /// </summary>
+    private void StartInstrument()
+    {
         // resolve the services that need to be started
         var backgroundServices = Container.Resolve<IEnumerable<IBackgroundService>>();
         foreach (var svc in backgroundServices)
         {
             svc.Start();
         }
-        
+
         // start up the state machine
         var stateMachine = Container.Resolve<StateMachine>();
         stateMachine.SendTrigger(NavigationTriggers.Next).Wait();
+
+        StartScriptingHost();
     }
     
 
@@ -181,10 +196,10 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        StartScriptingHost();
-
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            StartInstrument();
+
             desktop.MainWindow = new Views.MainWindow() { DataContext = Container.Resolve<MainWindowViewModel>() };
 
             desktop.ShutdownRequested += (_, _) => ScriptingHost?.StopAsync().GetAwaiter().GetResult();

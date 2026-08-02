@@ -87,6 +87,12 @@ editor can be pointed at it.
 The stubs describe each device with the capabilities it actually has, so completion on
 `inst.XMotor.` lists `home` and completion on `inst.YMotor.` does not.
 
+## Examples
+
+[examples/](examples/) holds complete projects written against this client, each one a directory
+you can open in PyCharm and run. [home_and_move](examples/home_and_move/) homes the X and Y motors
+and then walks them out a millimetre at a time.
+
 ## Tests
 
 `tests/test_units.py` needs nothing running. It covers the value conversions, the socket

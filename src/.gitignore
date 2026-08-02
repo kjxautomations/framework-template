@@ -4,3 +4,4 @@ obj
 *.actual.json
 __pycache__/
 *.pyc
+*.egg-info/

@@ -49,7 +49,12 @@ public partial class App : Application
 
     public override void Initialize()
     {
-        InitAutoFac();
+        // The XAML previewer loads this assembly and runs App, so anything with a side effect on
+        // the instrument has to stay out of design time. Loading the XAML does not: that is what
+        // gives a previewed control the application's styles.
+        if (!Design.IsDesignMode)
+            InitAutoFac();
+
         AvaloniaXamlLoader.Load(this);
     }
     
@@ -124,14 +129,23 @@ public partial class App : Application
         // Get the logger factory (NLog is already configured through the service collection)
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         Logger = Container.Resolve<ILogger<Application>>();
+    }
 
-        
+    /// <summary>
+    /// Everything that makes the application start behaving like an instrument, as opposed to
+    /// merely being wired together. Kept apart from <see cref="InitAutoFac"/> so that what must
+    /// not happen at design time is a place rather than a condition.
+    /// </summary>
+    private void StartInstrument()
+    {
         //Resolve the services that need to be started
         var backgroundServices = Container.Resolve<IEnumerable<IBackgroundService>>();
         foreach (var svc in backgroundServices)
         {
             svc.Start();
         }
+
+        StartScriptingHost();
     }
     
     /// <summary>
@@ -145,6 +159,11 @@ public partial class App : Application
             // Local only by default. To serve remote clients, set Port and Token here, and point
             // CertificatePath at a certificate.
             var options = ScriptApiHostOptions.ForLocalInstrument("kjx-engineering");
+
+            // Loopback as well as the socket, because CPython on Windows has no AF_UNIX and so
+            // cannot reach the socket at all. A port needs a token; this one is for the bench.
+            options.Port = 7443;
+            options.Token = "bench-token";
 
             ScriptingHost = ScriptApiHost.Create(
                 Container,
@@ -163,10 +182,10 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        StartScriptingHost();
-
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            StartInstrument();
+
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(ConfigHandler),
