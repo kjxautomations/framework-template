@@ -66,6 +66,12 @@ generator emits the RPC dispatch, the API descriptor and the Python type stubs f
 exposes exactly the interfaces its configuration lists, so a motor configured without homing has no
 `home()` — and your editor knows it, because the stubs are generated per instrument.
 
+It is not only devices. A service you registered yourself, and objects a call hands back that are
+in no container at all, reach a script the same way.
+[Making something scriptable](src/Lib/KJX.Scripting/README.md#making-something-scriptable) is the
+checklist: what your assembly needs, what makes an object addressable, and how objects that refer
+to other objects cross the boundary.
+
 See [KJX.Scripting](src/Lib/KJX.Scripting/README.md) for the design, and
 [kjx-instrument](src/python/README.md) for the Python client.
 

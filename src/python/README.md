@@ -65,6 +65,22 @@ Forgetting `with` is a type error against the generated stubs. If it happens any
 is released when Python collects it, and if the script crashes outright the instrument releases
 everything the session held when the connection drops.
 
+A handle goes back in wherever the instrument declares an object parameter, and so does a device:
+
+```python
+with inst.Recipes.open("wash") as recipe:
+    inst.Recipes.run(recipe, inst.XMotor)
+```
+
+Handles belong to the connection that made them. Passing one to a second `connect()` is refused
+before it leaves the process, and one the instrument has already reclaimed raises `HandleReleased`.
+
+A call that returns a configured device hands back a reference to that device — `dev/XMotor`, not a
+new handle — so releasing it does nothing on the instrument. Either way, what the returned object
+offers is the members of the interface the call declares it returns, not everything the object
+behind it implements; for the whole device, reach for `inst.XMotor`. See
+[objects that refer to objects](../Lib/KJX.Scripting/README.md#objects-that-refer-to-objects).
+
 ## Sessions
 
 One session at a time has control of the instrument. It is taken implicitly by the first call

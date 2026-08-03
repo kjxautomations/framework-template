@@ -21,10 +21,13 @@ await host.StartAsync();
 What it does:
 
 - **Builds the device namespace from the container.** It enumerates the Autofac registry and keeps
-  the services the generated catalogs know about, so adding a device to `system_config.ini`
-  exposes it to scripts with no code change. A device carries the set of interfaces it was
-  registered under, which is how a motor configured with `ISupportsHoming` answers `home` and one
-  configured without it does not.
+  registrations that carry a `Name` in their metadata and are registered under at least one
+  interface the generated catalogs know about. `ConfigurationHandler` adds that metadata, so
+  adding a device to `system_config.ini` exposes it to scripts with no code change; a registration
+  you write yourself joins the namespace by doing the same thing —
+  [making an object addressable](../KJX.Scripting/README.md#making-an-object-addressable). A device
+  carries the set of interfaces it was registered under, which is how a motor configured with
+  `ISupportsHoming` answers `home` and one configured without it does not.
 - **Gives every session its own scope and handle table.** Objects returned from a call become
   `h/<n>`; devices stay `dev/<id>` and are never released. Session disposal is the backstop that
   releases whatever a crashed script was holding.

@@ -72,3 +72,9 @@ That separate-interface trick is the supported way to keep a member off the scri
 Mark the interface, keep its members inside the permitted type set, and the analyzer will tell you
 at compile time if something cannot cross the boundary. Everything else — dispatch, the descriptor,
 the Python proxies and stubs — is generated.
+
+That works for a device because this project is already set up for it — the analyzer, the
+generator and the catalog the host is given. Putting scriptable interfaces in an assembly of your
+own, exposing something that is not a configured device, or handing a script an object that is in
+no container at all, is
+[Making something scriptable](../KJX.Scripting/README.md#making-something-scriptable).
