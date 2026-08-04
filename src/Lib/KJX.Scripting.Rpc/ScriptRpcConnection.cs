@@ -157,7 +157,7 @@ internal sealed class ScriptRpcConnection
         }
         catch (JsonException exception)
         {
-            Respond(null, Error(ScriptApiErrorCodes.ParseError, exception.Message, null));
+            _ = RespondAsync(null, Error(ScriptApiErrorCodes.ParseError, exception.Message, null));
             return;
         }
 
@@ -167,14 +167,14 @@ internal sealed class ScriptRpcConnection
 
             if (root.ValueKind != JsonValueKind.Object)
             {
-                Respond(null, Error(ScriptApiErrorCodes.InvalidRequest,
+                _ = RespondAsync(null, Error(ScriptApiErrorCodes.InvalidRequest,
                     "Each message must be a single JSON-RPC request object.", null));
                 return;
             }
 
             if (!root.TryGetProperty("method", out var methodElement) || methodElement.ValueKind != JsonValueKind.String)
             {
-                Respond(null, Error(ScriptApiErrorCodes.InvalidRequest, "'method' is required.", null));
+                _ = RespondAsync(null, Error(ScriptApiErrorCodes.InvalidRequest, "'method' is required.", null));
                 return;
             }
 
@@ -183,7 +183,7 @@ internal sealed class ScriptRpcConnection
 
             if (arguments.ValueKind is not (JsonValueKind.Object or JsonValueKind.Undefined))
             {
-                Respond(IdOf(root), Error(ScriptApiErrorCodes.InvalidRequest,
+                _ = RespondAsync(IdOf(root), Error(ScriptApiErrorCodes.InvalidRequest,
                     "Arguments are passed by name: 'params' must be an object.", null));
                 return;
             }
@@ -208,21 +208,24 @@ internal sealed class ScriptRpcConnection
                 try
                 {
                     var result = await InvokeAsync(method, arguments, requestCancellation.Token).ConfigureAwait(false);
-                    Respond(JsonNode.Parse(key), result);
+                    await RespondAsync(JsonNode.Parse(key), result).ConfigureAwait(false);
+
+                    if (method == "subscribe")
+                        StartSubscription(result);
                 }
                 catch (OperationCanceledException)
                 {
-                    Respond(JsonNode.Parse(key), Error(ScriptApiErrorCodes.RequestCancelled, "The request was cancelled.", null));
+                    await RespondAsync(JsonNode.Parse(key), Error(ScriptApiErrorCodes.RequestCancelled, "The request was cancelled.", null)).ConfigureAwait(false);
                 }
                 catch (ScriptApiException exception)
                 {
-                    Respond(JsonNode.Parse(key), Error(exception.Code, exception.Message, exception.ErrorData));
+                    await RespondAsync(JsonNode.Parse(key), Error(exception.Code, exception.Message, exception.ErrorData)).ConfigureAwait(false);
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, "Session {Session} failed handling '{Method}'.", _session.Id, method);
-                    Respond(JsonNode.Parse(key), Error(ScriptApiErrorCodes.DeviceError, exception.Message,
-                        new JsonObject { ["exception"] = exception.GetType().Name }));
+                    await RespondAsync(JsonNode.Parse(key), Error(ScriptApiErrorCodes.DeviceError, exception.Message,
+                        new JsonObject { ["exception"] = exception.GetType().Name })).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -323,9 +326,7 @@ internal sealed class ScriptRpcConnection
         var started = DateTimeOffset.UtcNow;
         _audit.Invoked(_session, targetId, member, memberArguments, JsonValue.Create(id), started, TimeSpan.Zero, null);
 
-        subscription.Pump = Task.Run(
-            () => PumpAsync(subscription, resolved, target, member, memberArguments),
-            CancellationToken.None);
+        subscription.PumpFactory = () => PumpAsync(subscription, resolved, target, member, memberArguments);
 
         return new JsonObject { ["subscription"] = id };
     }
@@ -407,20 +408,31 @@ internal sealed class ScriptRpcConnection
     private async Task<JsonNode> ReleaseAsync(JsonElement arguments)
     {
         var released = new JsonArray();
+        string id;
 
         if (arguments.ValueKind == JsonValueKind.Object && arguments.TryGetProperty("handles", out var handles) &&
             handles.ValueKind == JsonValueKind.Array)
         {
             foreach (var handle in handles.EnumerateArray())
             {
-                await _session.Handles.ReleaseAsync(handle.GetString()).ConfigureAwait(false);
-                released.Add(handle.GetString());
+                id = handle.GetString();
+
+                try
+                {
+                    await _session.Handles.ReleaseAsync(id).ConfigureAwait(false);
+                    released.Add(id);
+                }
+                catch (ScriptApiException exception) when (exception.Code == ScriptApiErrorCodes.HandleNotFound)
+                {
+                    // A finalizer batch may contain a handle the idle sweeper already reclaimed.
+                    // Keep processing so one stale id cannot strand the rest of the batch.
+                }
             }
 
             return new JsonObject { ["released"] = released };
         }
 
-        var id = RequiredString(arguments, "handle", "release");
+        id = RequiredString(arguments, "handle", "release");
         await _session.Handles.ReleaseAsync(id).ConfigureAwait(false);
         released.Add(id);
 
@@ -520,27 +532,36 @@ internal sealed class ScriptRpcConnection
     }
 
     /// <summary>Queues a response. Responses wait for room rather than being dropped.</summary>
-    private void Respond(JsonNode id, JsonNode payload)
+    private async Task RespondAsync(JsonNode id, JsonNode payload)
     {
         var message = new JsonObject { ["jsonrpc"] = Version, ["id"] = id };
 
         foreach (var property in payload.AsObject().ToList())
             message[property.Key] = property.Value?.DeepClone();
 
-        if (!_outbound.Writer.TryWrite(message))
-            _ = WriteWhenReadyAsync(message);
-    }
-
-    private async Task WriteWhenReadyAsync(JsonNode message)
-    {
         try
         {
             await _outbound.Writer.WriteAsync(message, _closing.Token).ConfigureAwait(false);
         }
-        catch (Exception)
+        catch (OperationCanceledException)
         {
             // the connection is going away
         }
+        catch (ChannelClosedException)
+        {
+            // the connection is going away
+        }
+    }
+
+    private void StartSubscription(JsonNode result)
+    {
+        if (result["result"]?["subscription"]?.GetValue<string>() is not { } id ||
+            !_subscriptions.TryGetValue(id, out var subscription))
+        {
+            return;
+        }
+
+        subscription.Pump = Task.Run(subscription.PumpFactory, CancellationToken.None);
     }
 
     private bool TrySendStream(JsonObject parameters) =>
@@ -587,6 +608,8 @@ internal sealed class ScriptRpcConnection
         public CancellationTokenSource Cancellation { get; } = new();
 
         public Task Pump;
+
+        public Func<Task> PumpFactory;
 
         public long Dropped;
 
