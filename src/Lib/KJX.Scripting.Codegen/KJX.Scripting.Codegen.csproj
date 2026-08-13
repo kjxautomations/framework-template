@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <PackageId>KJX.Scripting.Codegen</PackageId>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!-- Keeps the linked copies of the shared sources internal to this assembly. -->
+        <DefineConstants>$(DefineConstants);SCRIPTAPI_SHARED_SOURCE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="AnalyzerReleases.Shipped.md" />
+        <None Include="AnalyzerReleases.Unshipped.md" />
+        <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+        <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- The generator and the analyzer must agree on what the surface of an interface is and
+             on what the members are called, so both compile the same two files. -->
+        <Compile Include="..\KJX.Scripting\ScriptApiNaming.cs" Link="Shared\ScriptApiNaming.cs" />
+        <Compile Include="..\KJX.Scripting.Analyzer\ScriptApiTypeModel.cs" Link="Shared\ScriptApiTypeModel.cs" />
+    </ItemGroup>
+
+</Project>

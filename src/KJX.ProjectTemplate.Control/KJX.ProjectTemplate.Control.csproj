@@ -177,5 +177,6 @@
       <ProjectReference Include="..\Lib\KJX.Config\KJX.Config.csproj" />
       <ProjectReference Include="..\Lib\KJX.Core\KJX.Core.csproj" />
       <ProjectReference Include="..\Lib\KJX.Devices\KJX.Devices.csproj" />
+      <ProjectReference Include="..\Lib\KJX.Scripting.Rpc\KJX.Scripting.Rpc.csproj" />
     </ItemGroup>
 </Project>

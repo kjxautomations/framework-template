@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <PackageId>KJX.Scripting.Runtime</PackageId>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!-- The scalar readers in ScriptApiJson are one per primitive and documented as a group. -->
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+        <!-- Nothing here may need reflection: the generated dispatch is the only caller. -->
+        <IsTrimmable>true</IsTrimmable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\KJX.Scripting\KJX.Scripting.csproj" />
+    </ItemGroup>
+
+</Project>

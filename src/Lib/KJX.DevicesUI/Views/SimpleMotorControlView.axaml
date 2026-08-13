@@ -13,38 +13,51 @@
     <Border BorderThickness="1" BorderBrush="DimGray" CornerRadius="10" Padding="10">
         <StackPanel>
             <Label Content="{Binding Name}" Margin="0,0,0,10" FontWeight="Bold"/>
-            <views:DeviceSettingsControlView DataContext="{Binding DeviceSettings}"/>
-            <Grid ColumnDefinitions="Auto, 10, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
-                <TextBlock Grid.Row="2" Grid.Column="0">Position to move to: </TextBlock>
-                <NumericUpDown Grid.Row="2" Grid.Column="2"
-                               Value="{Binding PositionToMoveTo}" 
-                               Increment="{Binding MinimumPositionIncrement}"/>
-            
-                <Button Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"
-                        Content="Move" Margin="10,10,0,10"
-                        Command="{Binding MoveToPositionCommand}"
-                        CommandParameter="{Binding PositionToMoveTo}" />
-                
-                <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,15,0,0"
-                            Orientation="Vertical">
-                    <CheckBox IsChecked="{Binding EnforceLimits}" Content="Enforce Limits?"/>
-                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
-                        <Label Grid.Row="0" Grid.Column="0">Lower: </Label>
-                        <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding LowerLimit}" Increment="{Binding MinimumPositionIncrement}"/>
-                        <Label Grid.Row="1" Grid.Column="0">Upper: </Label>
-                        <NumericUpDown Grid.Row="1"  Grid.Column="1" Value="{Binding UpperLimit}" Increment="{Binding MinimumPositionIncrement}"/>    
-                    </Grid>
-                    
-                </StackPanel>
-                <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,15,0,0"
-                            Orientation="Horizontal">
-                    <TextBlock >Position (</TextBlock>
-                    <TextBlock Text="{Binding Units}" />
-                    <TextBlock >): </TextBlock>
-                    <TextBlock Background="Coral" Padding="5,0,5,0"
-                               Text="{Binding Position}" />
-                </StackPanel>
-            </Grid>
+
+            <!-- Outside the gated panel: homing is the way out of the not-homed state. -->
+            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,10"
+                        IsVisible="{Binding SupportsHoming}">
+                <Button Content="Home" Command="{Binding HomeCommand}"/>
+                <TextBlock Text="Not homed" Foreground="Firebrick" VerticalAlignment="Center"
+                           IsVisible="{Binding NeedsHoming}"/>
+            </StackPanel>
+
+            <!-- Everything here is disabled until the motor is homed, and while it is moving. -->
+            <StackPanel IsEnabled="{Binding CanOperate}">
+                <views:DeviceSettingsControlView DataContext="{Binding DeviceSettings}"/>
+                <Grid ColumnDefinitions="Auto, 10, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+                    <TextBlock Grid.Row="2" Grid.Column="0">Position to move to: </TextBlock>
+                    <NumericUpDown Grid.Row="2" Grid.Column="2"
+                                   Value="{Binding PositionToMoveTo}"
+                                   Increment="{Binding MinimumPositionIncrement}"/>
+
+                    <Button Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"
+                            Content="Move" Margin="10,10,0,10"
+                            Command="{Binding MoveToPositionCommand}"
+                            CommandParameter="{Binding PositionToMoveTo}" />
+
+                    <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,15,0,0"
+                                Orientation="Vertical">
+                        <CheckBox IsChecked="{Binding EnforceLimits}" Content="Enforce Limits?"/>
+                        <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                            <Label Grid.Row="0" Grid.Column="0">Lower: </Label>
+                            <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding LowerLimit}" Increment="{Binding MinimumPositionIncrement}"/>
+                            <Label Grid.Row="1" Grid.Column="0">Upper: </Label>
+                            <NumericUpDown Grid.Row="1"  Grid.Column="1" Value="{Binding UpperLimit}" Increment="{Binding MinimumPositionIncrement}"/>
+                        </Grid>
+
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <!-- A readout rather than a control, so it stays legible while everything is locked. -->
+            <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
+                <TextBlock >Position (</TextBlock>
+                <TextBlock Text="{Binding Units}" />
+                <TextBlock >): </TextBlock>
+                <TextBlock Background="Coral" Padding="5,0,5,0"
+                           Text="{Binding Position}" />
+            </StackPanel>
         </StackPanel>
 
     </Border>

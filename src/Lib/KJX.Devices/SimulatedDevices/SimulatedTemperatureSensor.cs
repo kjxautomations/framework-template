@@ -37,8 +37,8 @@ public class SimulatedTemperatureSensor : SensorBase
     {
         var sensorReadings = new Random();
         Value = sensorReadings.Next(0, 100);
-        FireValueUpdated();
-        
+        PublishReading();
+
         _timer?.Start();
     }
 

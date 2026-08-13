@@ -1,4 +1,7 @@
 bin
 obj
 .idea
-
+*.actual.json
+__pycache__/
+*.pyc
+*.egg-info/

@@ -1,7 +1,9 @@
-﻿namespace KJX.Devices;
+﻿using KJX.Scripting;
+
+namespace KJX.Devices;
 
 /// <summary>
-/// Interface for devices that support and/or require initialization. 
+/// Interface for devices that support and/or require initialization.
 /// </summary>
 public interface ISupportsInitialization
 {
@@ -17,7 +19,13 @@ public interface ISupportsInitialization
 /// <summary>
 /// Typical of stages and motors, an interface for devices that require a knowledge of their origin.
 /// </summary>
-public interface ISupportsHoming 
+/// <remarks>
+/// A capability rather than a kind of device: a driver mixes it in alongside IMotor, and the
+/// configuration decides which instances expose it. Scripts reach it because a target carries the
+/// set of interfaces it was registered under, not a single type.
+/// </remarks>
+[ScriptApi]
+public interface ISupportsHoming
 {
     public bool IsHomed { get; }
     /// <summary>

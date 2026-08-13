@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using KJX.Config;
 using KJX.Devices.Logic;
-using KJX.Devices;
 using Microsoft.Extensions.Logging;
 
 namespace KJX.Devices;

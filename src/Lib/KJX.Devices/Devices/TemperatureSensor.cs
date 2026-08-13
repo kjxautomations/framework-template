@@ -19,5 +19,6 @@ public class TemperatureSensor : SensorBase
     public override void ReadSensor()
     {
         Value = 25.0;
+        PublishReading();
     }
 }

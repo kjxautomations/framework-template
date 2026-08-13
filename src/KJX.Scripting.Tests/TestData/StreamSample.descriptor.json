@@ -1,0 +1,215 @@
+{
+  "hash": "sha256:ac5056d4b6e8f0998bd43c8917c5ffe9c4c3f7e019a2edab6fae654483760140",
+  "api": {
+    "version": 1,
+    "types": [
+      {
+        "name": "syringe_pump",
+        "clr": "Sample.Instruments.ISyringePump",
+        "doc": "A syringe pump.",
+        "members": [
+          {
+            "name": "calibrate",
+            "kind": "call",
+            "access": "invoke",
+            "clr": "CalibrateAsync",
+            "doc": "Runs a calibration pass and reports what it measured.",
+            "params": [
+              {
+                "name": "passes",
+                "type": {
+                  "kind": "int32"
+                },
+                "required": false,
+                "default": 3,
+                "doc": "How many times to repeat the measurement."
+              },
+              {
+                "name": "state",
+                "type": {
+                  "kind": "enum",
+                  "name": "pump_state"
+                },
+                "required": false,
+                "default": "Idle",
+                "doc": "The state to leave the pump in afterwards."
+              }
+            ],
+            "returns": {
+              "kind": "dto",
+              "name": "flow_reading"
+            }
+          },
+          {
+            "name": "flow",
+            "kind": "stream",
+            "access": "stream",
+            "clr": "Flow",
+            "doc": "Every flow reading as it is measured, including repeats of the same value.",
+            "params": [],
+            "yields": {
+              "kind": "dto",
+              "name": "flow_reading"
+            }
+          },
+          {
+            "name": "get_flow_rate",
+            "kind": "call",
+            "access": "get",
+            "clr": "FlowRate",
+            "doc": "Millilitres per minute.",
+            "params": [],
+            "returns": {
+              "kind": "float64"
+            }
+          },
+          {
+            "name": "get_maximum_flow_rate",
+            "kind": "call",
+            "access": "get",
+            "clr": "MaximumFlowRate",
+            "doc": "The largest flow the pump accepts, or null when it is unlimited.",
+            "params": [],
+            "returns": {
+              "kind": "float64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "get_name",
+            "kind": "call",
+            "access": "get",
+            "clr": "Name",
+            "doc": "The name this pump is configured under.",
+            "params": [],
+            "returns": {
+              "kind": "string"
+            }
+          },
+          {
+            "name": "get_state",
+            "kind": "call",
+            "access": "get",
+            "clr": "State",
+            "doc": "What the pump is doing.",
+            "params": [],
+            "returns": {
+              "kind": "enum",
+              "name": "pump_state"
+            }
+          },
+          {
+            "name": "prime",
+            "kind": "call",
+            "access": "invoke",
+            "clr": "PrimeAsync",
+            "doc": "Draws liquid in.",
+            "params": [
+              {
+                "name": "microlitres",
+                "type": {
+                  "kind": "float64"
+                },
+                "required": true,
+                "doc": "How much to draw."
+              },
+              {
+                "name": "settle",
+                "type": {
+                  "kind": "duration"
+                },
+                "required": true,
+                "doc": "How long to wait once the plunger stops."
+              }
+            ]
+          },
+          {
+            "name": "set_flow_rate",
+            "kind": "call",
+            "access": "set",
+            "clr": "FlowRate",
+            "doc": "Millilitres per minute.",
+            "params": [
+              {
+                "name": "value",
+                "type": {
+                  "kind": "float64"
+                },
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "set_maximum_flow_rate",
+            "kind": "call",
+            "access": "set",
+            "clr": "MaximumFlowRate",
+            "doc": "The largest flow the pump accepts, or null when it is unlimited.",
+            "params": [
+              {
+                "name": "value",
+                "type": {
+                  "kind": "float64",
+                  "nullable": true
+                },
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "stop",
+            "kind": "call",
+            "access": "invoke",
+            "clr": "Stop",
+            "doc": "Stops the pump immediately.",
+            "params": []
+          }
+        ]
+      }
+    ],
+    "dtos": [
+      {
+        "name": "flow_reading",
+        "clr": "Sample.Instruments.FlowReading",
+        "doc": "One flow measurement.",
+        "properties": [
+          {
+            "name": "microlitres",
+            "type": {
+              "kind": "float64"
+            },
+            "doc": "Volume moved since the previous reading."
+          },
+          {
+            "name": "taken",
+            "type": {
+              "kind": "timestamp"
+            },
+            "doc": "When the reading was taken."
+          }
+        ]
+      }
+    ],
+    "enums": [
+      {
+        "name": "pump_state",
+        "clr": "Sample.Instruments.PumpState",
+        "doc": "What the pump is doing right now.",
+        "values": [
+          {
+            "name": "Idle",
+            "value": 0
+          },
+          {
+            "name": "Priming",
+            "value": 1
+          },
+          {
+            "name": "Dispensing",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  }
+}

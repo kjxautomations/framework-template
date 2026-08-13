@@ -1,0 +1,13 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+
+# PyCharm writes a lot into .idea; the run configuration is the one part worth sharing.
+# src/.gitignore excludes .idea outright, so it has to be let back in before that can happen.
+!.idea/
+.idea/*
+!.idea/runConfigurations/
